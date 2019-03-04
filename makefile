@@ -1,16 +1,20 @@
 ifeq ($(OS),Windows_NT)
 	RM = del
 	PROG = prog.exe
-	WINARGS = -lmingw32 -lSDLmain
+	WINARGS = -I "$(CURDIR)/SDL2/include" -L "$(CURDIR)/SDL2/lib" -lmingw32 -lSDL2main
+	NOCONSOLE = -w -mwindows
 else
 	RM = rm
 	PROG = prog.out
 	WINARGS = 
+	NOCONSOLE = 
 endif
 
 all: main.o
-	g++ main.o -o $(PROG) $(WINARGS) -lSDL
-main.o: lesson01.cpp
-	g++ -c lesson01.cpp -o main.o
+	g++ main.o $(NOCONSOLE) $(WINARGS) -lSDL2 -o $(PROG)
+debug: main.o
+	g++ main.o $(WINARGS) -lSDL2 -o $(PROG)
+main.o: main.cpp
+	g++ -c main.cpp -o main.o
 clean:
 	$(RM) *.o *.out *.exe
