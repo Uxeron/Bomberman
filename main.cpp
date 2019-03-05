@@ -8,6 +8,7 @@
 
 #include <string>
 #include <stdio.h>
+#include "window.hpp"
 
 const int SCREEN_WIDTH 	= 640;
 const int SCREEN_HEIGHT = 480;
@@ -15,38 +16,10 @@ const int SCREEN_HEIGHT = 480;
 const int CHAR_WIDTH 	= 23;
 const int CHAR_HEIGHT 	= 56;
 
-SDL_Window *Window = NULL;
-
-// The surface contained by the window
-SDL_Surface *ScreenSurface = NULL;
+window *Window = NULL;
 
 // Character's image
 SDL_Surface *Character = NULL;
-
-SDL_Surface *loadSurface(std::string path) {
-	// The final optimized image
-	SDL_Surface *optimizedSurface = NULL;
-
-	// Load image at specified path
-	SDL_Surface *loadedSurface = IMG_Load(path.c_str());
-
-	// Convert surface to screen format
-	optimizedSurface = SDL_ConvertSurface(loadedSurface, ScreenSurface->format, 0);
-
-	// Set colorkey for transparency
-	SDL_SetColorKey(optimizedSurface, SDL_TRUE, SDL_MapRGB(ScreenSurface->format, 255, 0, 255));
-
-	// Get rid of old loaded surface
-	SDL_FreeSurface(loadedSurface);
-
-	return optimizedSurface;
-}
-
-
-void draw_image(SDL_Surface *image, int x, int y) {
-	SDL_Rect rect = {x, y, image->w, image->h};	// Create temporary rect
-	SDL_BlitSurface(image, NULL, ScreenSurface, &rect);	// Blit image at position
-}
 
 void stop_game() {
 	// Free character's image
@@ -54,8 +27,7 @@ void stop_game() {
 	Character = NULL;
 
 	// Destroy window
-	SDL_DestroyWindow(Window);
-	Window = NULL;
+	Window->free();
 
 	// Quit SDL and SDL_image
 	IMG_Quit();
@@ -66,12 +38,10 @@ int main(int argc, char *args[]) {
 	SDL_Init(SDL_INIT_VIDEO);	// Start SDL
 	IMG_Init(IMG_INIT_PNG);		// Start SDL_imag
 
-	// Create window and widow's surface
-	Window = SDL_CreateWindow("Bomberman!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-	ScreenSurface = SDL_GetWindowSurface(Window);
+	Window = window::create(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
 
 	// Load character image
-	Character = loadSurface("Character_Stand_Down.png");
+	Character = Window->loadSurface("Character_Stand_Down.png");
 
 	// Character position
 	int x = 0;
@@ -122,13 +92,13 @@ int main(int argc, char *args[]) {
 		}
 
 		// Clear screen
-		SDL_FillRect(ScreenSurface, NULL, SDL_MapRGB(ScreenSurface->format, 0, 127, 64));
+		Window->fill_screen(0, 127, 64);
 
 		// Draw character
-		draw_image(Character, x, y);
+		Window->draw_image(Character, x, y);
 
 		// Update the screen
-		SDL_UpdateWindowSurface(Window);
+		Window->update();
 	}
 
 	stop_game();	// Stop the game

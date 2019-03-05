@@ -10,10 +10,12 @@ else
 	NOCONSOLE = 
 endif
 
-all: main.o
-	g++ main.o $(NOCONSOLE) $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
-debug: main.o
-	g++ main.o $(WINARGS) -lSDL2 -o $(PROG)
+all: main.o window.o
+	g++ main.o window.o $(NOCONSOLE) $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
+debug: main.o window.o
+	g++ main.o window.o $(WINARGS) -lSDL2 -o $(PROG)
+window.o: window.cpp
+	g++ -c window.cpp -o window.o
 main.o: main.cpp
 	g++ -c main.cpp -o main.o
 clean:
