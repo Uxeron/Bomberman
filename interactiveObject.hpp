@@ -17,6 +17,8 @@
         Window* window;
 
     public:
+        bool remove = false;
+
         void setSprite(SDL_Surface* spr);
         SDL_Surface* getSprite();
 

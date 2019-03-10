@@ -4,7 +4,6 @@
     #include "SDL2/include/SDL.h"
 #endif
 
-#include <string>
 #include <iostream>
 #include "window.hpp"
 #include "character.hpp"
@@ -19,13 +18,18 @@ Uint32 prevTime = 0;
 
 Window *window = NULL;
 
-// Main character
-Character *character = NULL;
-
+Character* characterList[4] = {NULL};
+InteractiveObject* objectList[20] = {NULL};
 
 void stopGame() {
-	// Free main character
-	character->free();
+	// Free all characters
+	for (Character *chr : characterList)
+		if (chr != NULL)
+			chr->free();
+	// Free all leftover objects
+	for (InteractiveObject *obj : objectList)
+		if (obj != NULL)
+			obj->free();
 
 	// Destroy window
 	window->free();
@@ -42,8 +46,8 @@ int main(int argc, char *args[]) {
 	window->create(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
 
 	// Create the main character
-	character = new Character(window);
-	character->setSprite(loadSurface("Character_Stand_Down.png", *window));
+	characterList[0] = new Character(window);
+	characterList[0]->setSprite(loadSurface("Character_Stand_Down.png", *window));
 
 	// Main loop flag
 	bool quit = false;
@@ -59,21 +63,53 @@ int main(int argc, char *args[]) {
 			if (e.type == SDL_QUIT)
 				quit = true;
 			
-			character->event(e);
+			// Pass events to all characters
+			for(Character* chr: characterList)
+				if (chr != NULL)
+					chr->event(e);
+			// Pass events to all objects
+			for (InteractiveObject *obj : objectList)
+				if (obj != NULL)
+					obj->event(e);
 		}
 
-		// Process character's functions
-		character->process();
+		// Call process for all characters
+		for (Character *chr : characterList) {
+			if (chr != NULL) {
+				chr->process();
+				if (chr->remove) {
+					chr->free();
+					chr = NULL;
+				}
+			}
+		}
+		// Call process for all objects
+		for (InteractiveObject *obj : objectList) {
+			if (obj != NULL) {
+				obj->process();
+				if (obj->remove) {
+					obj->free();
+					obj = NULL;
+				}
+			}
+		}
 
 		// Clear screen
 		window->fillScreen(0, 127, 64);
 
-		// Draw character
-		character->draw();
+		// Draw all characters
+		for (Character *chr : characterList)
+			if (chr != NULL)
+				chr->draw();
+		// Draw all objects
+		for (InteractiveObject *obj : objectList)
+			if (obj != NULL)
+				obj->draw();
 
 		// Update the screen
 		window->update();
 
+		// Limit framerate
 		if (prevTime + FRAME_TIME > SDL_GetTicks())
 			SDL_Delay(prevTime + FRAME_TIME - SDL_GetTicks());
 		prevTime = SDL_GetTicks();
