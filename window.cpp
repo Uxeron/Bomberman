@@ -9,7 +9,7 @@ Window* Window::getInstance(int screen_width = 0, int screen_height = 0, std::st
 		instance = new Window;
 
 		instance->gameWindow    = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
-		instance->ScreenSurface = SDL_GetWindowSurface(instance->gameWindow);
+		instance->screenSurface = SDL_GetWindowSurface(instance->gameWindow);
 	}
 
 	return instance;
@@ -34,10 +34,10 @@ SDL_Surface* Window::loadSurface(std::string path) {
 	SDL_Surface *loadedSurface = IMG_Load(path.c_str());
 
 	// Convert surface to screen format
-	optimizedSurface = SDL_ConvertSurface(loadedSurface, ScreenSurface->format, 0);
+	optimizedSurface = SDL_ConvertSurface(loadedSurface, screenSurface->format, 0);
 
 	// Set colorkey for transparency
-	SDL_SetColorKey(optimizedSurface, SDL_TRUE, SDL_MapRGB(ScreenSurface->format, 255, 0, 255));
+	SDL_SetColorKey(optimizedSurface, SDL_TRUE, SDL_MapRGB(screenSurface->format, 255, 0, 255));
 
 	// Get rid of old loaded surface
 	SDL_FreeSurface(loadedSurface);
@@ -46,13 +46,13 @@ SDL_Surface* Window::loadSurface(std::string path) {
 }
 
 
-void Window::draw_image(SDL_Surface *image, int x, int y) {
+void Window::drawImage(SDL_Surface *image, int x, int y) {
 	SDL_Rect rect = {x, y, image->w, image->h};	// Create temporary rect
-	SDL_BlitSurface(image, NULL, ScreenSurface, &rect);	// Blit image at position
+	SDL_BlitSurface(image, NULL, screenSurface, &rect);	// Blit image at position
 }
 
-void Window::fill_screen(int r, int g, int b) {
-	SDL_FillRect(ScreenSurface, NULL, SDL_MapRGB(ScreenSurface->format, r, g, b));
+void Window::fillScreen(int r, int g, int b) {
+	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, r, g, b));
 }
 
 void Window::update() {

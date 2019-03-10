@@ -5,7 +5,7 @@
 #endif
 
 #include <string>
-#include <stdio.h>
+#include <iostream>
 #include "window.hpp"
 
 const int SCREEN_WIDTH 	= 640;
@@ -21,7 +21,7 @@ Window *window = NULL;
 SDL_Surface *Character = NULL;
 
 
-void stop_game() {
+void stopGame() {
 	// Free character's image
 	SDL_FreeSurface(Character);
 	Character = NULL;
@@ -91,16 +91,16 @@ int main(int argc, char *args[]) {
 		}
 
 		// Clear screen
-		window->fill_screen(0, 127, 64);
+		window->fillScreen(0, 127, 64);
 
 		// Draw character
-		window->draw_image(Character, x, y);
+		window->drawImage(Character, x, y);
 
 		// Update the screen
 		window->update();
 	}
 
-	stop_game();	// Stop the game
+	stopGame();	// Stop the game
 	
 	return 0; 
 }

@@ -4,6 +4,7 @@
     #define WINDOW_H_
 
     #include <string>
+    #include <iostream>
 
     #ifdef __linux__	// linux
         #include <SDL2/SDL.h>
@@ -17,13 +18,13 @@
         Window();
         static Window* instance;
         SDL_Window*   gameWindow    = NULL;
-        SDL_Surface*  ScreenSurface = NULL;
+        SDL_Surface*  screenSurface = NULL;
         public:
-            static Window* getInstance(int screen_width, int screen_height, std::string name);
-            SDL_Surface *loadSurface(std::string path);
+            static Window* getInstance(int screenWidth, int screenHeight, std::string name);
+            friend SDL_Surface *loadSurface(std::string path);
             void free();
-            void draw_image(SDL_Surface *image, int x, int y);
-            void fill_screen(int r, int g, int b);
+            void drawImage(SDL_Surface *image, int x, int y);
+            void fillScreen(int r, int g, int b);
             void update();
     };
 #endif

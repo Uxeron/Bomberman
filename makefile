@@ -13,7 +13,7 @@ endif
 all: main.o window.o
 	g++ main.o window.o $(NOCONSOLE) $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
 debug: main.o window.o
-	g++ main.o window.o $(WINARGS) -lSDL2 -o $(PROG)
+	g++ main.o window.o $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
 window.o: window.cpp
 	g++ -c window.cpp -o window.o
 main.o: main.cpp
