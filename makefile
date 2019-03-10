@@ -11,12 +11,12 @@ else
 endif
 
 all: main.o window.o
-	g++ main.o window.o $(NOCONSOLE) $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
+	g++ -std=c++11 main.o window.o $(NOCONSOLE) $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
 debug: main.o window.o
-	g++ main.o window.o $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
+	g++ -std=c++11 main.o window.o $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
 window.o: window.cpp
-	g++ -c window.cpp -o window.o
+	g++ -std=c++11 -c window.cpp -o window.o
 main.o: main.cpp
-	g++ -c main.cpp -o main.o
+	g++ -std=c++11 -c main.cpp -o main.o
 clean:
 	$(RM) *.o *.out *.exe
