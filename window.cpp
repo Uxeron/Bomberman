@@ -1,24 +1,32 @@
-#include "window.hpp"
+#include "Window.hpp"
 
-window* window::create(int screen_width, int screen_height, std::string name) {
-	window* win = new window;
-
-	win->gameWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
-	win->ScreenSurface = SDL_GetWindowSurface(win->gameWindow);
-
-    return win;
+Window::Window() {
+	IMG_Init(IMG_INIT_PNG);		// Start SDL_img
 }
 
+Window* Window::getInstance(int screen_width = 0, int screen_height = 0, std::string name = "") {
+	if (!instance) {
+		instance = new Window;
 
-void window::free() {
+		instance->gameWindow    = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
+		instance->ScreenSurface = SDL_GetWindowSurface(instance->gameWindow);
+	}
+
+	return instance;
+   }
+
+
+void Window::free() {
 	SDL_DestroyWindow(gameWindow);
 	gameWindow = NULL;
+
+	IMG_Quit();
 
     delete this;
 }
 
 
-SDL_Surface* window::loadSurface(std::string path) {
+SDL_Surface* Window::loadSurface(std::string path) {
 	// The final optimized image
 	SDL_Surface *optimizedSurface = NULL;
 
@@ -38,15 +46,15 @@ SDL_Surface* window::loadSurface(std::string path) {
 }
 
 
-void window::draw_image(SDL_Surface *image, int x, int y) {
+void Window::draw_image(SDL_Surface *image, int x, int y) {
 	SDL_Rect rect = {x, y, image->w, image->h};	// Create temporary rect
 	SDL_BlitSurface(image, NULL, ScreenSurface, &rect);	// Blit image at position
 }
 
-void window::fill_screen(int r, int g, int b) {
+void Window::fill_screen(int r, int g, int b) {
 	SDL_FillRect(ScreenSurface, NULL, SDL_MapRGB(ScreenSurface->format, r, g, b));
 }
 
-void window::update() {
+void Window::update() {
 	SDL_UpdateWindowSurface(gameWindow);
 }
