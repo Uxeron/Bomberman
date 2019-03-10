@@ -35,23 +35,23 @@ SDL_Rect* Character::getRect() {
 
 void Character::process() {
     const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
-    if (currentKeyStates[SDL_SCANCODE_UP]) {
-        rect.y -= 5;
+    if (currentKeyStates[SDL_SCANCODE_W]) {
+        rect.y -= 2;
         if (rect.y < 0)
             rect.y = 0;
     }
-    else if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-        rect.y += 5;
+    if (currentKeyStates[SDL_SCANCODE_S]) {
+        rect.y += 2;
         if (rect.y + rect.h > window->getHeight())
             rect.y = window->getHeight() - rect.h;
     }
-    else if (currentKeyStates[SDL_SCANCODE_LEFT]) {
-        rect.x -= 5;
+    if (currentKeyStates[SDL_SCANCODE_A]) {
+        rect.x -= 2;
         if (rect.x < 0)
             rect.x = 0;
     }
-    else if (currentKeyStates[SDL_SCANCODE_RIGHT]){
-        rect.x += 5;
+    if (currentKeyStates[SDL_SCANCODE_D]){
+        rect.x += 2;
         if (rect.x + rect.w > window->getWidth())
             rect.x = window->getWidth() - rect.w;
     }

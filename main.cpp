@@ -7,12 +7,10 @@
 #include <string>
 #include <iostream>
 #include "window.hpp"
+#include "character.hpp"
 
 const int SCREEN_WIDTH 	= 640;
 const int SCREEN_HEIGHT = 480;
-
-const int CHAR_WIDTH 	= 23;
-const int CHAR_HEIGHT 	= 56;
 
 const int FPS = 60;
 const int FRAME_TIME = 1000 / FPS;
@@ -21,14 +19,13 @@ Uint32 prevTime = 0;
 
 Window *window = NULL;
 
-// Character's image
-SDL_Surface *Character = NULL;
+// Main character
+Character *character = NULL;
 
 
 void stopGame() {
-	// Free character's image
-	SDL_FreeSurface(Character);
-	Character = NULL;
+	// Free main character
+	character->free();
 
 	// Destroy window
 	window->free();
@@ -44,12 +41,9 @@ int main(int argc, char *args[]) {
 	window = Window::getInstance();
 	window->create(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
 
-	// Load character image
-	Character = loadSurface("Character_Stand_Down.png", *window);
-
-	// Character position
-	int x = 0;
-	int y = 0;
+	// Create the main character
+	character = new Character(window);
+	character->setSprite(loadSurface("Character_Stand_Down.png", *window));
 
 	// Main loop flag
 	bool quit = false;
@@ -64,42 +58,18 @@ int main(int argc, char *args[]) {
 			// User pressed x
 			if (e.type == SDL_QUIT)
 				quit = true;
-
-			// User presses a key
-			else if (e.type == SDL_KEYDOWN) {
-				switch (e.key.keysym.sym) {
-					case SDLK_UP:
-						y -= 5;
-						if (y < 0) 
-							y = 0;
-						break;
-
-					case SDLK_DOWN:
-						y += 5;
-						if (y + CHAR_HEIGHT > SCREEN_HEIGHT)
-							y = SCREEN_HEIGHT - CHAR_HEIGHT;
-						break;
-
-					case SDLK_LEFT:
-						x -= 5;
-						if (x < 0)
-							x = 0;
-						break;
-
-					case SDLK_RIGHT:
-						x += 5;
-						if (x + CHAR_WIDTH > SCREEN_WIDTH)
-							x = SCREEN_WIDTH - CHAR_WIDTH;
-						break;
-				}
-			}
+			
+			character->event(e);
 		}
+
+		// Process character's functions
+		character->process();
 
 		// Clear screen
 		window->fillScreen(0, 127, 64);
 
 		// Draw character
-		window->drawImage(Character, x, y);
+		character->draw();
 
 		// Update the screen
 		window->update();
