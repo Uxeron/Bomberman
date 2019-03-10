@@ -7,6 +7,7 @@
 #include <iostream>
 #include "window.hpp"
 #include "character.hpp"
+#include <list>
 
 const int SCREEN_WIDTH 	= 640;
 const int SCREEN_HEIGHT = 480;
@@ -18,18 +19,18 @@ Uint32 prevTime = 0;
 
 Window *window = NULL;
 
-Character* characterList[4] = {NULL};
-InteractiveObject* objectList[20] = {NULL};
+std::list<Character*> chrList;
+std::list<InteractiveObject*> objList;
 
 void stopGame() {
 	// Free all characters
-	for (Character *chr : characterList)
-		if (chr != NULL)
-			chr->free();
+	for (Character *chr : chrList)
+		chr->free();
+	chrList.clear();
 	// Free all leftover objects
-	for (InteractiveObject *obj : objectList)
-		if (obj != NULL)
-			obj->free();
+	for (InteractiveObject *obj : objList)
+		obj->free();
+	objList.clear();
 
 	// Destroy window
 	window->free();
@@ -45,9 +46,12 @@ int main(int argc, char *args[]) {
 	window = Window::getInstance();
 	window->create(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
 
-	// Create the main character
-	characterList[0] = new Character(window);
-	characterList[0]->setSprite(loadSurface("Character_Stand_Down.png", *window));
+	// Create the characters
+	for (int i = 0; i < 1; i++) {
+		Character *chr = new Character(window);
+		chr->setSprite(loadSurface("Character_Stand_Down.png", *window));
+		chrList.push_back(chr);
+	}
 
 	// Main loop flag
 	bool quit = false;
@@ -64,33 +68,27 @@ int main(int argc, char *args[]) {
 				quit = true;
 			
 			// Pass events to all characters
-			for(Character* chr: characterList)
-				if (chr != NULL)
-					chr->event(e);
+			for (Character *chr : chrList)
+				chr->event(e);
 			// Pass events to all objects
-			for (InteractiveObject *obj : objectList)
-				if (obj != NULL)
-					obj->event(e);
+			for (InteractiveObject *obj : objList)
+				obj->event(e);
 		}
 
 		// Call process for all characters
-		for (Character *chr : characterList) {
-			if (chr != NULL) {
-				chr->process();
-				if (chr->remove) {
-					chr->free();
-					chr = NULL;
-				}
+		for (Character *chr : chrList) {
+			chr->process();
+			if (chr->remove) {
+				chr->free();
+				chrList.remove(chr);
 			}
 		}
 		// Call process for all objects
-		for (InteractiveObject *obj : objectList) {
-			if (obj != NULL) {
-				obj->process();
-				if (obj->remove) {
-					obj->free();
-					obj = NULL;
-				}
+		for (InteractiveObject *obj : objList) {
+			obj->process();
+			if (obj->remove) {
+				obj->free();
+				objList.remove(obj);
 			}
 		}
 
@@ -98,13 +96,11 @@ int main(int argc, char *args[]) {
 		window->fillScreen(0, 127, 64);
 
 		// Draw all characters
-		for (Character *chr : characterList)
-			if (chr != NULL)
-				chr->draw();
+		for (Character *chr : chrList)
+			chr->draw();
 		// Draw all objects
-		for (InteractiveObject *obj : objectList)
-			if (obj != NULL)
-				obj->draw();
+		for (InteractiveObject *obj : objList)
+			obj->draw();
 
 		// Update the screen
 		window->update();
