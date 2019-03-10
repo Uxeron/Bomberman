@@ -6,16 +6,21 @@ Window::Window() {
 	IMG_Init(IMG_INIT_PNG);		// Start SDL_img
 }
 
-Window* Window::getInstance(int screen_width = 0, int screen_height = 0, std::string name = "") {
-	if (!instance) {
+Window* Window::getInstance() {
+	if (!instance) 
 		instance = new Window;
-
-		instance->gameWindow    = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
-		instance->screenSurface = SDL_GetWindowSurface(instance->gameWindow);
-	}
 
 	return instance;
    }
+
+void Window::create(int screen_width, int screen_height, std::string name) {
+	if (created) return;
+	gameWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
+	screenSurface = SDL_GetWindowSurface(gameWindow);
+	width = screen_width;
+	height = screen_height;
+	created = true;
+}
 
 
 void Window::free() {
@@ -63,4 +68,12 @@ void Window::fillScreen(int r, int g, int b) {
 
 void Window::update() {
 	SDL_UpdateWindowSurface(gameWindow);
+}
+
+int Window::getWidth() {
+	return width;
+}
+
+int Window::getHeight() {
+	return height;
 }

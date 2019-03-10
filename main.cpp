@@ -14,6 +14,11 @@ const int SCREEN_HEIGHT = 480;
 const int CHAR_WIDTH 	= 23;
 const int CHAR_HEIGHT 	= 56;
 
+const int FPS = 60;
+const int FRAME_TIME = 1000 / FPS;
+
+Uint32 prevTime = 0;
+
 Window *window = NULL;
 
 // Character's image
@@ -36,7 +41,8 @@ int main(int argc, char *args[]) {
 	SDL_Init(SDL_INIT_VIDEO);	// Start SDL
 
 	// Create the main window singleton
-	window = Window::getInstance(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
+	window = Window::getInstance();
+	window->create(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
 
 	// Load character image
 	Character = loadSurface("Character_Stand_Down.png", *window);
@@ -97,6 +103,10 @@ int main(int argc, char *args[]) {
 
 		// Update the screen
 		window->update();
+
+		if (prevTime + FRAME_TIME > SDL_GetTicks())
+			SDL_Delay(prevTime + FRAME_TIME - SDL_GetTicks());
+		prevTime = SDL_GetTicks();
 	}
 
 	stopGame();	// Stop the game
