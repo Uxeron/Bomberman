@@ -19,12 +19,13 @@
         static Window* instance;
         SDL_Window*   gameWindow    = NULL;
         SDL_Surface*  screenSurface = NULL;
-        public:
-            static Window* getInstance(int screenWidth, int screenHeight, std::string name);
-            friend SDL_Surface *loadSurface(std::string path);
-            void free();
-            void drawImage(SDL_Surface *image, int x, int y);
-            void fillScreen(int r, int g, int b);
-            void update();
+    public:
+        static Window* getInstance(int screenWidth, int screenHeight, std::string name);
+        friend SDL_Surface *loadSurface(std::string path, Window wind);
+        void free();
+        void drawImage(SDL_Surface *image, int x, int y);
+        void drawImage(SDL_Surface *image, SDL_Rect *rect);
+        void fillScreen(int r, int g, int b);
+        void update();
     };
 #endif

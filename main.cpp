@@ -14,7 +14,6 @@ const int SCREEN_HEIGHT = 480;
 const int CHAR_WIDTH 	= 23;
 const int CHAR_HEIGHT 	= 56;
 
-Window *Window::instance = 0;
 Window *window = NULL;
 
 // Character's image
@@ -37,10 +36,10 @@ int main(int argc, char *args[]) {
 	SDL_Init(SDL_INIT_VIDEO);	// Start SDL
 
 	// Create the main window singleton
-	window = window->getInstance(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
+	window = Window::getInstance(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
 
 	// Load character image
-	Character = window->loadSurface("Character_Stand_Down.png");
+	Character = loadSurface("Character_Stand_Down.png", *window);
 
 	// Character position
 	int x = 0;

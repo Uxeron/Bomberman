@@ -1,5 +1,7 @@
 #include "Window.hpp"
 
+Window *Window::instance = 0;
+
 Window::Window() {
 	IMG_Init(IMG_INIT_PNG);		// Start SDL_img
 }
@@ -26,7 +28,7 @@ void Window::free() {
 }
 
 
-SDL_Surface* Window::loadSurface(std::string path) {
+SDL_Surface* loadSurface(std::string path, Window wind) {
 	// The final optimized image
 	SDL_Surface *optimizedSurface = NULL;
 
@@ -34,10 +36,10 @@ SDL_Surface* Window::loadSurface(std::string path) {
 	SDL_Surface *loadedSurface = IMG_Load(path.c_str());
 
 	// Convert surface to screen format
-	optimizedSurface = SDL_ConvertSurface(loadedSurface, screenSurface->format, 0);
+	optimizedSurface = SDL_ConvertSurface(loadedSurface, wind.screenSurface->format, 0);
 
 	// Set colorkey for transparency
-	SDL_SetColorKey(optimizedSurface, SDL_TRUE, SDL_MapRGB(screenSurface->format, 255, 0, 255));
+	SDL_SetColorKey(optimizedSurface, SDL_TRUE, SDL_MapRGB(wind.screenSurface->format, 255, 0, 255));
 
 	// Get rid of old loaded surface
 	SDL_FreeSurface(loadedSurface);
@@ -49,6 +51,10 @@ SDL_Surface* Window::loadSurface(std::string path) {
 void Window::drawImage(SDL_Surface *image, int x, int y) {
 	SDL_Rect rect = {x, y, image->w, image->h};	// Create temporary rect
 	SDL_BlitSurface(image, NULL, screenSurface, &rect);	// Blit image at position
+}
+
+void Window::drawImage(SDL_Surface *image, SDL_Rect *rect) {
+	SDL_BlitSurface(image, NULL, screenSurface, rect); // Blit image at position
 }
 
 void Window::fillScreen(int r, int g, int b) {
