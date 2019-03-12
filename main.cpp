@@ -19,14 +19,9 @@ Uint32 prevTime = 0;
 
 Window *window = NULL;
 
-std::list<Character*> chrList;
 std::list<InteractiveObject*> objList;
 
 void stopGame() {
-	// Free all characters
-	for (Character *chr : chrList)
-		chr->free();
-	chrList.clear();
 	// Free all leftover objects
 	for (InteractiveObject *obj : objList)
 		obj->free();
@@ -50,7 +45,7 @@ int main(int argc, char *args[]) {
 	for (int i = 0; i < 1; i++) {
 		Character *chr = new Character(window);
 		chr->setSprite(loadSurface("Character_Stand_Down.png", *window));
-		chrList.push_back(chr);
+		objList.push_back(chr);
 	}
 
 	// Main loop flag
@@ -67,22 +62,11 @@ int main(int argc, char *args[]) {
 			if (e.type == SDL_QUIT)
 				quit = true;
 			
-			// Pass events to all characters
-			for (Character *chr : chrList)
-				chr->event(e);
 			// Pass events to all objects
 			for (InteractiveObject *obj : objList)
 				obj->event(e);
 		}
 
-		// Call process for all characters
-		for (Character *chr : chrList) {
-			chr->process();
-			if (chr->remove) {
-				chr->free();
-				chrList.remove(chr);
-			}
-		}
 		// Call process for all objects
 		for (InteractiveObject *obj : objList) {
 			obj->process();
@@ -95,9 +79,6 @@ int main(int argc, char *args[]) {
 		// Clear screen
 		window->fillScreen(0, 127, 64);
 
-		// Draw all characters
-		for (Character *chr : chrList)
-			chr->draw();
 		// Draw all objects
 		for (InteractiveObject *obj : objList)
 			obj->draw();
