@@ -6,30 +6,55 @@ Character::Character(Window* wind) {
 
 void Character::process() {
     const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
-    if (currentKeyStates[SDL_SCANCODE_W]) {
-        rect.y -= 2;
-        if (rect.y < 0)
-            rect.y = 0;
-    }
-    if (currentKeyStates[SDL_SCANCODE_S]) {
-        rect.y += 2;
-        if (rect.y + rect.h > window->getHeight())
-            rect.y = window->getHeight() - rect.h;
-    }
-    if (currentKeyStates[SDL_SCANCODE_A]) {
-        rect.x -= 2;
-        if (rect.x < 0)
-            rect.x = 0;
-    }
-    if (currentKeyStates[SDL_SCANCODE_D]){
-        rect.x += 2;
-        if (rect.x + rect.w > window->getWidth())
-            rect.x = window->getWidth() - rect.w;
-    }
+    if (currentKeyStates[SDL_SCANCODE_W])
+        move(0, -2);
+    
+    if (currentKeyStates[SDL_SCANCODE_S]) 
+        move(0, 2);
+    
+    if (currentKeyStates[SDL_SCANCODE_A]) 
+        move(-2, 0);
+    
+    if (currentKeyStates[SDL_SCANCODE_D])
+        move(2, 0);
+}
+
+void Character::move(int dist_x, int dist_y) {
+    rect.x += dist_x;
+    rect.y += dist_y;
+
+    if (rect.x < 0)
+        rect.x = 0;
+
+    if (rect.y < 0)
+        rect.y = 0;
+
+    if (rect.x + rect.w > window->getWidth())
+        rect.x = window->getWidth() - rect.w;   
+
+    if (rect.y + rect.h > window->getHeight())
+        rect.y = window->getHeight() - rect.h;
 }
 
 void Character::draw() {
     window->drawImage(sprite, &rect);
 }
 
-void Character::event(SDL_Event ev) {}
+void Character::event(SDL_Event ev) {
+    if (ev.type == SDL_KEYDOWN) {
+        if (!ev.key.repeat && ev.key.state == SDL_PRESSED && ev.key.keysym.sym == SDLK_SPACE) {
+                const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
+                if (currentKeyStates[SDL_SCANCODE_W])
+                    move(0, -100);
+                
+                if (currentKeyStates[SDL_SCANCODE_S]) 
+                    move(0, 100);
+                
+                if (currentKeyStates[SDL_SCANCODE_A]) 
+                    move(-100, 0);
+                
+                if (currentKeyStates[SDL_SCANCODE_D])
+                    move(100, 0);
+        }
+    }
+}

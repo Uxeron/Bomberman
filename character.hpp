@@ -15,4 +15,6 @@ public:
     void process();
     void event(SDL_Event ev);
     void draw();
+
+    void move(int dist_x, int dist_y);
 };
