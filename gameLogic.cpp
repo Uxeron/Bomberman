@@ -11,10 +11,10 @@ void GameLogic::startGame() {
 
     debugWrite("Creating characters");
     // Create the characters
-    for (int i = 0; i < 1; i++)
-    {
+    for (int i = 0; i < 1; i++) {
         Character *chr = new Character(window);
-        chr->setSprite(window->loadSurface("Character_Stand_Down.png"));
+		chr->setPos(0, 0);
+        chr->setSprite(window->loadSurface("Sprites/Character_Stand_Down.png"));
         objList.push_back(chr);
     }
 }
@@ -60,8 +60,13 @@ void GameLogic::mainLoop() {
 		// Call process for all objects
 		for (InteractiveObject *obj : objList) {
             obj->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 100.0);
+			// Pull new objects from the current object's internal list
+			for(int i = 0; i < obj->objList.size();) {
+				objList.push_back(obj->objList.front());
+				obj->objList.pop_front();
+			}
+			// Check if object needs to be deleted
             if (obj->remove) {
-                debugWrite("Object asked to be deleted");
                 delete obj;
 				objList.remove(obj);
 			}

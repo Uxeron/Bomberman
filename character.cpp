@@ -52,5 +52,8 @@ void Character::event(SDL_Event ev) {
                 if (currentKeyStates[SDL_SCANCODE_D])
                     move(100, 0);
         }
+        if (!ev.key.repeat && ev.key.state == SDL_PRESSED && ev.key.keysym.sym == SDLK_e) {
+            objList.push_back(new Bomb(window, getRect()->x + pivotOffsetX, getRect()->y + pivotOffsetY));
+        }
     }
 }

@@ -12,8 +12,8 @@ void InteractiveObject::setWindow(Window* wind) {
 void InteractiveObject::setSprite(SDL_Surface *spr) {
     sprite = spr;
 
-    rect.x = 0;
-    rect.y = 0;
+    //rect.x = 0;
+    //rect.y = 0;
     rect.w = spr->w;
     rect.h = spr->h;
 }

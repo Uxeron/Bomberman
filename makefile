@@ -10,10 +10,10 @@ else
 	NOCONSOLE = 
 endif
 
-all: main.o window.o character.o interactiveObject.o gameLogic_d.o
-	g++ -std=c++11 main.o window.o character.o interactiveObject.o gameLogic_d.o $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
-release: main.o window.o character.o interactiveObject.o gameLogic.o
-	g++ -std=c++11 main.o window.o character.o interactiveObject.o gameLogic.o $(NOCONSOLE) $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
+all: main.o window.o character.o interactiveObject.o gameLogic_d.o explosion.o bomb.o
+	g++ -std=c++11 main.o window.o character.o interactiveObject.o gameLogic_d.o explosion.o bomb.o $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
+release: main.o window.o character.o interactiveObject.o gameLogic.o explosion.o bomb.o
+	g++ -std=c++11 main.o window.o character.o interactiveObject.o gameLogic.o explosion.o bomb.o $(NOCONSOLE) $(WINARGS) -lSDL2 -lSDL2_image -o $(PROG)
 window.o: window.cpp
 	g++ -std=c++11 -c window.cpp -o window.o
 character.o: character.cpp
@@ -24,6 +24,10 @@ gameLogic_d.o: gameLogic.cpp
 	g++ -std=c++11 -c gameLogic.cpp -D DEBUG -o gameLogic_d.o
 gameLogic.o: gameLogic.cpp
 	g++ -std=c++11 -c gameLogic.cpp -o gameLogic.o
+explosion.o: explosion.cpp
+	g++ -std=c++11 -c explosion.cpp -o explosion.o
+bomb.o: bomb.cpp
+	g++ -std=c++11 -c bomb.cpp -o bomb.o
 main.o: main.cpp
 	g++ -std=c++11 -c main.cpp -o main.o
 clean:

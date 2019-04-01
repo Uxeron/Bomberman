@@ -7,9 +7,9 @@
 #endif
 
 #include <iostream>
-#include "window.hpp"
-#include "character.hpp"
 #include <list>
+#include "character.hpp"
+#include "window.hpp"
 
 #ifdef DEBUG
 	#define debugWrite(message) std::cout << message << std::endl;
@@ -25,7 +25,8 @@ class GameLogic {
     Uint32 prevTime = 0;
     Window *window = NULL;
     std::list<InteractiveObject*> objList;
-public:
+
+  public:
     void startGame();
     void mainLoop();
     void stopGame();

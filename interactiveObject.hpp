@@ -1,6 +1,7 @@
 // The base class for any object that can be interacted with (characters, bombs, etc)
-#pragma once 
+#pragma once
 
+#include <list>
 #include "window.hpp"
 
 #ifdef __linux__ // linux
@@ -15,9 +16,11 @@ protected:
     SDL_Rect rect;
     Window* window = NULL;
 
-public:
+  public:
+    std::list<InteractiveObject*> objList;
     InteractiveObject();
     InteractiveObject(Window* wind): window(wind) {};
+    InteractiveObject(Window* wind, int x, int y): window(wind) { setPos(x, y); };
     ~InteractiveObject();
 
     bool remove = false;
