@@ -12,7 +12,7 @@
 class Character: public InteractiveObject {
 public:
     Character(Window* wind): InteractiveObject(wind) {};
-    void process();
+    void process(float delta);
     void event(SDL_Event ev);
     void draw();
 

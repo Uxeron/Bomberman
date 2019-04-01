@@ -29,7 +29,7 @@ public:
     void setPos(int x, int y);
     SDL_Rect* getRect();
 
-    virtual void process() = 0;
+    virtual void process(float delta) = 0;
     virtual void event(SDL_Event ev) = 0;
     virtual void draw() = 0;
 };

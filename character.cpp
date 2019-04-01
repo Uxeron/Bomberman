@@ -1,6 +1,6 @@
 #include "character.hpp"
 
-void Character::process() {
+void Character::process(float delta) {
     const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
     if (currentKeyStates[SDL_SCANCODE_W])
         move(0, -2);

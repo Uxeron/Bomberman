@@ -59,8 +59,8 @@ void GameLogic::mainLoop() {
 
 		// Call process for all objects
 		for (InteractiveObject *obj : objList) {
-			obj->process();
-			if (obj->remove) {
+            obj->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 100.0);
+            if (obj->remove) {
                 debugWrite("Object asked to be deleted");
                 delete obj;
 				objList.remove(obj);
