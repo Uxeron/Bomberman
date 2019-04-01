@@ -2,7 +2,6 @@
 // Window is a singleton (wouldn't want multiple windows)
 #pragma once 
 
-#include <string>
 #include <iostream>
 
 #ifdef __linux__	// linux
@@ -14,18 +13,15 @@
 #endif
 
 class Window {
-    Window();
-    static Window* instance;
     SDL_Window*   gameWindow    = NULL;
     SDL_Surface*  screenSurface = NULL;
-    bool created = false;
     int width;
     int height;
 public:
-    static Window* getInstance();
-    friend SDL_Surface *loadSurface(std::string path, Window wind);
-    void create(int screen_width, int screen_height, std::string name);
-    void free();
+    Window();
+    Window(int posX, int posY, const char* name);
+    ~Window();
+    SDL_Surface *loadSurface(const char* path);
     void drawImage(SDL_Surface *image, int x, int y);
     void drawImage(SDL_Surface *image, SDL_Rect *rect);
     void fillScreen(int r, int g, int b);

@@ -1,50 +1,33 @@
 #include "Window.hpp"
 
-Window *Window::instance = 0;
-
-Window::Window() {
-	IMG_Init(IMG_INIT_PNG);		// Start SDL_img
-}
-
-Window* Window::getInstance() {
-	if (!instance) 
-		instance = new Window;
-
-	return instance;
-   }
-
-void Window::create(int screen_width, int screen_height, std::string name) {
-	if (created) return;
-	gameWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
+Window::Window(int w, int h, const char* name): width(w), height(h) {
+	gameWindow = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
 	screenSurface = SDL_GetWindowSurface(gameWindow);
-	width = screen_width;
-	height = screen_height;
-	created = true;
 }
 
+Window::Window(): width(640), height(480) {
+	gameWindow = SDL_CreateWindow("Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+	screenSurface = SDL_GetWindowSurface(gameWindow);
+}
 
-void Window::free() {
+Window::~Window() {
 	SDL_DestroyWindow(gameWindow);
 	gameWindow = NULL;
-
-	IMG_Quit();
-
-    delete this;
 }
 
 
-SDL_Surface* loadSurface(std::string path, Window wind) {
+SDL_Surface* Window::loadSurface(const char* path) {
 	// The final optimized image
 	SDL_Surface *optimizedSurface = NULL;
 
 	// Load image at specified path
-	SDL_Surface *loadedSurface = IMG_Load(path.c_str());
+	SDL_Surface *loadedSurface = IMG_Load(path);
 
 	// Convert surface to screen format
-	optimizedSurface = SDL_ConvertSurface(loadedSurface, wind.screenSurface->format, 0);
+	optimizedSurface = SDL_ConvertSurface(loadedSurface, screenSurface->format, 0);
 
 	// Set colorkey for transparency
-	SDL_SetColorKey(optimizedSurface, SDL_TRUE, SDL_MapRGB(wind.screenSurface->format, 255, 0, 255));
+	SDL_SetColorKey(optimizedSurface, SDL_TRUE, SDL_MapRGB(screenSurface->format, 255, 0, 255));
 
 	// Get rid of old loaded surface
 	SDL_FreeSurface(loadedSurface);

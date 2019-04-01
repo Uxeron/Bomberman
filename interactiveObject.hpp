@@ -13,18 +13,21 @@ class InteractiveObject {
 protected:
     SDL_Surface* sprite = NULL;
     SDL_Rect rect;
-    Window* window;
+    Window* window = NULL;
 
 public:
+    InteractiveObject();
+    InteractiveObject(Window* wind): window(wind) {};
+    ~InteractiveObject();
+
     bool remove = false;
+    void setWindow(Window* window);
 
     void setSprite(SDL_Surface* spr);
     SDL_Surface* getSprite();
 
     void setPos(int x, int y);
     SDL_Rect* getRect();
-
-    void free();
 
     virtual void process() = 0;
     virtual void event(SDL_Event ev) = 0;

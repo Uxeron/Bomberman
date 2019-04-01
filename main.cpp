@@ -1,7 +1,15 @@
 #ifdef __linux__	// linux
 	#include <SDL2/SDL.h>
+    #include <SDL2/SDL_image.h>
 #else 				// windows
     #include "SDL2/include/SDL.h"
+	#include "SDL2/include/SDL_image.h"
+#endif
+
+#ifdef DEBUG
+	#define debugWrite(message) std::cout << message << std::endl;
+#else
+	#define debugWrite(message);
 #endif
 
 #include <iostream>
@@ -24,27 +32,30 @@ std::list<InteractiveObject*> objList;
 void stopGame() {
 	// Free all leftover objects
 	for (InteractiveObject *obj : objList)
-		obj->free();
+		delete obj;
 	objList.clear();
 
 	// Destroy window
-	window->free();
+	delete window;
 
 	// Quit SDL and SDL_image
 	SDL_Quit();
+	IMG_Quit(); // Stop SDL_img
 }
 
 int main(int argc, char *args[]) {
 	SDL_Init(SDL_INIT_VIDEO);	// Start SDL
+	IMG_Init(IMG_INIT_PNG);		// Start SDL_img
 
+	debugWrite("Creating window");
 	// Create the main window singleton
-	window = Window::getInstance();
-	window->create(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
+	window = new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
 
+	debugWrite("Creating characters");
 	// Create the characters
 	for (int i = 0; i < 1; i++) {
 		Character *chr = new Character(window);
-		chr->setSprite(loadSurface("Character_Stand_Down.png", *window));
+		chr->setSprite(window->loadSurface("Character_Stand_Down.png"));
 		objList.push_back(chr);
 	}
 
@@ -53,7 +64,7 @@ int main(int argc, char *args[]) {
 
 	// Event handler
 	SDL_Event e;
-
+	debugWrite("Starting main loop");
 	// While application is running
 	while (!quit) {
 		// Handle events on queue
@@ -71,7 +82,7 @@ int main(int argc, char *args[]) {
 		for (InteractiveObject *obj : objList) {
 			obj->process();
 			if (obj->remove) {
-				obj->free();
+				delete obj;
 				objList.remove(obj);
 			}
 		}

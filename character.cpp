@@ -1,9 +1,5 @@
 #include "character.hpp"
 
-Character::Character(Window* wind) {
-    window = wind;
-}
-
 void Character::process() {
     const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
     if (currentKeyStates[SDL_SCANCODE_W])

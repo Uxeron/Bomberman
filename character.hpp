@@ -11,7 +11,7 @@
 
 class Character: public InteractiveObject {
 public:
-    Character(Window* wind);
+    Character(Window* wind): InteractiveObject(wind) {};
     void process();
     void event(SDL_Event ev);
     void draw();

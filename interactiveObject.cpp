@@ -1,10 +1,12 @@
 #include "interactiveObject.hpp"
 
-void InteractiveObject::free() {
+InteractiveObject::~InteractiveObject() {
     SDL_FreeSurface(sprite);
     sprite = NULL;
+}
 
-    delete this;
+void InteractiveObject::setWindow(Window* wind) {
+    window = wind;
 }
 
 void InteractiveObject::setSprite(SDL_Surface *spr) {
