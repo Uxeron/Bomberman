@@ -1,4 +1,4 @@
-#include "explosion.hpp"
+#include "../include/explosion.hpp"
 
 Explosion::Explosion(Window* wind, int x, int y): InteractiveObject(wind, x, y) {
     sprites[0] = window->loadSurface("Sprites/Explosion/0.png");

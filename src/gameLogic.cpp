@@ -1,5 +1,4 @@
-#include "gameLogic.hpp"
-
+#include "../include/gameLogic.hpp"
 
 void GameLogic::startGame() {
     SDL_Init(SDL_INIT_VIDEO); // Start SDL

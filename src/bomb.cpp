@@ -1,4 +1,4 @@
-#include "bomb.hpp"
+#include "../include/bomb.hpp"
 
 Bomb::Bomb(Window *wind, int x, int y): InteractiveObject(wind, x, y) {
     sprites[0] = window->loadSurface("Sprites/Bomb/0.png");

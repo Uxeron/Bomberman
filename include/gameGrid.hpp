@@ -1,6 +1,6 @@
 #pragma once
 
-#include "interactiveObject.hpp"
+#include "../include/interactiveObject.hpp"
 #include <vector>
 #include <list>
 

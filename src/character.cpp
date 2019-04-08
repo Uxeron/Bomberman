@@ -1,4 +1,4 @@
-#include "character.hpp"
+#include "../include/character.hpp"
 
 void Character::process(float delta) {
     const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);

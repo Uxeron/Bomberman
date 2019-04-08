@@ -2,14 +2,14 @@
 	#include <SDL2/SDL.h>
     #include <SDL2/SDL_image.h>
 #else 				// windows
-    #include "SDL2/include/SDL.h"
-	#include "SDL2/include/SDL_image.h"
+    #include "../SDL2/include/SDL.h"
+	#include "../SDL2/include/SDL_image.h"
 #endif
 
 #include <iostream>
 #include <list>
-#include "character.hpp"
-#include "window.hpp"
+#include "../include/character.hpp"
+#include "../include/window.hpp"
 
 #ifdef DEBUG
 	#define debugWrite(message) std::cout << message << std::endl;

@@ -1,13 +1,13 @@
 // Character class
-#pragma once 
+#pragma once
 
-#include "interactiveObject.hpp"
-#include "bomb.hpp"
+#include "../include/bomb.hpp"
+#include "../include/interactiveObject.hpp"
 
 #ifdef __linux__ // linux
     #include <SDL2/SDL.h>
 #else // windows
-    #include "SDL2/include/SDL.h"
+    #include "../SDL2/include/SDL.h"
 #endif
 
 class Character: public InteractiveObject {

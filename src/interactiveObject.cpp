@@ -1,4 +1,4 @@
-#include "interactiveObject.hpp"
+#include "../include/interactiveObject.hpp"
 
 InteractiveObject::~InteractiveObject() {
     SDL_FreeSurface(sprite);

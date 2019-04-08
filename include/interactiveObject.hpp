@@ -2,12 +2,12 @@
 #pragma once
 
 #include <queue>
-#include "window.hpp"
+#include "../include/window.hpp"
 
 #ifdef __linux__ // linux
     #include <SDL2/SDL.h>
 #else // windows
-    #include "SDL2/include/SDL.h"
+    #include "../SDL2/include/SDL.h"
 #endif
 
 class InteractiveObject {

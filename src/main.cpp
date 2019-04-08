@@ -1,4 +1,4 @@
-#include "gameLogic.hpp"
+#include "../include/gameLogic.hpp"
 
 int main(int argc, char *args[]) {
 	GameLogic* game = new GameLogic;
