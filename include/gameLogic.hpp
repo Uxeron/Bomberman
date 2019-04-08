@@ -11,11 +11,7 @@
 #include "../include/character.hpp"
 #include "../include/window.hpp"
 
-#ifdef DEBUG
-	#define debugWrite(message) std::cout << message << std::endl;
-#else
-	#define debugWrite(message);
-#endif
+#define debugWrite(message) std::cout << message << std::endl;
 
 class GameLogic {
     const int SCREEN_WIDTH 	= 640;
