@@ -23,10 +23,10 @@ void Bomb::process(float delta) {
             if (explosionStep >= endExplosionStep) {
                 remove = true;
             } else {
-                objList.push_back(new Explosion(window, getRect()->x + explosionStep * 32, getRect()->y));
-                objList.push_back(new Explosion(window, getRect()->x - explosionStep * 32, getRect()->y));
-                objList.push_back(new Explosion(window, getRect()->x, getRect()->y + explosionStep * 32));
-                objList.push_back(new Explosion(window, getRect()->x, getRect()->y - explosionStep * 32));
+                objList.push(new Explosion(window, getRect()->x + explosionStep * 32, getRect()->y));
+                objList.push(new Explosion(window, getRect()->x - explosionStep * 32, getRect()->y));
+                objList.push(new Explosion(window, getRect()->x, getRect()->y + explosionStep * 32));
+                objList.push(new Explosion(window, getRect()->x, getRect()->y - explosionStep * 32));
             }
         } else {
             currTime = stepTime;
@@ -34,7 +34,7 @@ void Bomb::process(float delta) {
             if (step >= explodeOnStep) {
                 exploding = true;
                 currTime = explosionStepTime;
-                objList.push_back(new Explosion(window, getRect()->x, getRect()->y));
+                objList.push(new Explosion(window, getRect()->x, getRect()->y));
             }
             else {
                 setSprite(sprites[step%2]);

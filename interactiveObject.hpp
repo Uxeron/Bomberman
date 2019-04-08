@@ -1,7 +1,7 @@
 // The base class for any object that can be interacted with (characters, bombs, etc)
 #pragma once
 
-#include <list>
+#include <queue>
 #include "window.hpp"
 
 #ifdef __linux__ // linux
@@ -11,13 +11,13 @@
 #endif
 
 class InteractiveObject {
-protected:
+  protected:
     SDL_Surface* sprite = NULL;
     SDL_Rect rect;
     Window* window = NULL;
 
   public:
-    std::list<InteractiveObject*> objList;
+    std::queue<InteractiveObject*> objList;
     InteractiveObject();
     InteractiveObject(Window* wind): window(wind) {};
     InteractiveObject(Window* wind, int x, int y): window(wind) { setPos(x, y); };

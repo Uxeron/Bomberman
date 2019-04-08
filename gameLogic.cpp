@@ -63,7 +63,7 @@ void GameLogic::mainLoop() {
 			// Pull new objects from the current object's internal list
 			for(int i = 0; i < obj->objList.size();) {
 				objList.push_back(obj->objList.front());
-				obj->objList.pop_front();
+				obj->objList.pop();
 			}
 			// Check if object needs to be deleted
             if (obj->remove) {
