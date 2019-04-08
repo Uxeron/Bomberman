@@ -8,13 +8,17 @@ void GameLogic::startGame() {
     // Create the main window
     window = new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
 
+	debugWrite("Creating grid")
+	// Create game's grid
+	grid = new GameGrid(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE, CELL_SIZE);
+
     debugWrite("Creating characters");
     // Create the characters
     for (int i = 0; i < 1; i++) {
-        Character *chr = new Character(window);
-		chr->setPos(0, 0);
-        chr->setSprite(window->loadSurface("Sprites/Character_Stand_Down.png"));
-        objList.push_back(chr);
+        Character *chr = new Character(window, CELL_SIZE, 0, 0);
+        chr->setSprite(window->loadSurface("Sprites/Character/Walk_Down/3.png"));
+        intObjList.push_back(chr);
+        grid->addObject(chr);
     }
 }
 
@@ -22,9 +26,16 @@ void GameLogic::startGame() {
 void GameLogic::stopGame() {
     debugWrite("Clearing all interactive objects");
 	// Free all leftover objects
-	for (InteractiveObject *obj : objList)
-		delete obj;
+	for (Object *obj : objList) delete obj;
 	objList.clear();
+
+	for (InteractiveObject *obj : intObjList) delete obj;
+	intObjList.clear();
+
+	debugWrite("Destroying grid")
+	// Destroying grid
+	grid->clear();
+	delete grid;
 
     debugWrite("Destroying window");
     // Destroy window
@@ -52,22 +63,36 @@ void GameLogic::mainLoop() {
 				quit = true;
 			
 			// Pass events to all objects
-			for (InteractiveObject *obj : objList)
-				obj->event(e);
+			for (InteractiveObject *obj : intObjList) obj->event(e);
 		}
 
 		// Call process for all objects
-		for (InteractiveObject *obj : objList) {
-            obj->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 100.0);
+		for (InteractiveObject *obj : intObjList) {
+            obj->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
 			// Pull new objects from the current object's internal list
 			for(int i = 0; i < obj->objList.size();) {
-				objList.push_back(obj->objList.front());
+				Object* currObj = obj->objList.front();
+				if (grid->addObject(currObj)) {
+					if(dynamic_cast<InteractiveObject*>(currObj)) 
+						intObjList.push_back(dynamic_cast<InteractiveObject*>(currObj));
+					else
+						objList.push_back(currObj);
+				}
 				obj->objList.pop();
+			}
+			// Check if object wants to move on the grid
+			if (obj->deltaX != 0 || obj->deltaY != 0) {
+				if (grid->moveObject(obj->getX() + obj->deltaX, obj->getY() + obj->deltaY, obj)) { // If moved successfully
+					obj->setPos(obj->getX() + obj->deltaX, obj->getY() + obj->deltaY);
+				}
+				obj->deltaX = 0;
+				obj->deltaY = 0;
 			}
 			// Check if object needs to be deleted
             if (obj->remove) {
                 delete obj;
-				objList.remove(obj);
+				intObjList.remove(obj);
+				grid->removeObject(obj);
 			}
 		}
 
@@ -75,8 +100,8 @@ void GameLogic::mainLoop() {
 		window->fillScreen(0, 127, 64);
 
 		// Draw all objects
-		for (InteractiveObject *obj : objList)
-			obj->draw();
+		for (Object *obj : objList) obj->draw();
+		for (InteractiveObject *obj : intObjList) obj->draw();
 
 		// Update the screen
 		window->update();

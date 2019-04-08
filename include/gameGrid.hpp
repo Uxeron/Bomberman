@@ -1,13 +1,16 @@
 #pragma once
 
-#include "../include/interactiveObject.hpp"
+#include <iostream>
 #include <vector>
-#include <list>
+#include "object.hpp"
+
+#define debugWrite(message) std::cout << message << std::endl;
 
 class GameGrid {
     void refreshSize();
+    bool withinBounds(int x, int y);
 
-    std::vector< std::vector< std::list<InteractiveObject*> > > grid; // Main grid
+    std::vector< std::vector< Object* > > grid; // Main grid
     int sizeX;
     int sizeY;
     int squareSize;
@@ -19,15 +22,15 @@ class GameGrid {
 
     void setSize(int x, int y, int sq);
 
-    void addObject(int x, int y, InteractiveObject *obj);
-    void addObject(InteractiveObject *obj);
+    bool addObject(int x, int y, Object *obj);
+    bool addObject(Object *obj);
 
-    void removeObject(int x, int y, InteractiveObject *obj);
-    void removeObject(InteractiveObject *obj);
+    bool removeObject(int x, int y);
+    bool removeObject(int x, int y, Object *obj);
+    bool removeObject(Object *obj);
 
-    void moveObject(int currX, int currY, int x, int y, InteractiveObject *obj);
-    void moveObject(int x, int y, InteractiveObject *obj);
+    bool moveObject(int currX, int currY, int x, int y, Object *obj);
+    bool moveObject(int x, int y, Object *obj);
 
-    void clear(int x, int y);
     void clear();
 };

@@ -1,7 +1,7 @@
 // Explosion class
 #pragma once
 
-#include "../include/interactiveObject.hpp"
+#include "interactiveObject.hpp"
 
 #ifdef __linux__ // linux
     #include <SDL2/SDL.h>
@@ -12,11 +12,12 @@
 class Explosion: public InteractiveObject {
     SDL_Surface* sprites[6];
     int step = 0;
-    float stepTime = 0.2;
+    float stepTime = 0.025;
     float currTime;
 
   public:
-    Explosion(Window* wind, int x, int y);
+    std::string name() { return "explosion"; }
+    Explosion(Window* wind, int cellSize, int x, int y);
     ~Explosion();
     void process(float delta);
     void event(SDL_Event ev);

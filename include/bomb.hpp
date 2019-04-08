@@ -1,8 +1,8 @@
 // Bomb class
 #pragma once
 
-#include "../include/explosion.hpp"
-#include "../include/interactiveObject.hpp"
+#include "explosion.hpp"
+#include "interactiveObject.hpp"
 
 #ifdef __linux__ // linux
     #include <SDL2/SDL.h>
@@ -16,15 +16,16 @@ class Bomb: public InteractiveObject {
     // Bomb steps
     int step = 0;
     int explodeOnStep = 10;
-    float stepTime = 1.0;
+    float stepTime = 0.2;
     float currTime;
     // Explosion steps
     int explosionStep = 0;
     int endExplosionStep = 5;
-    float explosionStepTime = 0.2;
+    float explosionStepTime = 0.025;
     
   public:
-    Bomb(Window* wind, int x, int y);
+    std::string name() { return "bomb"; }
+    Bomb(Window* wind, int cellSize, int x, int y);
     ~Bomb();
     void process(float delta);
     void event(SDL_Event ev);

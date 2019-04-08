@@ -1,6 +1,6 @@
 #include "../include/explosion.hpp"
 
-Explosion::Explosion(Window* wind, int x, int y): InteractiveObject(wind, x, y) {
+Explosion::Explosion(Window* wind, int cellSize, int x, int y): InteractiveObject(wind, cellSize, x, y) {
     sprites[0] = window->loadSurface("Sprites/Explosion/0.png");
     sprites[1] = window->loadSurface("Sprites/Explosion/1.png");
     sprites[2] = window->loadSurface("Sprites/Explosion/2.png");
