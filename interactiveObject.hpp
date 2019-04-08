@@ -30,6 +30,8 @@ class InteractiveObject {
     SDL_Surface* getSprite();
 
     void setPos(int x, int y);
+    int getX();
+    int getY();
     SDL_Rect* getRect();
 
     virtual void process(float delta) = 0;

@@ -5,9 +5,7 @@ InteractiveObject::~InteractiveObject() {
     sprite = NULL;
 }
 
-void InteractiveObject::setWindow(Window* wind) {
-    window = wind;
-}
+void InteractiveObject::setWindow(Window* wind) { window = wind; }
 
 void InteractiveObject::setSprite(SDL_Surface *spr) {
     sprite = spr;
@@ -16,15 +14,15 @@ void InteractiveObject::setSprite(SDL_Surface *spr) {
     rect.h = spr->h;
 }
 
-SDL_Surface *InteractiveObject::getSprite() {
-    return sprite;
-}
+SDL_Surface *InteractiveObject::getSprite() { return sprite; }
 
 void InteractiveObject::setPos(int x, int y) {
     rect.x = x;
     rect.y = y;
 }
 
-SDL_Rect* InteractiveObject::getRect() {
-    return &rect;
-}
+int InteractiveObject::getX() { return rect.x; }
+
+int InteractiveObject::getY() { return rect.y; }
+
+SDL_Rect* InteractiveObject::getRect() { return &rect; }
