@@ -10,19 +10,13 @@ void Character::process(float delta) {
         if (currentKeyStates[SDL_SCANCODE_W]) {
             move(0, -1);
             walkDelayCurr = walkDelay;
-        }
-        
-        if (currentKeyStates[SDL_SCANCODE_S]) {
+        } else if (currentKeyStates[SDL_SCANCODE_S]) {
             move(0, 1);
             walkDelayCurr = walkDelay;
-        }
-        
-        if (currentKeyStates[SDL_SCANCODE_A]) {
+        } else if (currentKeyStates[SDL_SCANCODE_A]) {
             move(-1, 0);
             walkDelayCurr = walkDelay;
-        }
-        
-        if (currentKeyStates[SDL_SCANCODE_D]) {
+        } else if (currentKeyStates[SDL_SCANCODE_D]) {
             move(1, 0);
             walkDelayCurr = walkDelay;
         }

@@ -88,6 +88,9 @@ bool GameGrid::moveObject(int x, int y, Object *obj) {
 }
 
 
+bool GameGrid::isOccupied(int x, int y) { return grid[x][y] != NULL; }
+
+
 void GameGrid::clear() {
     std::vector<std::vector<Object *> >::iterator it;
     for (it = grid.begin(); it != grid.end(); it++) {

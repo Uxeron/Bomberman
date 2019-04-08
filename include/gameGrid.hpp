@@ -32,5 +32,7 @@ class GameGrid {
     bool moveObject(int currX, int currY, int x, int y, Object *obj);
     bool moveObject(int x, int y, Object *obj);
 
+    bool isOccupied(int x, int y);
+
     void clear();
 };

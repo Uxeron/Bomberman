@@ -11,11 +11,12 @@
 #include "character.hpp"
 #include "window.hpp"
 #include "gameGrid.hpp"
+#include "wall.hpp"
 
 #define debugWrite(message) std::cout << message << std::endl;
 
 class GameLogic {
-    const int SCREEN_WIDTH 	= 640;
+    const int SCREEN_WIDTH 	= 672;
     const int SCREEN_HEIGHT = 480;
     const int CELL_SIZE = 32;
     const int FPS = 60;
@@ -25,6 +26,8 @@ class GameLogic {
     std::list<Object*> objList;
     std::list<InteractiveObject*> intObjList;
     GameGrid *grid = NULL;
+
+    void generateMap();
 
   public:
     void startGame();

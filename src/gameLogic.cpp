@@ -15,11 +15,13 @@ void GameLogic::startGame() {
     debugWrite("Creating characters");
     // Create the characters
     for (int i = 0; i < 1; i++) {
-        Character *chr = new Character(window, CELL_SIZE, 0, 0);
+        Character *chr = new Character(window, CELL_SIZE, 1, 1);
         chr->setSprite(window->loadSurface("Sprites/Character/Walk_Down/3.png"));
         intObjList.push_back(chr);
         grid->addObject(chr);
     }
+
+	generateMap();
 }
 
 
@@ -110,5 +112,35 @@ void GameLogic::mainLoop() {
 		if (prevTime + FRAME_TIME > SDL_GetTicks())
 			SDL_Delay(prevTime + FRAME_TIME - SDL_GetTicks());
 		prevTime = SDL_GetTicks();
+	}
+}
+
+void GameLogic::generateMap() {
+    const char *map[] = {
+        "111111111111111111111",
+        "100000000000000000001",
+        "101010101010101010101",
+        "100000000000000000001",
+		"101010101010101010101",
+		"100000000000000000001",
+		"101010101010101010101",
+		"100000000000000000001",
+		"101010101010101010101",
+		"100000000000000000001",
+		"101010101010101010101",
+		"100000000000000000001",
+		"101010101010101010101",
+		"100000000000000000001",
+		"111111111111111111111",
+    };
+
+	for (int x = 0; x < SCREEN_WIDTH/CELL_SIZE; x++) {
+		for (int y = 0; y < SCREEN_HEIGHT/CELL_SIZE; y++) {
+			if (map[y][x] == '1') {
+				Wall *wall = new Wall(window, CELL_SIZE, x, y);
+				objList.push_back(wall);
+				grid->addObject(wall);
+			}
+		}
 	}
 }
