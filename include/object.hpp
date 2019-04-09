@@ -4,12 +4,7 @@
 #include <queue>
 #include <string>
 #include "../include/window.hpp"
-
-#ifdef __linux__  // linux
-    #include <SDL2/SDL.h>
-#else  // windows
-    #include "../SDL2/include/SDL.h"
-#endif
+#include "../SDL2/include/SDL.h"
 
 class Object {
   protected:
