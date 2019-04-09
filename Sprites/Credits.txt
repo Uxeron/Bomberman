@@ -1,3 +1,5 @@
  N A M E  -  C R E A T O R  -  W E B S I T E  -  L I N K
 Bomb      -    Devnewton    - OpenGameArt.org - https://opengameart.org/content/bomb
 Explosion -     Sogomn      - OpenGameArt.org - https://opengameart.org/content/explosion-3
+Character -     Eldiran     - OpenGameArt.org - https://opengameart.org/content/32x32-rpg-character-sprites
+Wall      -     Asalga      - OpenGameArt.org - https://opengameart.org/content/hieroglyph-sprites
