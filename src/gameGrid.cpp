@@ -1,4 +1,5 @@
 #include "../include/gameGrid.hpp"
+#include "../include/object.hpp"
 
 void GameGrid::refreshSize() {
     grid.resize(sizeX);

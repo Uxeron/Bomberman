@@ -21,8 +21,10 @@ class Character: public InteractiveObject {
 
   public:
     std::string name() { return "character"; }
-    Character(Window *wind, int cellSize): InteractiveObject(wind, cellSize) {};
-    Character(Window* wind, int cellSize, int x, int y): InteractiveObject(wind, cellSize, x, y) {};
+    Character(Window& wind, GameGrid& grid)
+        : InteractiveObject(wind, grid){};
+    Character(Window& wind, GameGrid& grid, int x, int y)
+        : InteractiveObject(wind, grid, x, y){};
     void process(float delta);
     void event(SDL_Event ev);
     void draw();

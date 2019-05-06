@@ -1,5 +1,4 @@
 // Handles the main game Window, drawing to that Window and loading images
-// Window is a singleton (wouldn't want multiple windows)
 #pragma once 
 
 #include <iostream>

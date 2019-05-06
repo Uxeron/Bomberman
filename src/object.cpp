@@ -5,7 +5,7 @@ Object::~Object() {
     sprite = NULL;
 }
 
-void Object::setWindow(Window *wind) { window = wind; }
+void Object::setWindow(Window &wind) { window = wind; }
 
 void Object::setSprite(SDL_Surface *spr) {
     sprite = spr;

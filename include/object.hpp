@@ -3,7 +3,7 @@
 
 #include <queue>
 #include <string>
-#include "../include/window.hpp"
+#include "window.hpp"
 
 #ifdef __linux__  // linux
     #include <SDL2/SDL.h>
@@ -15,7 +15,7 @@ class Object {
   protected:
     SDL_Surface* sprite = NULL;
     SDL_Rect rect;
-    Window* window = NULL;
+    Window& window;
     int posX;
     int posY;
     int CELL_SIZE;
@@ -23,12 +23,12 @@ class Object {
   public:
     virtual std::string name() = 0;
     std::queue<Object*> objList;
-    Object(Window* wind, int cellSize): window(wind), CELL_SIZE(cellSize){};
-    Object(Window* wind, int cellSize, int x, int y): window(wind), CELL_SIZE(cellSize) { setPos(x, y); };
+    Object(Window& wind, int cellSize): window(wind), CELL_SIZE(cellSize){};
+    Object(Window& wind, int cellSize, int x, int y): window(wind), CELL_SIZE(cellSize) { setPos(x, y); };
     ~Object();
 
     bool remove = false;
-    void setWindow(Window* window);
+    void setWindow(Window& window);
 
     void setSprite(SDL_Surface* spr);
     SDL_Surface* getSprite();

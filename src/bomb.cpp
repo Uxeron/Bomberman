@@ -1,8 +1,8 @@
 #include "../include/bomb.hpp"
 
-Bomb::Bomb(Window *wind, int cellSize, int x, int y): InteractiveObject(wind, cellSize, x, y) {
-    sprites[0] = window->loadSurface("Sprites/Bomb/0.png");
-    sprites[1] = window->loadSurface("Sprites/Bomb/1.png");
+Bomb::Bomb(Window& wind, GameGrid& grid, int x, int y): InteractiveObject(wind, grid, x, y) {
+    sprites[0] = window.loadSurface("Sprites/Bomb/0.png");
+    sprites[1] = window.loadSurface("Sprites/Bomb/1.png");
 
     setSprite(sprites[0]);
     currTime = stepTime;
@@ -23,10 +23,10 @@ void Bomb::process(float delta) {
             if (explosionStep >= endExplosionStep) {
                 remove = true;
             } else {
-                objList.push(new Explosion(window, CELL_SIZE, posX + explosionStep, posY));
-                objList.push(new Explosion(window, CELL_SIZE, posX - explosionStep, posY));
-                objList.push(new Explosion(window, CELL_SIZE, posX, posY + explosionStep));
-                objList.push(new Explosion(window, CELL_SIZE, posX, posY - explosionStep));
+                objList.push(new Explosion(window, gameGrid, posX + explosionStep, posY));
+                objList.push(new Explosion(window, gameGrid, posX - explosionStep, posY));
+                objList.push(new Explosion(window, gameGrid, posX, posY + explosionStep));
+                objList.push(new Explosion(window, gameGrid, posX, posY - explosionStep));
             }
         } else {
             currTime = stepTime;
@@ -43,7 +43,7 @@ void Bomb::process(float delta) {
 }
 
 void Bomb::draw() {
-    window->drawImage(sprite, &rect);
+    window.drawImage(sprite, &rect);
 }
 
 void Bomb::event(SDL_Event ev) {

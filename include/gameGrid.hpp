@@ -2,7 +2,8 @@
 
 #include <iostream>
 #include <vector>
-#include "object.hpp"
+
+class Object;
 
 #define debugWrite(message) std::cout << message << std::endl;
 
@@ -33,6 +34,8 @@ class GameGrid {
     bool moveObject(int x, int y, Object *obj);
 
     bool isOccupied(int x, int y);
+
+    int getSqSize() { return squareSize; };
 
     void clear();
 };

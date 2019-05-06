@@ -15,7 +15,7 @@ void GameLogic::startGame() {
     debugWrite("Creating characters");
     // Create the characters
     for (int i = 0; i < 1; i++) {
-        Character *chr = new Character(window, CELL_SIZE, 1, 1);
+        Character *chr = new Character(*window, *grid, 1, 1);
         chr->setSprite(window->loadSurface("Sprites/Character/Walk_Down/3.png"));
         intObjList.push_back(chr);
         grid->addObject(chr);
@@ -137,7 +137,7 @@ void GameLogic::generateMap() {
 	for (int x = 0; x < SCREEN_WIDTH/CELL_SIZE; x++) {
 		for (int y = 0; y < SCREEN_HEIGHT/CELL_SIZE; y++) {
 			if (map[y][x] == '1') {
-				Wall *wall = new Wall(window, CELL_SIZE, x, y);
+				Wall *wall = new Wall(*window, CELL_SIZE, x, y);
 				objList.push_back(wall);
 				grid->addObject(wall);
 			}

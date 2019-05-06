@@ -25,7 +25,7 @@ class Bomb: public InteractiveObject {
     
   public:
     std::string name() { return "bomb"; }
-    Bomb(Window* wind, int cellSize, int x, int y);
+    Bomb(Window& wind, GameGrid& grid, int x, int y);
     ~Bomb();
     void process(float delta);
     void event(SDL_Event ev);

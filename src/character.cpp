@@ -29,7 +29,7 @@ void Character::move(int distX, int distY) {
 }
 
 void Character::draw() {
-    window->drawImage(sprite, &rect);
+    window.drawImage(sprite, &rect);
 }
 
 void Character::event(SDL_Event ev) {
@@ -50,7 +50,7 @@ void Character::event(SDL_Event ev) {
         }
         if (!ev.key.repeat && ev.key.state == SDL_PRESSED && ev.key.keysym.sym == SDLK_e) {
             if (bombDelayCurr <= 0) {
-                objList.push(new Bomb(window, CELL_SIZE, posX, posY + 1));
+                objList.push(new Bomb(window, gameGrid, posX, posY + 1));
                 bombDelayCurr = bombDelay;
             }
         }
