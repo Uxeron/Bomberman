@@ -1,5 +1,7 @@
 #include "../include/character.hpp"
 
+int Character::count = 0;
+
 void Character::process(float delta) {
     if (bombDelayCurr > 0) bombDelayCurr -= delta;
 

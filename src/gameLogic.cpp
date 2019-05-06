@@ -15,15 +15,6 @@ void GameLogic::startGame() {
 	// Create game's grid
 	grid = new GameGrid(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE, CELL_SIZE);
 
-    debugWrite("Creating characters");
-    // Create the characters
-    for (int i = 0; i < 1; i++) {
-        Character *chr = new Character(*window, *this, 1, 1);
-        chr->setSprite(window->loadSurface("Sprites/Character/Walk_Down/3.png"));
-        intObjList.push_back(chr);
-        grid->addObject(chr);
-    }
-
 	generateMap();
 }
 
@@ -66,6 +57,22 @@ void GameLogic::mainLoop() {
 			// User pressed x
 			if (e.type == SDL_QUIT)
 				quit = true;
+			
+			// Reset game
+			if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_r) {
+				for (Object *obj : objList) delete obj;
+				objList.clear();
+
+				for (InteractiveObject *obj : intObjList) delete obj;
+				intObjList.clear();
+
+				grid->clear();
+
+				Character::resetCount();
+
+				grid->setSize(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE, CELL_SIZE);
+				generateMap();
+			}
 			
 			// Pass events to all objects
 			for (InteractiveObject *obj : intObjList) obj->event(e);
@@ -150,7 +157,7 @@ bool GameLogic::removeObject(Object *obj) {
 void GameLogic::generateMap() {
     const char *map[] = {
         "111111111111111111111",
-        "100222222222222222001",
+        "130222222222222222001",
         "101212121212121212101",
         "122222222222222222221",
 		"121212121212121212121",
@@ -176,6 +183,11 @@ void GameLogic::generateMap() {
 				WallDestr *wall = new WallDestr(*window, CELL_SIZE, x, y);
 				objList.push_back(wall);
 				grid->addObject(wall);
+			} else if (map[y][x] == '3') {
+				Character *chr = new Character(*window, *this, x, y);
+				chr->setSprite(window->loadSurface("Sprites/Character/Walk_Down/3.png"));
+				intObjList.push_back(chr);
+				grid->addObject(chr);
 			}
 		}
 	}

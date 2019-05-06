@@ -5,6 +5,9 @@
 #include "interactiveObject.hpp"
 
 class Character: public InteractiveObject {
+    static int count;
+    int index = count++;
+
     float walkDelay = 0.2;
     float walkDelayCurr = 0;
 
@@ -24,4 +27,6 @@ class Character: public InteractiveObject {
     void draw();
 
     void move(int distX, int distY);
+
+    static void resetCount() { count = 0; }
 };
