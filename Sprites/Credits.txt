@@ -3,3 +3,4 @@ Bomb      -    Devnewton    - OpenGameArt.org - https://opengameart.org/content/
 Explosion -     Sogomn      - OpenGameArt.org - https://opengameart.org/content/explosion-3
 Character -     Eldiran     - OpenGameArt.org - https://opengameart.org/content/32x32-rpg-character-sprites
 Wall      -     Asalga      - OpenGameArt.org - https://opengameart.org/content/hieroglyph-sprites
+WallDestr -     LukeMS      - OpenGameArt.org - https://opengameart.org/content/2d-dungeon-wall-32px-db32-palette-brick-brown

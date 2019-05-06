@@ -3,6 +3,7 @@
 
 #include "explosion.hpp"
 #include "interactiveObject.hpp"
+#include <set>
 
 
 class Bomb: public InteractiveObject {
@@ -18,6 +19,8 @@ class Bomb: public InteractiveObject {
     int explosionStep = 0;
     int endExplosionStep = 5;
     float explosionStepTime = 0.025;
+
+    const std::set<std::string> destructibleObjects = {"character", "wallDestr"};
 
     void addExplosion(int x, int y, bool &condition);
     

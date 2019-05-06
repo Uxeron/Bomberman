@@ -12,9 +12,9 @@ class InteractiveObject;
 #define debugWrite(message) std::cout << message << std::endl;
 
 class GameLogic {
+    static const int CELL_SIZE = 32;
     const int SCREEN_WIDTH 	= 672;
     const int SCREEN_HEIGHT = 480;
-    const int CELL_SIZE = 32;
     const int FPS = 60;
     const int FRAME_TIME = 1000 / FPS;
     Uint32 prevTime = 0;
@@ -42,5 +42,5 @@ class GameLogic {
 
     std::string getObjectName(int x, int y) { return grid->getObjectName(x, y); };
 
-    int getSqSize() { return CELL_SIZE; };
+    static int getSqSize() { return CELL_SIZE; };
 };

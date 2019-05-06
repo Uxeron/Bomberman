@@ -1,6 +1,7 @@
 //#include "../include/gameLogic.hpp"
 #include "../include/character.hpp"
 #include "../include/wall.hpp"
+#include "../include/wallDestr.hpp"
 
 void GameLogic::startGame() {
     SDL_Init(SDL_INIT_VIDEO); // Start SDL
@@ -74,9 +75,9 @@ void GameLogic::mainLoop() {
 		for (InteractiveObject *obj : intObjList) {
 			// Check if object needs to be deleted
             if (obj->remove) {
-                delete obj;
 				intObjList.remove(obj);
 				grid->removeObject(obj);
+                delete obj;
 				continue;
 			}
 
@@ -85,9 +86,18 @@ void GameLogic::mainLoop() {
 
 			// Check again if object needs to be deleted
             if (obj->remove) {
-                delete obj;
 				intObjList.remove(obj);
 				grid->removeObject(obj);
+                delete obj;
+			}
+		}
+
+		for (Object *obj : objList) {
+			// Check if object needs to be deleted
+            if (obj->remove) {
+				objList.remove(obj);
+				grid->removeObject(obj);
+                delete obj;
 			}
 		}
 
@@ -140,19 +150,19 @@ bool GameLogic::removeObject(Object *obj) {
 void GameLogic::generateMap() {
     const char *map[] = {
         "111111111111111111111",
-        "100000000000000000001",
-        "101010101010101010101",
-        "100000000000000000001",
-		"101010101010101010101",
-		"100000000000000000001",
-		"101010101010101010101",
-		"100000000000000000001",
-		"101010101010101010101",
-		"100000000000000000001",
-		"101010101010101010101",
-		"100000000000000000001",
-		"101010101010101010101",
-		"100000000000000000001",
+        "100222222222222222001",
+        "101212121212121212101",
+        "122222222222222222221",
+		"121212121212121212121",
+		"122222222222222222221",
+		"121212121212121212121",
+		"122222222222222222221",
+		"121212121212121212121",
+		"122222222222222222221",
+		"121212121212121212121",
+		"122222222222222222221",
+		"101212121212121212101",
+		"100222222222222222001",
 		"111111111111111111111",
     };
 
@@ -160,6 +170,10 @@ void GameLogic::generateMap() {
 		for (int y = 0; y < SCREEN_HEIGHT/CELL_SIZE; y++) {
 			if (map[y][x] == '1') {
 				Wall *wall = new Wall(*window, CELL_SIZE, x, y);
+				objList.push_back(wall);
+				grid->addObject(wall);
+			} else if (map[y][x] == '2') {
+				WallDestr *wall = new WallDestr(*window, CELL_SIZE, x, y);
 				objList.push_back(wall);
 				grid->addObject(wall);
 			}

@@ -47,7 +47,7 @@ void Bomb::addExplosion(int x, int y, bool &condition) {
         if (!gameLogic.isOccupied(x, y)) {
             gameLogic.addObject(new Explosion(window, gameLogic, x, y));
         } else {
-            if (gameLogic.getObjectName(x, y) == "character") {
+            if (destructibleObjects.find(gameLogic.getObjectName(x, y)) != destructibleObjects.end()) {
                 gameLogic.removeObject(x, y);
                 gameLogic.addObject(new Explosion(window, gameLogic, x, y));
             } else {
