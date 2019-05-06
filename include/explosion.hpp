@@ -3,12 +3,6 @@
 
 #include "interactiveObject.hpp"
 
-#ifdef __linux__ // linux
-    #include <SDL2/SDL.h>
-#else // windows
-    #include "../SDL2/include/SDL.h"
-#endif
-
 class Explosion: public InteractiveObject {
     SDL_Surface* sprites[6];
     int step = 0;

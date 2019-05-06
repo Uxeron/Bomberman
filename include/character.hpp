@@ -4,15 +4,7 @@
 #include "bomb.hpp"
 #include "interactiveObject.hpp"
 
-#ifdef __linux__ // linux
-    #include <SDL2/SDL.h>
-#else // windows
-    #include "../SDL2/include/SDL.h"
-#endif
-
 class Character: public InteractiveObject {
-    const int pivotOffsetX = -4;
-    const int pivotOffsetY = 20;
     float walkDelay = 0.2;
     float walkDelayCurr = 0;
 

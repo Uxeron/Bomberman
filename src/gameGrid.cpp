@@ -72,7 +72,7 @@ bool GameGrid::removeObject(int x, int y, Object *obj) {
 }
 
 bool GameGrid::removeObject(Object *obj) {
-    removeObject(obj->getX(), obj->getY(), obj);
+    return removeObject(obj->getX(), obj->getY(), obj);
 }
 
 
