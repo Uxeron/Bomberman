@@ -185,7 +185,6 @@ void GameLogic::generateMap() {
 				grid->addObject(wall);
 			} else if (map[y][x] == '3') {
 				Character *chr = new Character(*window, *this, x, y);
-				chr->setSprite(window->loadSurface("Sprites/Character/Walk_Down/3.png"));
 				intObjList.push_back(chr);
 				grid->addObject(chr);
 			}

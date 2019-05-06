@@ -3,6 +3,7 @@
 
 #include "bomb.hpp"
 #include "interactiveObject.hpp"
+#include <string>
 
 class Character: public InteractiveObject {
     static int count;
@@ -18,10 +19,8 @@ class Character: public InteractiveObject {
 
   public:
     std::string name() { return "character"; }
-    Character(Window& wind, GameLogic& logic)
-        : InteractiveObject(wind, logic){};
-    Character(Window& wind, GameLogic& logic, int x, int y)
-        : InteractiveObject(wind, logic, x, y){};
+    Character(Window& wind, GameLogic& logic);
+    Character(Window& wind, GameLogic& logic, int x, int y);
     void process(float delta);
     void event(SDL_Event ev);
     void draw();

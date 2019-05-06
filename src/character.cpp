@@ -2,6 +2,13 @@
 
 int Character::count = 0;
 
+Character::Character(Window& wind, GameLogic& logic) : InteractiveObject(wind, logic) {
+    setSprite(window.loadSurface(("Sprites/Character/" + std::to_string(index) + "/Walk_Down/3.png").c_str()));
+}
+Character::Character(Window& wind, GameLogic& logic, int x, int y): InteractiveObject(wind, logic, x, y) {
+    setSprite(window.loadSurface(("Sprites/Character/" + std::to_string(index) + "/Walk_Down/3.png").c_str()));
+}
+
 void Character::process(float delta) {
     if (bombDelayCurr > 0) bombDelayCurr -= delta;
 
