@@ -20,6 +20,12 @@ void Character::process(float delta) {
             move(1, 0);
             walkDelayCurr = walkDelay;
         }
+
+        if (deltaX != 0 || deltaY != 0) {
+            gameLogic.moveObject(this, posX + deltaX, posY + deltaY);
+            deltaX = 0;
+            deltaY = 0;
+        }
     }
 }
 
@@ -50,7 +56,7 @@ void Character::event(SDL_Event ev) {
         }
         if (!ev.key.repeat && ev.key.state == SDL_PRESSED && ev.key.keysym.sym == SDLK_e) {
             if (bombDelayCurr <= 0) {
-                objList.push(new Bomb(window, gameGrid, posX, posY + 1));
+                gameLogic.addObject(new Bomb(window, gameLogic, posX, posY + 1));
                 bombDelayCurr = bombDelay;
             }
         }

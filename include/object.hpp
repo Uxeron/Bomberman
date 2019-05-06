@@ -16,7 +16,7 @@ class Object {
     const int cellSize;
 
   public:
-    static std::string name() { return "object"; };
+    virtual std::string name() = 0;
     std::queue<Object*> objList;
     Object(Window& wind, int cellSize): window(wind), cellSize(cellSize) {};
     Object(Window& wind, int cellSize, int x, int y)

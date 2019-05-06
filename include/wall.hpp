@@ -4,7 +4,7 @@
 
 class Wall: public Object {
   public:
-    static std::string name() { return "wall"; }
+    std::string name() { return "wall"; }
     Wall(Window& wind, int cellSize, int x, int y);
 
     void draw();

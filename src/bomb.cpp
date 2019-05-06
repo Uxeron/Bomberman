@@ -1,6 +1,6 @@
 #include "../include/bomb.hpp"
 
-Bomb::Bomb(Window& wind, GameGrid& grid, int x, int y): InteractiveObject(wind, grid, x, y) {
+Bomb::Bomb(Window& wind, GameLogic& logic, int x, int y): InteractiveObject(wind, logic, x, y) {
     sprites[0] = window.loadSurface("Sprites/Bomb/0.png");
     sprites[1] = window.loadSurface("Sprites/Bomb/1.png");
 
@@ -23,25 +23,10 @@ void Bomb::process(float delta) {
             if (explosionStep >= endExplosionStep) {
                 remove = true;
             } else {
-                if (right && !gameGrid.isOccupied(posX + explosionStep, posY))
-                    objList.push(new Explosion(window, gameGrid, posX + explosionStep, posY));
-                else
-                    right = false;
-                    
-                if (left && !gameGrid.isOccupied(posX - explosionStep, posY))
-                    objList.push(new Explosion(window, gameGrid, posX - explosionStep, posY));
-                else
-                    left = false;
-
-                if (down && !gameGrid.isOccupied(posX, posY + explosionStep))
-                    objList.push(new Explosion(window, gameGrid, posX, posY + explosionStep));
-                else
-                    down = false;
-
-                if (up && !gameGrid.isOccupied(posX, posY - explosionStep))
-                    objList.push(new Explosion(window, gameGrid, posX, posY - explosionStep));
-                else
-                    up = false;
+                addExplosion(posX + explosionStep, posY, right);
+                addExplosion(posX - explosionStep, posY, left);
+                addExplosion(posX, posY + explosionStep, down);
+                addExplosion(posX, posY - explosionStep, up);
             }
         } else {
             currTime = stepTime;
@@ -52,6 +37,21 @@ void Bomb::process(float delta) {
             }
             else {
                 setSprite(sprites[step%2]);
+            }
+        }
+    }
+}
+
+void Bomb::addExplosion(int x, int y, bool &condition) {
+    if (condition) {
+        if (!gameLogic.isOccupied(x, y)) {
+            gameLogic.addObject(new Explosion(window, gameLogic, x, y));
+        } else {
+            if (gameLogic.getObjectName(x, y) == "character") {
+                gameLogic.removeObject(x, y);
+                gameLogic.addObject(new Explosion(window, gameLogic, x, y));
+            } else {
+                condition = false;
             }
         }
     }

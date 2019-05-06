@@ -18,10 +18,12 @@ class Bomb: public InteractiveObject {
     int explosionStep = 0;
     int endExplosionStep = 5;
     float explosionStepTime = 0.025;
+
+    void addExplosion(int x, int y, bool &condition);
     
   public:
-    static std::string name() { return "bomb"; }
-    Bomb(Window& wind, GameGrid& grid, int x, int y);
+    std::string name() { return "bomb"; }
+    Bomb(Window& wind, GameLogic& logic, int x, int y);
     ~Bomb();
     void process(float delta);
     void event(SDL_Event ev);

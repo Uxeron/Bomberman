@@ -1,17 +1,13 @@
-#ifdef __linux__	// linux
-	#include <SDL2/SDL.h>
-    #include <SDL2/SDL_image.h>
-#else 				// windows
-    #include "../SDL2/include/SDL.h"
-	#include "../SDL2/include/SDL_image.h"
-#endif
+#include "../SDL2/include/SDL.h"
+#include "../SDL2/include/SDL_image.h"
 
 #include <iostream>
 #include <list>
-#include "character.hpp"
-#include "window.hpp"
 #include "gameGrid.hpp"
-#include "wall.hpp"
+#include "window.hpp"
+
+class Object;
+class InteractiveObject;
 
 #define debugWrite(message) std::cout << message << std::endl;
 
@@ -33,4 +29,18 @@ class GameLogic {
     void startGame();
     void mainLoop();
     void stopGame();
+
+    bool addObject(Object *obj, int x, int y);
+    bool addObject(Object *obj);
+
+    bool removeObject(int x, int y);
+    bool removeObject(Object *obj);
+
+    bool moveObject(Object *obj, int x, int y) { return grid->moveObject(obj, x, y); };
+
+    bool isOccupied(int x, int y) { return grid->isOccupied(x, y); }
+
+    std::string getObjectName(int x, int y) { return grid->getObjectName(x, y); };
+
+    int getSqSize() { return CELL_SIZE; };
 };

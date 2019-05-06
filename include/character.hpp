@@ -12,11 +12,11 @@ class Character: public InteractiveObject {
     float bombDelayCurr = 0;
 
   public:
-    static std::string name() { return "character"; }
-    Character(Window& wind, GameGrid& grid)
-        : InteractiveObject(wind, grid){};
-    Character(Window& wind, GameGrid& grid, int x, int y)
-        : InteractiveObject(wind, grid, x, y){};
+    std::string name() { return "character"; }
+    Character(Window& wind, GameLogic& logic)
+        : InteractiveObject(wind, logic){};
+    Character(Window& wind, GameLogic& logic, int x, int y)
+        : InteractiveObject(wind, logic, x, y){};
     void process(float delta);
     void event(SDL_Event ev);
     void draw();

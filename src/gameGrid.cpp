@@ -1,5 +1,4 @@
 #include "../include/gameGrid.hpp"
-#include "../include/object.hpp"
 
 void GameGrid::refreshSize() {
     grid.resize(sizeX);
@@ -34,6 +33,7 @@ bool GameGrid::addObject(Object *obj, int x, int y) {
 
     if (grid[x][y] == NULL) {
         grid[x][y] = obj;
+        obj->setPos(x, y);
         debugWrite("Moved object to " << x << " " << y)
         return true;
     } else if (grid[x][y]->name() == "character" && obj->name() == "explosion") {
@@ -57,6 +57,7 @@ bool GameGrid::addObject(Object *obj) {
 
 bool GameGrid::removeObject(int x, int y) {
     if (!withinBounds(x, y)) return false;
+    if (!isOccupied(x, y)) return false;
 
     grid[x][y] = NULL;
     return true;
@@ -71,7 +72,7 @@ bool GameGrid::removeObject(Object *obj, int x, int y) {
 }
 
 bool GameGrid::removeObject(Object *obj) {
-    return removeObject(obj, obj->getX(), obj->getY());
+    return removeObject(obj->getX(), obj->getY());
 }
 
 bool GameGrid::moveObject(Object *obj, int currX, int currY, int x, int y) {
@@ -86,9 +87,19 @@ bool GameGrid::moveObject(Object *obj, int x, int y) {
     return moveObject(obj, obj->getX(), obj->getY(), x, y);
 }
 
+std::string GameGrid::getObjectName(int x, int y) {
+    if (isOccupied(x, y))
+        return grid[x][y]->name();
+    else
+        return "";
+}
 
-bool GameGrid::isOccupied(int x, int y) { return grid[x][y] != NULL; }
-
+Object* GameGrid::getObject(int x, int y) {
+    if (isOccupied(x, y)) 
+        return grid[x][y];
+    else 
+        return NULL;
+}
 
 void GameGrid::clear() {
     std::vector<std::vector<Object *> >::iterator it;

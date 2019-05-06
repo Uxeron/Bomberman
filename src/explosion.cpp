@@ -1,7 +1,7 @@
 #include "../include/explosion.hpp"
 
-Explosion::Explosion(Window& wind, GameGrid& grid, int x, int y)
-    : InteractiveObject(wind, grid, x, y) {
+Explosion::Explosion(Window& wind, GameLogic& logic, int x, int y)
+    : InteractiveObject(wind, logic, x, y) {
     sprites[0] = window.loadSurface("Sprites/Explosion/0.png");
     sprites[1] = window.loadSurface("Sprites/Explosion/1.png");
     sprites[2] = window.loadSurface("Sprites/Explosion/2.png");

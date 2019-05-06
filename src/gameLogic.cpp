@@ -1,4 +1,6 @@
-#include "../include/gameLogic.hpp"
+//#include "../include/gameLogic.hpp"
+#include "../include/character.hpp"
+#include "../include/wall.hpp"
 
 void GameLogic::startGame() {
     SDL_Init(SDL_INIT_VIDEO); // Start SDL
@@ -15,7 +17,7 @@ void GameLogic::startGame() {
     debugWrite("Creating characters");
     // Create the characters
     for (int i = 0; i < 1; i++) {
-        Character *chr = new Character(*window, *grid, 1, 1);
+        Character *chr = new Character(*window, *this, 1, 1);
         chr->setSprite(window->loadSurface("Sprites/Character/Walk_Down/3.png"));
         intObjList.push_back(chr);
         grid->addObject(chr);
@@ -70,27 +72,18 @@ void GameLogic::mainLoop() {
 
 		// Call process for all objects
 		for (InteractiveObject *obj : intObjList) {
-            obj->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
-			// Pull new objects from the current object's internal list
-			for(int i = 0; i < obj->objList.size();) {
-				Object* currObj = obj->objList.front();
-				if (grid->addObject(currObj)) {
-					if(dynamic_cast<InteractiveObject*>(currObj)) 
-						intObjList.push_back(dynamic_cast<InteractiveObject*>(currObj));
-					else
-						objList.push_back(currObj);
-				}
-				obj->objList.pop();
-			}
-			// Check if object wants to move on the grid
-			if (obj->deltaX != 0 || obj->deltaY != 0) {
-				if (grid->moveObject(obj, obj->getX() + obj->deltaX, obj->getY() + obj->deltaY)) { // If moved successfully
-					obj->setPos(obj->getX() + obj->deltaX, obj->getY() + obj->deltaY);
-				}
-				obj->deltaX = 0;
-				obj->deltaY = 0;
-			}
 			// Check if object needs to be deleted
+            if (obj->remove) {
+                delete obj;
+				intObjList.remove(obj);
+				grid->removeObject(obj);
+				continue;
+			}
+
+			// Call process
+            obj->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
+
+			// Check again if object needs to be deleted
             if (obj->remove) {
                 delete obj;
 				intObjList.remove(obj);
@@ -114,6 +107,35 @@ void GameLogic::mainLoop() {
 		prevTime = SDL_GetTicks();
 	}
 }
+
+bool GameLogic::addObject(Object *obj, int x, int y) {
+    if (grid->addObject(obj)) {
+        if (dynamic_cast<InteractiveObject *>(obj))
+            intObjList.push_back(dynamic_cast<InteractiveObject *>(obj));
+        else
+            objList.push_back(obj);
+		return true;
+    }
+	return false;
+}
+
+bool GameLogic::addObject(Object *obj) {
+    return addObject(obj, obj->getX(), obj->getY());
+}
+
+bool GameLogic::removeObject(int x, int y) {
+	if (grid->isOccupied(x, y)) {
+		grid->getObject(x, y)->remove = true;
+		grid->removeObject(x, y);
+		return true;
+	}
+	return false;
+}
+
+bool GameLogic::removeObject(Object *obj) {
+    return removeObject(obj->getX(), obj->getY());
+}
+
 
 void GameLogic::generateMap() {
     const char *map[] = {
