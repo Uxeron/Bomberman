@@ -9,29 +9,26 @@ void Character::process(float delta) {
         const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
         if (currentKeyStates[SDL_SCANCODE_W]) {
             move(0, -1);
+            lastDir = 0;
             walkDelayCurr = walkDelay;
         } else if (currentKeyStates[SDL_SCANCODE_S]) {
             move(0, 1);
+            lastDir = 2;
             walkDelayCurr = walkDelay;
         } else if (currentKeyStates[SDL_SCANCODE_A]) {
             move(-1, 0);
+            lastDir = 3;
             walkDelayCurr = walkDelay;
         } else if (currentKeyStates[SDL_SCANCODE_D]) {
             move(1, 0);
+            lastDir = 1;
             walkDelayCurr = walkDelay;
-        }
-
-        if (deltaX != 0 || deltaY != 0) {
-            gameLogic.moveObject(this, posX + deltaX, posY + deltaY);
-            deltaX = 0;
-            deltaY = 0;
         }
     }
 }
 
 void Character::move(int distX, int distY) {
-    deltaX += distX;
-    deltaY += distY;
+    gameLogic.moveObject(this, posX + distX, posY + distY);
 }
 
 void Character::draw() {
@@ -56,7 +53,24 @@ void Character::event(SDL_Event ev) {
         }
         if (!ev.key.repeat && ev.key.state == SDL_PRESSED && ev.key.keysym.sym == SDLK_e) {
             if (bombDelayCurr <= 0) {
-                gameLogic.addObject(new Bomb(window, gameLogic, posX, posY + 1));
+                switch (lastDir) {
+                    case 0:
+                        gameLogic.addObject(new Bomb(window, gameLogic, posX, posY + 1));
+                        break;
+                    case 1:
+                        gameLogic.addObject(new Bomb(window, gameLogic, posX - 1, posY));
+                        break;
+                    case 2:
+                        gameLogic.addObject(new Bomb(window, gameLogic, posX, posY - 1));
+                        break;
+                    case 3:
+                        gameLogic.addObject(new Bomb(window, gameLogic, posX + 1, posY));
+                        break;
+
+                    default:
+                        break;
+                }
+                
                 bombDelayCurr = bombDelay;
             }
         }

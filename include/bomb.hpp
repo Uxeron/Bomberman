@@ -17,7 +17,7 @@ class Bomb: public InteractiveObject {
     float currTime;
     // Explosion steps
     int explosionStep = 0;
-    int endExplosionStep = 5;
+    int endExplosionStep = 3;
     float explosionStepTime = 0.025;
 
     const std::set<std::string> destructibleObjects = {"character", "wallDestr"};

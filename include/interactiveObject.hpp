@@ -14,9 +14,6 @@ class InteractiveObject: public Object {
    InteractiveObject(Window& wind, GameLogic& logic, int x, int y)
        : Object(wind, logic.getSqSize(), x, y), gameLogic(logic) {};
 
-   int deltaX = 0;  // How much the object wants to move on the grid along the X axis
-   int deltaY = 0;  // How much the object wants to move on the grid along the Y axis
-
    virtual void process(float delta) = 0;
    virtual void event(SDL_Event ev) = 0;
 };

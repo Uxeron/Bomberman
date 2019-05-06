@@ -11,6 +11,8 @@ class Character: public InteractiveObject {
     float bombDelay = 3.0;
     float bombDelayCurr = 0;
 
+    int lastDir = 0; // 0 - down, 1 - left, 2 - up, 3 - right
+
   public:
     std::string name() { return "character"; }
     Character(Window& wind, GameLogic& logic)

@@ -1,7 +1,6 @@
 // The base class for any object
 #pragma once
 
-#include <queue>
 #include <string>
 #include "window.hpp"
 #include "../SDL2/include/SDL.h"
@@ -17,7 +16,6 @@ class Object {
 
   public:
     virtual std::string name() = 0;
-    std::queue<Object*> objList;
     Object(Window& wind, int cellSize): window(wind), cellSize(cellSize) {};
     Object(Window& wind, int cellSize, int x, int y)
         : window(wind), cellSize(cellSize) { setPos(x, y); };
