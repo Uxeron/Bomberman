@@ -84,7 +84,7 @@ void GameLogic::mainLoop() {
 			}
 			// Check if object wants to move on the grid
 			if (obj->deltaX != 0 || obj->deltaY != 0) {
-				if (grid->moveObject(obj->getX() + obj->deltaX, obj->getY() + obj->deltaY, obj)) { // If moved successfully
+				if (grid->moveObject(obj, obj->getX() + obj->deltaX, obj->getY() + obj->deltaY)) { // If moved successfully
 					obj->setPos(obj->getX() + obj->deltaX, obj->getY() + obj->deltaY);
 				}
 				obj->deltaX = 0;

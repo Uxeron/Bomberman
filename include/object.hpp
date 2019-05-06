@@ -13,24 +13,25 @@ class Object {
     Window& window;
     int posX;
     int posY;
-    int CELL_SIZE;
+    const int cellSize;
 
   public:
-    virtual std::string name() = 0;
+    static std::string name() { return "object"; };
     std::queue<Object*> objList;
-    Object(Window& wind, int cellSize): window(wind), CELL_SIZE(cellSize){};
-    Object(Window& wind, int cellSize, int x, int y): window(wind), CELL_SIZE(cellSize) { setPos(x, y); };
+    Object(Window& wind, int cellSize): window(wind), cellSize(cellSize) {};
+    Object(Window& wind, int cellSize, int x, int y)
+        : window(wind), cellSize(cellSize) { setPos(x, y); };
     ~Object();
 
     bool remove = false;
-    void setWindow(Window& window);
+    void setWindow(Window& wind) { window = wind; };
 
     void setSprite(SDL_Surface* spr);
-    SDL_Surface* getSprite();
+    SDL_Surface* getSprite() { return sprite; };
 
     void setPos(int x, int y);
-    int getX();
-    int getY();
+    int getX() { return posX; };
+    int getY() { return posY; };
 
     virtual void draw() = 0;
 };

@@ -10,7 +10,7 @@ class Explosion: public InteractiveObject {
     float currTime;
 
   public:
-    std::string name() { return "explosion"; }
+    static std::string name() { return "explosion"; }
     Explosion(Window& wind, GameGrid& grid, int x, int y);
     ~Explosion();
     void process(float delta);

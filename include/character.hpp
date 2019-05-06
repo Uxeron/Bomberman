@@ -12,7 +12,7 @@ class Character: public InteractiveObject {
     float bombDelayCurr = 0;
 
   public:
-    std::string name() { return "character"; }
+    static std::string name() { return "character"; }
     Character(Window& wind, GameGrid& grid)
         : InteractiveObject(wind, grid){};
     Character(Window& wind, GameGrid& grid, int x, int y)

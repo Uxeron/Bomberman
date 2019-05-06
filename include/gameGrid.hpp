@@ -23,15 +23,15 @@ class GameGrid {
 
     void setSize(int x, int y, int sq);
 
-    bool addObject(int x, int y, Object *obj);
+    bool addObject(Object *obj, int x, int y);
     bool addObject(Object *obj);
 
     bool removeObject(int x, int y);
-    bool removeObject(int x, int y, Object *obj);
+    bool removeObject(Object *obj, int x, int y);
     bool removeObject(Object *obj);
 
-    bool moveObject(int currX, int currY, int x, int y, Object *obj);
-    bool moveObject(int x, int y, Object *obj);
+    bool moveObject(Object *obj, int currX, int currY, int x, int y);
+    bool moveObject(Object *obj, int x, int y);
 
     bool isOccupied(int x, int y);
 

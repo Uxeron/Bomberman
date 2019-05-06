@@ -29,8 +29,7 @@ void GameGrid::setSize(int x, int y, int sq) {
     refreshSize();
 }
 
-
-bool GameGrid::addObject(int x, int y, Object *obj) {
+bool GameGrid::addObject(Object *obj, int x, int y) {
     if (!withinBounds(x, y)) return false;
 
     if (grid[x][y] == NULL) {
@@ -52,7 +51,7 @@ bool GameGrid::addObject(int x, int y, Object *obj) {
 }
 
 bool GameGrid::addObject(Object *obj) {
-    return addObject(obj->getX(), obj->getY(), obj);
+    return addObject(obj, obj->getX(), obj->getY());
 }
 
 
@@ -63,7 +62,7 @@ bool GameGrid::removeObject(int x, int y) {
     return true;
 }
 
-bool GameGrid::removeObject(int x, int y, Object *obj) {
+bool GameGrid::removeObject(Object *obj, int x, int y) {
     if (!withinBounds(x, y)) return false;
 
     if (obj == grid[x][y]) 
@@ -72,20 +71,19 @@ bool GameGrid::removeObject(int x, int y, Object *obj) {
 }
 
 bool GameGrid::removeObject(Object *obj) {
-    return removeObject(obj->getX(), obj->getY(), obj);
+    return removeObject(obj, obj->getX(), obj->getY());
 }
 
-
-bool GameGrid::moveObject(int currX, int currY, int x, int y, Object *obj) {
-    if (addObject(x, y, obj)) {
-        removeObject(currX, currY, obj);
+bool GameGrid::moveObject(Object *obj, int currX, int currY, int x, int y) {
+    if (addObject(obj, x, y)) {
+        removeObject(obj, currX, currY);
         return true;
     }
     return false;
 }
 
-bool GameGrid::moveObject(int x, int y, Object *obj) {
-    return moveObject(obj->getX(), obj->getY(), x, y, obj);
+bool GameGrid::moveObject(Object *obj, int x, int y) {
+    return moveObject(obj, obj->getX(), obj->getY(), x, y);
 }
 
 

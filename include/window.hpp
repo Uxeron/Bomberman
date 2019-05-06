@@ -14,7 +14,7 @@ class Window {
     int height;
 public:
     Window();
-    Window(int posX, int posY, const char* name);
+    Window(int w, int h, const char* name);
     ~Window();
     SDL_Surface *loadSurface(const char* path);
     void drawImage(SDL_Surface *image, int x, int y);

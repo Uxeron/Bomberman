@@ -23,10 +23,25 @@ void Bomb::process(float delta) {
             if (explosionStep >= endExplosionStep) {
                 remove = true;
             } else {
-                objList.push(new Explosion(window, gameGrid, posX + explosionStep, posY));
-                objList.push(new Explosion(window, gameGrid, posX - explosionStep, posY));
-                objList.push(new Explosion(window, gameGrid, posX, posY + explosionStep));
-                objList.push(new Explosion(window, gameGrid, posX, posY - explosionStep));
+                if (right && !gameGrid.isOccupied(posX + explosionStep, posY))
+                    objList.push(new Explosion(window, gameGrid, posX + explosionStep, posY));
+                else
+                    right = false;
+                    
+                if (left && !gameGrid.isOccupied(posX - explosionStep, posY))
+                    objList.push(new Explosion(window, gameGrid, posX - explosionStep, posY));
+                else
+                    left = false;
+
+                if (down && !gameGrid.isOccupied(posX, posY + explosionStep))
+                    objList.push(new Explosion(window, gameGrid, posX, posY + explosionStep));
+                else
+                    down = false;
+
+                if (up && !gameGrid.isOccupied(posX, posY - explosionStep))
+                    objList.push(new Explosion(window, gameGrid, posX, posY - explosionStep));
+                else
+                    up = false;
             }
         } else {
             currTime = stepTime;

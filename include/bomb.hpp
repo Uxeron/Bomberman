@@ -6,6 +6,7 @@
 
 
 class Bomb: public InteractiveObject {
+    bool up = true, down = true, left = true, right = true;
     bool exploding = false;
     SDL_Surface* sprites[2];
     // Bomb steps
@@ -19,7 +20,7 @@ class Bomb: public InteractiveObject {
     float explosionStepTime = 0.025;
     
   public:
-    std::string name() { return "bomb"; }
+    static std::string name() { return "bomb"; }
     Bomb(Window& wind, GameGrid& grid, int x, int y);
     ~Bomb();
     void process(float delta);
