@@ -1,7 +1,7 @@
 #include "../include/Object.hpp"
 
 Object::~Object() {
-    SDL_FreeSurface(sprite);
+    if (sprite != NULL) SDL_FreeSurface(sprite);
     sprite = NULL;
 }
 

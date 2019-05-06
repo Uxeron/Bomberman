@@ -12,6 +12,7 @@ Bomb::~Bomb() {
     for (SDL_Surface *spr : sprites){
         SDL_FreeSurface(spr);
     }
+    sprite = NULL;
 }
 
 void Bomb::process(float delta) {

@@ -21,6 +21,7 @@ class Character: public InteractiveObject {
     std::string name() { return "character"; }
     Character(Window& wind, GameLogic& logic);
     Character(Window& wind, GameLogic& logic, int x, int y);
+    ~Character();
     void process(float delta);
     void event(SDL_Event ev);
     void draw();

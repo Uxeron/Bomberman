@@ -9,11 +9,13 @@ class InteractiveObject: public Object {
     GameLogic& gameLogic;
 
   public:
-   InteractiveObject(Window& wind, GameLogic& logic)
+    InteractiveObject(Window& wind, GameLogic& logic)
        : Object(wind, logic.getSqSize()), gameLogic(logic) {};
-   InteractiveObject(Window& wind, GameLogic& logic, int x, int y)
+    InteractiveObject(Window& wind, GameLogic& logic, int x, int y)
        : Object(wind, logic.getSqSize(), x, y), gameLogic(logic) {};
+    
+    virtual ~InteractiveObject() = 0;
 
-   virtual void process(float delta) = 0;
-   virtual void event(SDL_Event ev) = 0;
+    virtual void process(float delta) = 0;
+    virtual void event(SDL_Event ev) = 0;
 };

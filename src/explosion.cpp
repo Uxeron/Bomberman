@@ -17,6 +17,7 @@ Explosion::~Explosion() {
     for(SDL_Surface* spr : sprites) {
         SDL_FreeSurface(spr);
     }
+    sprite = NULL;
 }
 
 void Explosion::process(float delta) {

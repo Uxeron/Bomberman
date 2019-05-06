@@ -9,6 +9,11 @@ Character::Character(Window& wind, GameLogic& logic, int x, int y): InteractiveO
     setSprite(window.loadSurface(("Sprites/Character/" + std::to_string(index) + "/Walk_Down/3.png").c_str()));
 }
 
+Character::~Character() {
+    if (sprite != NULL) SDL_FreeSurface(sprite);
+    sprite = NULL;
+}
+
 void Character::process(float delta) {
     if (bombDelayCurr > 0) bombDelayCurr -= delta;
 
