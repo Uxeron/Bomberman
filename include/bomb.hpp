@@ -3,6 +3,8 @@
 
 #include "explosion.hpp"
 #include "interactiveObject.hpp"
+#include "powerupBomb.hpp"
+#include "powerupSpeed.hpp"
 #include <set>
 
 
@@ -28,6 +30,7 @@ class Bomb: public InteractiveObject {
     std::string name() { return "bomb"; }
     Bomb(Window& wind, GameLogic& logic, int x, int y);
     ~Bomb();
+    void adjustDelay(int amount) { endExplosionStep += amount; }
     void process(float delta);
     void event(SDL_Event ev);
     void draw();

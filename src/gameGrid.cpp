@@ -14,7 +14,7 @@ void GameGrid::refreshSize() {
 
 bool GameGrid::withinBounds(int x, int y) {
     if (x < 0 || y < 0 || x >= sizeX || y >= sizeY) {
-        debugWrite("object being checked is outside bounds " << x << " " << y)
+        debugWrite("Object being checked is outside bounds " << x << " " << y)
         return false;
     }
     return true;
@@ -34,16 +34,7 @@ bool GameGrid::addObject(Object *obj, int x, int y) {
     if (grid[x][y] == NULL) {
         grid[x][y] = obj;
         obj->setPos(x, y);
-        debugWrite("Moved object to " << x << " " << y)
         return true;
-    } else if (grid[x][y]->name() == "character" && obj->name() == "explosion") {
-        grid[x][y]->remove = true;
-        grid[x][y] = obj;
-        debugWrite("Killed character sitting in cell")
-        return true;
-    } else if (grid[x][y]->name() == "explosion" && obj->name() == "character") {
-        obj->remove = true;
-        debugWrite("Killed character trying to move into cell")
     }
 
     debugWrite("Grid position already occupied")

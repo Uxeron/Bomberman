@@ -6,7 +6,7 @@
 class Explosion: public InteractiveObject {
     SDL_Surface* sprites[6];
     int step = 0;
-    float stepTime = 0.025;
+    float stepTime = 0.05;
     float currTime;
 
   public:

@@ -60,17 +60,23 @@ void GameLogic::mainLoop() {
 			
 			// Reset game
 			if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_r) {
+				debugWrite("Cleaning objects");
 				for (Object *obj : objList) delete obj;
 				objList.clear();
 
+				debugWrite("Cleaning interactive objects");
 				for (InteractiveObject *obj : intObjList) delete obj;
 				intObjList.clear();
 
+				debugWrite("Cleaning grid");
 				grid->clear();
 
+				debugWrite("Resetting counter");
 				Character::resetCount();
 
+				debugWrite("Reseting grid");
 				grid->setSize(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE, CELL_SIZE);
+				debugWrite("Regenerating map");
 				generateMap();
 			}
 			
@@ -127,10 +133,11 @@ void GameLogic::mainLoop() {
 
 bool GameLogic::addObject(Object *obj, int x, int y) {
     if (grid->addObject(obj)) {
-        if (dynamic_cast<InteractiveObject *>(obj))
+        if (dynamic_cast<InteractiveObject *>(obj)) {
             intObjList.push_back(dynamic_cast<InteractiveObject *>(obj));
-        else
+		} else {
             objList.push_back(obj);
+		}
 		return true;
     }
 	return false;
@@ -184,9 +191,7 @@ void GameLogic::generateMap() {
 				objList.push_back(wall);
 				grid->addObject(wall);
 			} else if (map[y][x] == '3') {
-				Character *chr = new Character(*window, *this, x, y);
-				intObjList.push_back(chr);
-				grid->addObject(chr);
+				addObject(new Character(*window, *this, x, y));
 			}
 		}
 	}

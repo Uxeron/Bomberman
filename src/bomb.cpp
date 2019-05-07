@@ -50,7 +50,15 @@ void Bomb::addExplosion(int x, int y, bool &condition) {
         } else {
             if (destructibleObjects.find(gameLogic.getObjectName(x, y)) != destructibleObjects.end()) {
                 gameLogic.removeObject(x, y);
-                gameLogic.addObject(new Explosion(window, gameLogic, x, y));
+                if (rand() % 7 == 0) {
+                    if (rand() % 2 == 0) {
+                        gameLogic.addObject(new PowerupBomb(window, gameLogic, x, y));
+                    } else {
+                        gameLogic.addObject(new PowerupSpeed(window, gameLogic, x, y));
+                    }
+                } else {
+                    gameLogic.addObject(new Explosion(window, gameLogic, x, y));
+                }
             } else {
                 condition = false;
             }

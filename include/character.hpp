@@ -9,6 +9,8 @@ class Character: public InteractiveObject {
     static int count;
     int index = count++;
 
+    int bombStepAdjust = 0;
+
     float walkDelay = 0.2;
     float walkDelayCurr = 0;
 
