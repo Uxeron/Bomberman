@@ -18,10 +18,20 @@ class Character: public InteractiveObject {
     float bombDelayCurr = 0;
 
     Vector2 moveAnimationOffset;
-
     Vector2 lastPos;
 
-    int lastDir = 0; // 0 - down, 1 - left, 2 - up, 3 - right
+    float animFrameDelay = 0.1;
+    float currAnimFrameDelay = animFrameDelay;
+    int animIndex = 4;
+
+    SDL_Surface* sprites[4][5];
+
+    int keys[5];
+
+    int lastDir = 2; // 0 - down, 1 - left, 2 - up, 3 - right
+
+    void loadSprites();
+    void selectControls();
 
   public:
     std::string name() const { return "character"; }

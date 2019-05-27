@@ -36,7 +36,6 @@ bool GameGrid::addObject(Object *obj, Vector2 pos) {
         return true;
     }
 
-    debugWrite("Grid position already occupied")
     return false;
 }
 
