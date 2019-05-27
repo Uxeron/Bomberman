@@ -1,4 +1,4 @@
-#include "../include/Window.hpp"
+#include "../include/window.hpp"
 
 Window::Window(int w, int h, const char* name): width(w), height(h) {
 	gameWindow = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);

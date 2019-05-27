@@ -1,9 +1,14 @@
 // The base class for any object
 #pragma once
 
+#ifdef __linux__
+  #include <SDL2/SDL.h>
+#else
+  #include "../SDL2/include/SDL.h"
+#endif
+
 #include <string>
 #include "window.hpp"
-#include "../SDL2/include/SDL.h"
 
 
 class Object {

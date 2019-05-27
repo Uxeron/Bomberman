@@ -1,10 +1,15 @@
 // Handles the main game Window, drawing to that Window and loading images
 #pragma once 
 
-#include <iostream>
+#ifdef __linux__
+  #include <SDL2/SDL.h>
+  #include <SDL2/SDL_image.h>
+#else
+  #include "../SDL2/include/SDL.h"
+  #include "../SDL2/include/SDL_image.h"
+#endif
 
-#include "../SDL2/include/SDL.h"
-#include "../SDL2/include/SDL_image.h"
+#include <iostream>
 
 
 struct Rect {
