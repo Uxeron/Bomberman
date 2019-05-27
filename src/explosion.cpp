@@ -32,10 +32,3 @@ void Explosion::process(float delta) {
         }
     }
 }
-
-void Explosion::draw() {
-    window.drawImage(sprite, &rect);
-}
-
-void Explosion::event(SDL_Event ev) {
-}

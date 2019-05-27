@@ -16,7 +16,7 @@ Window::~Window() {
 }
 
 
-SDL_Surface* Window::loadSurface(const char* path) {
+SDL_Surface* Window::loadSurface(const char* path) const {
 	// The final optimized image
 	SDL_Surface *optimizedSurface = NULL;
 
@@ -41,8 +41,9 @@ void Window::drawImage(SDL_Surface *image, int x, int y) {
 	SDL_BlitSurface(image, NULL, screenSurface, &rect);	// Blit image at position
 }
 
-void Window::drawImage(SDL_Surface *image, SDL_Rect *rect) {
-	SDL_BlitSurface(image, NULL, screenSurface, rect); // Blit image at position
+void Window::drawImage(SDL_Surface *image, const Rect &rect) {
+	SDL_Rect rect_c = {rect.x, rect.y, rect.w, rect.h};	// Create temporary rect
+	SDL_BlitSurface(image, NULL, screenSurface, &rect_c); // Blit image at position
 }
 
 void Window::fillScreen(int r, int g, int b) {
@@ -53,10 +54,3 @@ void Window::update() {
 	SDL_UpdateWindowSurface(gameWindow);
 }
 
-int Window::getWidth() {
-	return width;
-}
-
-int Window::getHeight() {
-	return height;
-}

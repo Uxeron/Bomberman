@@ -17,18 +17,24 @@ class Character: public InteractiveObject {
     float bombDelay = 3.0;
     float bombDelayCurr = 0;
 
+    int moveAnimationOffsetX = 0;
+    int moveAnimationOffsetY = 0;
+
+    int lastPosX = 0;
+    int lastPosY = 0;
+
     int lastDir = 0; // 0 - down, 1 - left, 2 - up, 3 - right
 
   public:
-    std::string name() { return "character"; }
+    std::string name() const { return "character"; }
     Character(Window& wind, GameLogic& logic);
     Character(Window& wind, GameLogic& logic, int x, int y);
     ~Character();
     void process(float delta);
     void event(SDL_Event ev);
-    void draw();
+    void draw() const;
 
-    void move(int distX, int distY);
+    bool move(int distX, int distY);
 
     static void resetCount() { count = 0; }
 };

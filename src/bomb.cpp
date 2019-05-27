@@ -51,10 +51,10 @@ void Bomb::addExplosion(int x, int y, bool &condition) {
             if (destructibleObjects.find(gameLogic.getObjectName(x, y)) != destructibleObjects.end()) {
                 gameLogic.removeObject(x, y);
                 if (rand() % 7 == 0) {
-                    if (rand() % 2 == 0) {
-                        gameLogic.addObject(new PowerupBomb(window, gameLogic, x, y));
-                    } else {
+                    if (rand() % 3 == 0) {
                         gameLogic.addObject(new PowerupSpeed(window, gameLogic, x, y));
+                    } else {
+                        gameLogic.addObject(new PowerupBomb(window, gameLogic, x, y));
                     }
                 } else {
                     gameLogic.addObject(new Explosion(window, gameLogic, x, y));
@@ -64,11 +64,4 @@ void Bomb::addExplosion(int x, int y, bool &condition) {
             }
         }
     }
-}
-
-void Bomb::draw() {
-    window.drawImage(sprite, &rect);
-}
-
-void Bomb::event(SDL_Event ev) {
 }

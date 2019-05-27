@@ -5,17 +5,18 @@
 #include "window.hpp"
 #include "../SDL2/include/SDL.h"
 
+
 class Object {
   protected:
     SDL_Surface* sprite = NULL;
-    SDL_Rect rect;
+    Rect rect;
     Window& window;
     int posX;
     int posY;
     const int cellSize;
 
   public:
-    virtual std::string name() = 0;
+    virtual std::string name() const = 0;
     Object(Window& wind, int cellSize): window(wind), cellSize(cellSize) {};
     Object(Window& wind, int cellSize, int x, int y)
         : window(wind), cellSize(cellSize) { setPos(x, y); };
@@ -25,11 +26,11 @@ class Object {
     void setWindow(Window& wind) { window = wind; };
 
     void setSprite(SDL_Surface* spr);
-    SDL_Surface* getSprite() { return sprite; };
+    SDL_Surface* getSprite() const { return sprite; };
 
     void setPos(int x, int y);
-    int getX() { return posX; };
-    int getY() { return posY; };
+    int getX() const { return posX; };
+    int getY() const { return posY; };
 
-    virtual void draw() = 0;
+    virtual void draw() const = 0;
 };

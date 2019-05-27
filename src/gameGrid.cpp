@@ -78,14 +78,14 @@ bool GameGrid::moveObject(Object *obj, int x, int y) {
     return moveObject(obj, obj->getX(), obj->getY(), x, y);
 }
 
-std::string GameGrid::getObjectName(int x, int y) {
+std::string GameGrid::getObjectName(int x, int y) const {
     if (isOccupied(x, y))
         return grid[x][y]->name();
     else
         return "";
 }
 
-Object* GameGrid::getObject(int x, int y) {
+Object* GameGrid::getObject(int x, int y) const {
     if (isOccupied(x, y)) 
         return grid[x][y];
     else 

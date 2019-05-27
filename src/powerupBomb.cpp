@@ -11,7 +11,3 @@ void PowerupBomb::process(float delta) {
         gameLogic.addObjectnoList(this);
     }
 }
-
-void PowerupBomb::draw() { window.drawImage(sprite, &rect); }
-
-void PowerupBomb::event(SDL_Event ev) {}

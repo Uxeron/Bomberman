@@ -32,12 +32,12 @@ class GameGrid {
     bool moveObject(Object *obj, int currX, int currY, int x, int y);
     bool moveObject(Object *obj, int x, int y);
 
-    bool isOccupied(int x, int y) { return grid[x][y] != NULL; }
+    bool isOccupied(int x, int y) const { return grid[x][y] != NULL; }
 
-    std::string getObjectName(int x, int y);
-    Object* getObject(int x, int y);
+    std::string getObjectName(int x, int y) const;
+    Object* getObject(int x, int y) const;
 
-    int getSqSize() { return squareSize; };
+    int getSqSize() const { return squareSize; };
 
     void clear();
 };

@@ -27,11 +27,11 @@ class Bomb: public InteractiveObject {
     void addExplosion(int x, int y, bool &condition);
     
   public:
-    std::string name() { return "bomb"; }
+    std::string name() const { return "bomb"; }
     Bomb(Window& wind, GameLogic& logic, int x, int y);
     ~Bomb();
     void adjustDelay(int amount) { endExplosionStep += amount; }
     void process(float delta);
-    void event(SDL_Event ev);
-    void draw();
+    void event(SDL_Event ev) {};
+    void draw() const { window.drawImage(sprite, rect); };
 };

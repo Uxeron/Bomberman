@@ -4,8 +4,8 @@
 
 class Wall: public Object {
   public:
-    std::string name() { return "wall"; }
+    std::string name() const { return "wall"; }
     Wall(Window& wind, int cellSize, int x, int y);
 
-    void draw();
+    void draw() const { window.drawImage(sprite, rect); };
 };

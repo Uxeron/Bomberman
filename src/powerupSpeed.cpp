@@ -11,7 +11,3 @@ void PowerupSpeed::process(float delta) {
         gameLogic.addObjectnoList(this);
     }
 }
-
-void PowerupSpeed::draw() { window.drawImage(sprite, &rect); }
-
-void PowerupSpeed::event(SDL_Event ev) {}

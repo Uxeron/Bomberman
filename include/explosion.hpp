@@ -10,10 +10,10 @@ class Explosion: public InteractiveObject {
     float currTime;
 
   public:
-    std::string name() { return "explosion"; }
+    std::string name() const { return "explosion"; }
     Explosion(Window& wind, GameLogic& logic, int x, int y);
     ~Explosion();
     void process(float delta);
-    void event(SDL_Event ev);
-    void draw();
+    void event(SDL_Event ev) {};
+    void draw() const { window.drawImage(sprite, rect); };
 };
