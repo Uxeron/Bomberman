@@ -1,4 +1,4 @@
-#include "../include/Object.hpp"
+#include "../include/object.hpp"
 
 Object::~Object() {
     if (sprite != NULL) SDL_FreeSurface(sprite);

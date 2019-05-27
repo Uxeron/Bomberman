@@ -15,6 +15,7 @@ void GameLogic::startGame() {
 	// Create game's grid
 	grid = new GameGrid(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE, CELL_SIZE);
 
+	debugWrite("Generating map")
 	generateMap();
 }
 
@@ -164,7 +165,7 @@ bool GameLogic::removeObject(Object *obj) {
 
 
 void GameLogic::generateMap() {
-    const char *map[] = {
+    const char* map[] = {
         "111111111111111111111",
         "130222222222222222031",
         "101212121212121212101",
