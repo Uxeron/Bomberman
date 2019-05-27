@@ -36,18 +36,18 @@ class GameLogic {
     void mainLoop();
     void stopGame();
 
-    bool addObject(Object *obj, int x, int y);
+    bool addObject(Object *obj, Vector2 pos);
     bool addObject(Object *obj);
     bool addObjectnoList(Object *obj) const { return grid->addObject(obj); }
 
-    bool removeObject(int x, int y);
+    bool removeObject(Vector2 pos);
     bool removeObject(Object *obj);
 
-    bool moveObject(Object *obj, int x, int y) const { return grid->moveObject(obj, x, y); }
+    bool moveObject(Object *obj, Vector2 pos) const { return grid->moveObject(obj, pos); }
 
-    bool isOccupied(int x, int y) const { return grid->isOccupied(x, y); }
+    bool isOccupied(Vector2 pos) const { return grid->isOccupied(pos); }
 
-    std::string getObjectName(int x, int y) const { return grid->getObjectName(x, y); }
+    std::string getObjectName(Vector2 pos) const { return grid->getObjectName(pos); }
 
     static int getSqSize() { return CELL_SIZE; };
 

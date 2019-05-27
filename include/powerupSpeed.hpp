@@ -5,7 +5,7 @@
 class PowerupSpeed: public InteractiveObject {
   public:
     std::string name() const { return "powerupSpeed"; }
-    PowerupSpeed(Window& wind, GameLogic& logic, int x, int y);
+    PowerupSpeed(Window& wind, GameLogic& logic, Vector2 position);
     ~PowerupSpeed();
 
     void process(float delta);

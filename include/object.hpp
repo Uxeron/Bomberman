@@ -16,15 +16,14 @@ class Object {
     SDL_Surface* sprite = NULL;
     Rect rect;
     Window& window;
-    int posX;
-    int posY;
+    Vector2 pos;
     const int cellSize;
 
   public:
     virtual std::string name() const = 0;
     Object(Window& wind, int cellSize): window(wind), cellSize(cellSize) {};
-    Object(Window& wind, int cellSize, int x, int y)
-        : window(wind), cellSize(cellSize) { setPos(x, y); };
+    Object(Window& wind, int cellSize, Vector2 position)
+        : window(wind), cellSize(cellSize) { setPos(position); };
     virtual ~Object();
 
     bool remove = false;
@@ -34,8 +33,10 @@ class Object {
     SDL_Surface* getSprite() const { return sprite; };
 
     void setPos(int x, int y);
-    int getX() const { return posX; };
-    int getY() const { return posY; };
+    void setPos(Vector2 position);
+    Vector2 getPos() const { return pos; }
+    int getX() const { return pos.x(); };
+    int getY() const { return pos.y(); };
 
     virtual void draw() const = 0;
 };

@@ -42,7 +42,7 @@ void Window::drawImage(SDL_Surface *image, int x, int y) {
 }
 
 void Window::drawImage(SDL_Surface *image, const Rect &rect) {
-	SDL_Rect rect_c = {rect.x, rect.y, rect.w, rect.h};	// Create temporary rect
+	SDL_Rect rect_c = {rect.position.x(), rect.position.y(), rect.size.x(), rect.size.y()};	// Create temporary rect
 	SDL_BlitSurface(image, NULL, screenSurface, &rect_c); // Blit image at position
 }
 

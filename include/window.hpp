@@ -10,13 +10,11 @@
 #endif
 
 #include <iostream>
-
+#include "vector2.hpp"
 
 struct Rect {
-  int x;
-  int y;
-  int w;
-  int h;
+  Vector2 position;
+  Vector2 size;
 };
 
 class Window {

@@ -1,5 +1,6 @@
 #include "../include/wall.hpp"
 
-Wall::Wall(Window& wind, int cellSize, int x, int y): Object(wind, cellSize, x, y) {
+Wall::Wall(Window& wind, int cellSize, Vector2 position)
+    : Object(wind, cellSize, position) {
     setSprite(window.loadSurface("Sprites/Wall.png"));
 }

@@ -5,7 +5,7 @@
 class PowerupBomb: public InteractiveObject {
   public:
     std::string name() const { return "powerupBomb"; }
-    PowerupBomb(Window& wind, GameLogic& logic, int x, int y);
+    PowerupBomb(Window& wind, GameLogic& logic, Vector2 position);
     ~PowerupBomb();
 
     void process(float delta);

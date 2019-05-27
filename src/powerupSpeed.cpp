@@ -1,13 +1,14 @@
 #include "../include/powerupSpeed.hpp"
 
-PowerupSpeed::PowerupSpeed(Window& wind, GameLogic& logic, int x, int y): InteractiveObject(wind, logic, x, y) {
+PowerupSpeed::PowerupSpeed(Window& wind, GameLogic& logic, Vector2 position)
+    : InteractiveObject(wind, logic, position) {
     setSprite(window.loadSurface("Sprites/powerupSpeed.png"));
 }
 
 PowerupSpeed::~PowerupSpeed() {}
 
 void PowerupSpeed::process(float delta) {
-    if (gameLogic.getObjectName(posX, posY) != name()) {
+    if (gameLogic.getObjectName(pos) != name()) {
         gameLogic.addObjectnoList(this);
     }
 }

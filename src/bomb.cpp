@@ -1,6 +1,6 @@
 #include "../include/bomb.hpp"
 
-Bomb::Bomb(Window& wind, GameLogic& logic, int x, int y): InteractiveObject(wind, logic, x, y) {
+Bomb::Bomb(Window& wind, GameLogic& logic, Vector2 position): InteractiveObject(wind, logic, position) {
     sprites[0] = window.loadSurface("Sprites/Bomb/0.png");
     sprites[1] = window.loadSurface("Sprites/Bomb/1.png");
 
@@ -24,10 +24,10 @@ void Bomb::process(float delta) {
             if (explosionStep >= endExplosionStep) {
                 remove = true;
             } else {
-                addExplosion(posX + explosionStep, posY, right);
-                addExplosion(posX - explosionStep, posY, left);
-                addExplosion(posX, posY + explosionStep, down);
-                addExplosion(posX, posY - explosionStep, up);
+                addExplosion(Vector2(explosionStep, 0), right);
+                addExplosion(Vector2(-explosionStep, 0), left);
+                addExplosion(Vector2(0, explosionStep), down);
+                addExplosion(Vector2(0, -explosionStep), up);
             }
         } else {
             currTime = stepTime;
@@ -43,25 +43,26 @@ void Bomb::process(float delta) {
     }
 }
 
-void Bomb::addExplosion(int x, int y, bool &condition) {
-    if (condition) {
-        if (!gameLogic.isOccupied(x, y)) {
-            gameLogic.addObject(new Explosion(window, gameLogic, x, y));
-        } else {
-            if (destructibleObjects.find(gameLogic.getObjectName(x, y)) != destructibleObjects.end()) {
-                gameLogic.removeObject(x, y);
-                if (rand() % 7 == 0) {
-                    if (rand() % 3 == 0) {
-                        gameLogic.addObject(new PowerupSpeed(window, gameLogic, x, y));
-                    } else {
-                        gameLogic.addObject(new PowerupBomb(window, gameLogic, x, y));
-                    }
+void Bomb::addExplosion(Vector2 position, bool &condition) {
+    if (!condition) return;
+    
+    position += pos;
+    if (!gameLogic.isOccupied(position)) {
+        gameLogic.addObject(new Explosion(window, gameLogic, position));
+    } else {
+        if (std::find(destructibleObjects.begin(), destructibleObjects.end(), gameLogic.getObjectName(position)) != destructibleObjects.end()) {
+            gameLogic.removeObject(position);
+            if (rand() % 7 == 0) {
+                if (rand() % 3 == 0) {
+                    gameLogic.addObject(new PowerupSpeed(window, gameLogic, position));
                 } else {
-                    gameLogic.addObject(new Explosion(window, gameLogic, x, y));
+                    gameLogic.addObject(new PowerupBomb(window, gameLogic, position));
                 }
             } else {
-                condition = false;
+                gameLogic.addObject(new Explosion(window, gameLogic, position));
             }
+        } else {
+            condition = false;
         }
     }
 }

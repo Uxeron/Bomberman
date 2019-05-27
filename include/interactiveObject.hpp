@@ -11,8 +11,8 @@ class InteractiveObject: public Object {
   public:
     InteractiveObject(Window& wind, GameLogic& logic)
        : Object(wind, logic.getSqSize()), gameLogic(logic) {};
-    InteractiveObject(Window& wind, GameLogic& logic, int x, int y)
-       : Object(wind, logic.getSqSize(), x, y), gameLogic(logic) {};
+    InteractiveObject(Window& wind, GameLogic& logic, Vector2 position)
+       : Object(wind, logic.getSqSize(), position), gameLogic(logic) {};
     
     virtual ~InteractiveObject() = 0;
 

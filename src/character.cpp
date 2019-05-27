@@ -5,10 +5,9 @@ int Character::count = 0;
 Character::Character(Window& wind, GameLogic& logic) : InteractiveObject(wind, logic) {
     setSprite(window.loadSurface(("Sprites/Character/" + std::to_string(index) + "/Walk_Down/3.png").c_str()));
 }
-Character::Character(Window& wind, GameLogic& logic, int x, int y): InteractiveObject(wind, logic, x, y) {
+Character::Character(Window& wind, GameLogic& logic, Vector2 position): InteractiveObject(wind, logic, position) {
     setSprite(window.loadSurface(("Sprites/Character/" + std::to_string(index) + "/Walk_Down/3.png").c_str()));
-    lastPosX = x;
-    lastPosY = y;
+    lastPos = position;
 }
 
 Character::~Character() {
@@ -22,22 +21,22 @@ void Character::process(float delta) {
     if (walkDelayCurr <= 0) {
         const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
         if (currentKeyStates[SDL_SCANCODE_W]) {
-            if (move(0, -1)) {
+            if (move(Vector2(0, -1))) {
                 lastDir = 0;
                 walkDelayCurr = walkDelay;
             }
         } else if (currentKeyStates[SDL_SCANCODE_S]) {
-            if (move(0, 1)) {
+            if (move(Vector2(0, 1))) {
                 lastDir = 2;
                 walkDelayCurr = walkDelay;
             }
         } else if (currentKeyStates[SDL_SCANCODE_A]) {
-            if (move(-1, 0)) {
+            if (move(Vector2(-1, 0))) {
                 lastDir = 3;
                 walkDelayCurr = walkDelay;
             }
         } else if (currentKeyStates[SDL_SCANCODE_D]) {
-            if (move(1, 0)) {
+            if (move(Vector2(1, 0))) {
                 lastDir = 1;
                 walkDelayCurr = walkDelay;
             }
@@ -47,45 +46,39 @@ void Character::process(float delta) {
     if (walkDelayCurr > 0) {
         walkDelayCurr -= delta;
         if (walkDelayCurr < 0) walkDelayCurr = 0;
-        moveAnimationOffsetX = cellSize * (walkDelayCurr / walkDelay) * (lastPosX - posX);
-        moveAnimationOffsetY = cellSize * (walkDelayCurr / walkDelay) * (lastPosY - posY);
+        moveAnimationOffset = (lastPos - pos) * cellSize * (walkDelayCurr / walkDelay);
     } else {
-        moveAnimationOffsetX = 0;
-        moveAnimationOffsetY = 0;
+        moveAnimationOffset *= 0;
     }
 }
 
-bool Character::move(int distX, int distY) {
-    if (!gameLogic.moveObject(this, posX + distX, posY + distY)) {
-        if (gameLogic.getObjectName(posX + distX, posY + distY) == "powerupSpeed") {
+bool Character::move(Vector2 dist) {
+    if (!gameLogic.moveObject(this, pos + dist)) {
+        if (gameLogic.getObjectName(pos + dist) == "powerupSpeed") {
             if (walkDelay > 0.03) walkDelay -= 0.02;
-            gameLogic.removeObject(posX + distX, posY + distY);
-            if (gameLogic.moveObject(this, posX + distX, posY + distY)) {
-                lastPosX = posX - distX;
-                lastPosY = posY - distY;
+            gameLogic.removeObject(pos + dist);
+            if (gameLogic.moveObject(this, pos + dist)) {
+                lastPos = pos - dist;
                 return true;
             }
-        } else if (gameLogic.getObjectName(posX + distX, posY + distY) == "powerupBomb") {
+        } else if (gameLogic.getObjectName(pos + dist) == "powerupBomb") {
             bombStepAdjust += 1;
-            gameLogic.removeObject(posX + distX, posY + distY);
-            if (gameLogic.moveObject(this, posX + distX, posY + distY)) {
-                lastPosX = posX - distX;
-                lastPosY = posY - distY;
+            gameLogic.removeObject(pos + dist);
+            if (gameLogic.moveObject(this, pos + dist)) {
+                lastPos = pos - dist;
                 return true;
             }
         }
     } else {
-        lastPosX = posX - distX;
-        lastPosY = posY - distY;
+        lastPos = pos - dist;
         return true;
     }
     return false;
 }
 
 void Character::draw() const {
-    Rect tmpRect = {rect.x, rect.y, rect.w, rect.h};
-    tmpRect.x += moveAnimationOffsetX;
-    tmpRect.y += moveAnimationOffsetY;
+    Rect tmpRect = Rect(rect);
+    tmpRect.position += moveAnimationOffset;
     window.drawImage(sprite, tmpRect);
 }
 
@@ -93,33 +86,24 @@ void Character::event(const SDL_Event& ev) {
     if (ev.type == SDL_KEYDOWN) {
         if (!ev.key.repeat && ev.key.state == SDL_PRESSED && ev.key.keysym.sym == SDLK_e) {
             if (bombDelayCurr <= 0) {
-                Bomb* bomb;
+                Vector2 bombPos = pos;
                 switch (lastDir) {
                     case 0:
-                        bomb = new Bomb(window, gameLogic, posX, posY + 1);
-                        bomb->adjustDelay(bombStepAdjust);
-                        gameLogic.addObject(bomb);
+                        bombPos.y(pos.y() + 1);
                         break;
                     case 1:
-                        bomb = new Bomb(window, gameLogic, posX - 1, posY);
-                        bomb->adjustDelay(bombStepAdjust);
-                        gameLogic.addObject(bomb);
+                        bombPos.x(pos.x() - 1);
                         break;
                     case 2:
-                        bomb = new Bomb(window, gameLogic, posX, posY - 1);
-                        bomb->adjustDelay(bombStepAdjust);
-                        gameLogic.addObject(bomb);
+                        bombPos.y(pos.y() - 1);
                         break;
                     case 3:
-                        bomb = new Bomb(window, gameLogic, posX + 1, posY);
-                        bomb->adjustDelay(bombStepAdjust);
-                        gameLogic.addObject(bomb);
-                        break;
-
-                    default:
+                        bombPos.x(pos.x() + 1);
                         break;
                 }
-                
+                Bomb* bomb = new Bomb(window, gameLogic, bombPos);
+                bomb->adjustDelay(bombStepAdjust);
+                gameLogic.addObject(bomb);
                 bombDelayCurr = bombDelay;
             }
         }

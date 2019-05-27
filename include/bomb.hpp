@@ -25,11 +25,11 @@ class Bomb: public InteractiveObject {
 
     const std::set<std::string> destructibleObjects = {"character", "wallDestr"};
 
-    void addExplosion(int x, int y, bool &condition);
+    void addExplosion(Vector2 position, bool &condition);
     
   public:
     std::string name() const { return "bomb"; }
-    Bomb(Window& wind, GameLogic& logic, int x, int y);
+    Bomb(Window& wind, GameLogic& logic, Vector2 position);
     ~Bomb();
     void adjustDelay(int amount) { endExplosionStep += amount; }
     void process(float delta);

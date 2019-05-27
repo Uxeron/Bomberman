@@ -11,7 +11,7 @@ class Explosion: public InteractiveObject {
 
   public:
     std::string name() const { return "explosion"; }
-    Explosion(Window& wind, GameLogic& logic, int x, int y);
+    Explosion(Window& wind, GameLogic& logic, Vector2 position);
     ~Explosion();
     void process(float delta);
     void event(const SDL_Event& ev) {};

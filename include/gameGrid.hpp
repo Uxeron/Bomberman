@@ -8,34 +8,33 @@
 
 class GameGrid {
     void refreshSize();
-    bool withinBounds(int x, int y);
+    bool withinBounds(Vector2 pos);
 
     std::vector< std::vector< Object* > > grid; // Main grid
-    int sizeX;
-    int sizeY;
+    Vector2 size;
     int squareSize;
 
   public:
-    GameGrid(): sizeX(1), sizeY(1), squareSize(1) { refreshSize(); }
-    GameGrid(int x, int y, int sq) : sizeX(x), sizeY(y), squareSize(sq) { refreshSize(); }
+    GameGrid(): size(1, 1), squareSize(1) { refreshSize(); }
+    GameGrid(Vector2 gridSize, int sq) : size(gridSize), squareSize(sq) { refreshSize(); }
     ~GameGrid() { clear(); };
 
-    void setSize(int x, int y, int sq);
+    void setSize(Vector2 gridSize, int sq);
 
-    bool addObject(Object *obj, int x, int y);
+    bool addObject(Object *obj, Vector2 pos);
     bool addObject(Object *obj);
 
-    bool removeObject(int x, int y);
-    bool removeObject(Object *obj, int x, int y);
+    bool removeObject(Vector2 pos);
+    bool removeObject(Object *obj, Vector2 pos);
     bool removeObject(Object *obj);
 
-    bool moveObject(Object *obj, int currX, int currY, int x, int y);
-    bool moveObject(Object *obj, int x, int y);
+    bool moveObject(Object *obj, Vector2 currPos, Vector2 pos);
+    bool moveObject(Object *obj, Vector2 pos);
 
-    bool isOccupied(int x, int y) const { return grid[x][y] != NULL; }
+    bool isOccupied(Vector2 pos) const { return grid[pos.x()][pos.y()] != NULL; }
 
-    std::string getObjectName(int x, int y) const;
-    Object* getObject(int x, int y) const;
+    std::string getObjectName(Vector2 pos) const;
+    Object* getObject(Vector2 pos) const;
 
     int getSqSize() const { return squareSize; };
 

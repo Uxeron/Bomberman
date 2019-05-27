@@ -13,7 +13,7 @@ void GameLogic::startGame() {
 
 	debugWrite("Creating grid")
 	// Create game's grid
-	grid = new GameGrid(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE, CELL_SIZE);
+	grid = new GameGrid(Vector2(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE), CELL_SIZE);
 
 	debugWrite("Generating map")
 	generateMap();
@@ -78,7 +78,7 @@ void GameLogic::mainLoop() {
 				Character::resetCount();
 
 				debugWrite("Reseting grid");
-				grid->setSize(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE, CELL_SIZE);
+				grid->setSize(Vector2(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE), CELL_SIZE);
 				debugWrite("Regenerating map");
 				generateMap();
 			}
@@ -134,8 +134,8 @@ void GameLogic::mainLoop() {
 	}
 }
 
-bool GameLogic::addObject(Object *obj, int x, int y) {
-    if (grid->addObject(obj)) {
+bool GameLogic::addObject(Object *obj, Vector2 pos) {
+    if (grid->addObject(obj, pos)) {
         if (dynamic_cast<InteractiveObject *>(obj)) {
             intObjList.push_back(dynamic_cast<InteractiveObject *>(obj));
 		} else {
@@ -147,20 +147,20 @@ bool GameLogic::addObject(Object *obj, int x, int y) {
 }
 
 bool GameLogic::addObject(Object *obj) {
-    return addObject(obj, obj->getX(), obj->getY());
+    return addObject(obj, obj->getPos());
 }
 
-bool GameLogic::removeObject(int x, int y) {
-	if (grid->isOccupied(x, y)) {
-		grid->getObject(x, y)->remove = true;
-		grid->removeObject(x, y);
+bool GameLogic::removeObject(Vector2 pos) {
+	if (grid->isOccupied(pos)) {
+		grid->getObject(pos)->remove = true;
+		grid->removeObject(pos);
 		return true;
 	}
 	return false;
 }
 
 bool GameLogic::removeObject(Object *obj) {
-    return removeObject(obj->getX(), obj->getY());
+    return removeObject(obj->getPos());
 }
 
 
@@ -186,15 +186,15 @@ void GameLogic::generateMap() {
 	for (int x = 0; x < SCREEN_WIDTH/CELL_SIZE; x++) {
 		for (int y = 0; y < SCREEN_HEIGHT/CELL_SIZE; y++) {
 			if (map[y][x] == '1') {
-				Wall *wall = new Wall(*window, CELL_SIZE, x, y);
+				Wall *wall = new Wall(*window, CELL_SIZE, Vector2(x, y));
 				objList.push_back(wall);
 				grid->addObject(wall);
 			} else if (map[y][x] == '2') {
-				WallDestr *wall = new WallDestr(*window, CELL_SIZE, x, y);
+				WallDestr *wall = new WallDestr(*window, CELL_SIZE, Vector2(x, y));
 				objList.push_back(wall);
 				grid->addObject(wall);
 			} else if (map[y][x] == '3') {
-				addObject(new Character(*window, *this, x, y));
+				addObject(new Character(*window, *this, Vector2(x, y)));
 			}
 		}
 	}
