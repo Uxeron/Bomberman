@@ -20,7 +20,7 @@ class Object {
     Object(Window& wind, int cellSize): window(wind), cellSize(cellSize) {};
     Object(Window& wind, int cellSize, int x, int y)
         : window(wind), cellSize(cellSize) { setPos(x, y); };
-    ~Object();
+    virtual ~Object();
 
     bool remove = false;
     void setWindow(Window& wind) { window = wind; };

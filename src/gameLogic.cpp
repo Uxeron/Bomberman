@@ -22,10 +22,12 @@ void GameLogic::startGame() {
 void GameLogic::stopGame() {
     debugWrite("Clearing all interactive objects");
 	// Free all leftover objects
-	for (Object *obj : objList) delete obj;
+	std::for_each(objList.begin(), objList.end(), deleteObj);
+	//for (Object *obj : objList) delete obj;
 	objList.clear();
 
-	for (InteractiveObject *obj : intObjList) delete obj;
+	std::for_each(intObjList.begin(), intObjList.end(), deleteObj);
+	//for (InteractiveObject *obj : intObjList) delete obj;
 	intObjList.clear();
 
 	debugWrite("Destroying grid")
@@ -61,11 +63,11 @@ void GameLogic::mainLoop() {
 			// Reset game
 			if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_r) {
 				debugWrite("Cleaning objects");
-				for (Object *obj : objList) delete obj;
+				std::for_each(objList.begin(), objList.end(), deleteObj);
 				objList.clear();
 
 				debugWrite("Cleaning interactive objects");
-				for (InteractiveObject *obj : intObjList) delete obj;
+				std::for_each(intObjList.begin(), intObjList.end(), deleteObj);
 				intObjList.clear();
 
 				debugWrite("Cleaning grid");

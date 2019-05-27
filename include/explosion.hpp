@@ -14,6 +14,6 @@ class Explosion: public InteractiveObject {
     Explosion(Window& wind, GameLogic& logic, int x, int y);
     ~Explosion();
     void process(float delta);
-    void event(SDL_Event ev) {};
+    void event(const SDL_Event& ev) {};
     void draw() const { window.drawImage(sprite, rect); };
 };

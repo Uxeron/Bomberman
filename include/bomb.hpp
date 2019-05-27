@@ -1,11 +1,12 @@
 // Bomb class
 #pragma once
 
+#include <set>
+#include <algorithm>
 #include "explosion.hpp"
 #include "interactiveObject.hpp"
 #include "powerupBomb.hpp"
 #include "powerupSpeed.hpp"
-#include <set>
 
 
 class Bomb: public InteractiveObject {
@@ -32,6 +33,6 @@ class Bomb: public InteractiveObject {
     ~Bomb();
     void adjustDelay(int amount) { endExplosionStep += amount; }
     void process(float delta);
-    void event(SDL_Event ev) {};
+    void event(const SDL_Event& ev) {};
     void draw() const { window.drawImage(sprite, rect); };
 };

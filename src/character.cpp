@@ -89,7 +89,7 @@ void Character::draw() const {
     window.drawImage(sprite, tmpRect);
 }
 
-void Character::event(SDL_Event ev) {
+void Character::event(const SDL_Event& ev) {
     if (ev.type == SDL_KEYDOWN) {
         if (!ev.key.repeat && ev.key.state == SDL_PRESSED && ev.key.keysym.sym == SDLK_e) {
             if (bombDelayCurr <= 0) {

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <list>
+#include <algorithm>
 #include "gameGrid.hpp"
 #include "window.hpp"
 
@@ -13,10 +14,10 @@ class InteractiveObject;
 
 class GameLogic {
     static const int CELL_SIZE = 32;
-    const int SCREEN_WIDTH 	= 672;
-    const int SCREEN_HEIGHT = 480;
-    const int FPS = 60;
-    const int FRAME_TIME = 1000 / FPS;
+    static const int SCREEN_WIDTH 	= 672;
+    static const int SCREEN_HEIGHT = 480;
+    static const int FPS = 60;
+    static const int FRAME_TIME = 1000 / FPS;
     Uint32 prevTime = 0;
     Window *window = NULL;
     std::list<Object*> objList;
@@ -44,4 +45,6 @@ class GameLogic {
     std::string getObjectName(int x, int y) const { return grid->getObjectName(x, y); }
 
     static int getSqSize() { return CELL_SIZE; };
+
+    static void deleteObj(Object *obj) { delete obj; };
 };

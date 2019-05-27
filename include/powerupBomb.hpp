@@ -9,6 +9,6 @@ class PowerupBomb: public InteractiveObject {
     ~PowerupBomb();
 
     void process(float delta);
-    void event(SDL_Event ev) {};
+    void event(const SDL_Event& ev) {};
     void draw() const { window.drawImage(sprite, rect); };
 };

@@ -17,5 +17,5 @@ class InteractiveObject: public Object {
     virtual ~InteractiveObject() = 0;
 
     virtual void process(float delta) = 0;
-    virtual void event(SDL_Event ev) = 0;
+    virtual void event(const SDL_Event& ev) = 0;
 };
