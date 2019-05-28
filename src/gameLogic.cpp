@@ -125,23 +125,13 @@ void GameLogic::mainLoop() {
                 delete obj;
 			} else {
 				if (obj->name() == "character" && Character::getCount() == 1) {	// The last character remaining, wins game
-					window->drawImage(sprites[dynamic_cast<Character *>(obj)->getIndex()], gameEndScreenRect);
 					gameStopped = true;
-					window->update();
-					debugWrite("Stopping game");
-					break;
 				}
             }
 		}
 
-		if (gameStopped) continue;
-
 		if (Character::getCount() == 0) {	// All characters were removed, noone wins
-			window->drawImage(sprites[4], gameEndScreenRect);
 			gameStopped = true;
-			window->update();
-			debugWrite("Stopping game");
-			continue;
 		}
 
 		for (Object *obj : objList) {
@@ -159,6 +149,16 @@ void GameLogic::mainLoop() {
 		// Draw all objects
 		for (Object *obj : objList) obj->draw();
 		for (InteractiveObject *obj : intObjList) obj->draw();
+
+		if (gameStopped) {
+			std::list<InteractiveObject*>::iterator it = std::find_if(intObjList.begin(), intObjList.end(), isCharacter);
+			if (it != intObjList.end()) {
+				window->drawImage(sprites[dynamic_cast<Character*>(*it)->getIndex()], gameEndScreenRect);
+			} else {
+				window->drawImage(sprites[4], gameEndScreenRect);
+			}
+			debugWrite("Stopping game");
+		}
 
 		// Update the screen
 		window->update();
@@ -219,8 +219,8 @@ void GameLogic::generateMap() {
 		"111111111111111111111",
     };
 
-	for (int x = 0; x < SCREEN_WIDTH/CELL_SIZE; x++) {
-		for (int y = 0; y < SCREEN_HEIGHT/CELL_SIZE; y++) {
+	for (int y = 0; y < SCREEN_HEIGHT/CELL_SIZE; y++) {
+		for (int x = 0; x < SCREEN_WIDTH/CELL_SIZE; x++) {
 			if (map[y][x] == '1') {
 				Wall *wall = new Wall(*window, CELL_SIZE, Vector2(x, y));
 				objList.push_back(wall);

@@ -59,4 +59,5 @@ class GameLogic {
     static int getSqSize() { return CELL_SIZE; };
 
     static void deleteObj(Object *obj) { delete obj; };
+    static bool isCharacter(Object *obj) { return obj->name() == "character"; };
 };
