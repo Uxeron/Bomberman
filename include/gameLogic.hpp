@@ -9,6 +9,7 @@
 #include <iostream>
 #include <list>
 #include <algorithm>
+#include <exception>
 #include "gameGrid.hpp"
 #include "window.hpp"
 
@@ -16,6 +17,12 @@ class Object;
 class InteractiveObject;
 
 #define debugWrite(message) std::cout << message << std::endl;
+
+struct mapException : public std::exception {
+    const char * what () const throw() {
+      return "Map contains invalid symbols";
+    }
+};
 
 class GameLogic {
     static const int CELL_SIZE = 32;

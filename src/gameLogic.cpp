@@ -32,11 +32,9 @@ void GameLogic::stopGame() {
     debugWrite("Clearing all interactive objects");
 	// Free all leftover objects
 	std::for_each(objList.begin(), objList.end(), deleteObj);
-	//for (Object *obj : objList) delete obj;
 	objList.clear();
 
 	std::for_each(intObjList.begin(), intObjList.end(), deleteObj);
-	//for (InteractiveObject *obj : intObjList) delete obj;
 	intObjList.clear();
 
 	for (int i = 0; i < 5; i++) delete sprites[i];
@@ -153,7 +151,11 @@ void GameLogic::mainLoop() {
 		if (gameStopped) {
 			std::list<InteractiveObject*>::iterator it = std::find_if(intObjList.begin(), intObjList.end(), isCharacter);
 			if (it != intObjList.end()) {
-				window->drawImage(sprites[dynamic_cast<Character*>(*it)->getIndex()], gameEndScreenRect);
+				try {
+					window->drawImage(sprites[dynamic_cast<Character*>(*it)->getIndex()], gameEndScreenRect);
+				} catch(std::exception& ex) {
+					debugWrite("Exception raised, " << ex.what());
+				}
 			} else {
 				window->drawImage(sprites[4], gameEndScreenRect);
 			}
@@ -173,7 +175,11 @@ void GameLogic::mainLoop() {
 bool GameLogic::addObject(Object *obj, Vector2 pos) {
     if (grid->addObject(obj, pos)) {
         if (dynamic_cast<InteractiveObject *>(obj)) {
-            intObjList.push_back(dynamic_cast<InteractiveObject *>(obj));
+			try {
+            	intObjList.push_back(dynamic_cast<InteractiveObject *>(obj));
+			} catch(std::exception& ex) {
+				debugWrite("Exception raised, " << ex.what());
+			}
 		} else {
             objList.push_back(obj);
 		}
@@ -221,7 +227,9 @@ void GameLogic::generateMap() {
 
 	for (int y = 0; y < SCREEN_HEIGHT/CELL_SIZE; y++) {
 		for (int x = 0; x < SCREEN_WIDTH/CELL_SIZE; x++) {
-			if (map[y][x] == '1') {
+			if (map[y][x] == '0') {
+				continue;
+			} else if (map[y][x] == '1') {
 				Wall *wall = new Wall(*window, CELL_SIZE, Vector2(x, y));
 				objList.push_back(wall);
 				grid->addObject(wall);
@@ -231,6 +239,8 @@ void GameLogic::generateMap() {
 				grid->addObject(wall);
 			} else if (map[y][x] == '3') {
 				addObject(new Character(*window, *this, Vector2(x, y)));
+			} else {
+				throw mapException();
 			}
 		}
 	}
