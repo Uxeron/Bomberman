@@ -240,6 +240,7 @@ void GameLogic::generateMap() {
 			} else if (map[y][x] == '3') {
 				addObject(new Character(*window, *this, Vector2(x, y)));
 			} else {
+				stopGame();
 				throw mapException();
 			}
 		}
