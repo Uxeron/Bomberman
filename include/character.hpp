@@ -45,4 +45,6 @@ class Character: public InteractiveObject {
     bool move(Vector2 dist);
 
     static void resetCount() { count = 0; }
+    static int getCount() { return count; }
+    int getIndex() const { return index; }
 };

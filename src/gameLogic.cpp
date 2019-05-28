@@ -7,9 +7,17 @@ void GameLogic::startGame() {
     SDL_Init(SDL_INIT_VIDEO); // Start SDL
     IMG_Init(IMG_INIT_PNG);   // Start SDL_img
 
+	gameEndScreenRect.position.x((SCREEN_WIDTH - GAME_END_SCREEN_SIZE_X) / 2);
+	gameEndScreenRect.position.y((SCREEN_HEIGHT - GAME_END_SCREEN_SIZE_Y) / 2);
+	gameEndScreenRect.size.x(GAME_END_SCREEN_SIZE_X);
+	gameEndScreenRect.size.y(GAME_END_SCREEN_SIZE_Y);
+
     debugWrite("Creating window");
     // Create the main window
     window = new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
+
+	debugWrite("Loading game end sprites");
+	for (int i = 0; i < 5; i++) sprites[i] = window->loadSurface(("Sprites/WinScreens/P" + std::to_string(i) + ".png").c_str());
 
 	debugWrite("Creating grid")
 	// Create game's grid
@@ -30,6 +38,8 @@ void GameLogic::stopGame() {
 	std::for_each(intObjList.begin(), intObjList.end(), deleteObj);
 	//for (InteractiveObject *obj : intObjList) delete obj;
 	intObjList.clear();
+
+	for (int i = 0; i < 5; i++) delete sprites[i];
 
 	debugWrite("Destroying grid")
 	// Destroying grid
@@ -63,6 +73,7 @@ void GameLogic::mainLoop() {
 			
 			// Reset game
 			if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_r) {
+				gameStopped = false;
 				debugWrite("Cleaning objects");
 				std::for_each(objList.begin(), objList.end(), deleteObj);
 				objList.clear();
@@ -82,12 +93,19 @@ void GameLogic::mainLoop() {
 				debugWrite("Regenerating map");
 				generateMap();
 			}
-			
+
 			// Pass events to all objects
 			for (InteractiveObject *obj : intObjList) obj->event(e);
 		}
 
-		// Call process for all objects
+		if (gameStopped) {
+			if (prevTime + FRAME_TIME > SDL_GetTicks())
+				SDL_Delay(prevTime + FRAME_TIME - SDL_GetTicks());
+			prevTime = SDL_GetTicks();
+			continue;
+		}
+
+                // Call process for all objects
 		for (InteractiveObject *obj : intObjList) {
 			// Check if object needs to be deleted
             if (obj->remove) {
@@ -105,7 +123,25 @@ void GameLogic::mainLoop() {
 				intObjList.remove(obj);
 				grid->removeObject(obj);
                 delete obj;
-			}
+			} else {
+				if (obj->name() == "character" && Character::getCount() == 1) {	// The last character remaining, wins game
+					window->drawImage(sprites[dynamic_cast<Character *>(obj)->getIndex()], gameEndScreenRect);
+					gameStopped = true;
+					window->update();
+					debugWrite("Stopping game");
+					break;
+				}
+            }
+		}
+
+		if (gameStopped) continue;
+
+		if (Character::getCount() == 0) {	// All characters were removed, noone wins
+			window->drawImage(sprites[4], gameEndScreenRect);
+			gameStopped = true;
+			window->update();
+			debugWrite("Stopping game");
+			continue;
 		}
 
 		for (Object *obj : objList) {

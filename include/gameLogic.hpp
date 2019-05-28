@@ -24,10 +24,17 @@ class GameLogic {
     static const int FPS = 60;
     static const int FRAME_TIME = 1000 / FPS;
     Uint32 prevTime = 0;
-    Window *window = NULL;
+    Window* window = NULL;
     std::list<Object*> objList;
     std::list<InteractiveObject*> intObjList;
-    GameGrid *grid = NULL;
+    GameGrid* grid = NULL;
+    SDL_Surface* sprites[5];
+
+    static const int GAME_END_SCREEN_SIZE_X = 400;
+    static const int GAME_END_SCREEN_SIZE_Y = 300;
+    Rect gameEndScreenRect;
+
+    bool gameStopped = false;
 
     void generateMap();
 
