@@ -40,7 +40,7 @@ void GameLogic::stopGame() {
 	std::for_each(intObjList.begin(), intObjList.end(), deleteObj);
 	intObjList.clear();
 
-	for (int i = 0; i < 5; i++) delete sprites[i];
+	for (int i = 0; i < 5; i++) SDL_FreeSurface(sprites[i]);
 
 	debugWrite("Destroying grid")
 	// Destroying grid

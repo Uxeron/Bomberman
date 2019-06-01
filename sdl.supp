@@ -1,0 +1,36 @@
+{
+	<initSDLLeak>
+		Memcheck:Leak
+		...
+		fun:SDL_InitSubSystem_REAL
+		...
+}
+{
+	<initSDLAddr4>
+		Memcheck:Addr4
+		...
+		fun:X11_GL_InitExtensions
+		...
+}
+{
+	<initSDLAddr8>
+		Memcheck:Addr8
+		...
+		fun:X11_GL_InitExtensions
+		...
+}
+{
+	<InitKeyboard>
+		Memcheck:Leak
+		...
+		fun:X11_InitKeyboard
+		...
+}
+{
+	<SDL_IME_Init>
+		Memcheck:Leak
+		...
+		fun:SDL_IME_Init
+		...
+}
+
