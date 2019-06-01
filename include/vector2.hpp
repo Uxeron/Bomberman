@@ -26,20 +26,20 @@ class Vector2 {
     void x(int newX) { _x = static_cast<float>(newX); }
     void y(int newY) { _y = static_cast<float>(newY); }
 
-    Vector2 operator+= (const Vector2& vec2_2);
-    Vector2 operator-= (const Vector2& vec2_2);
-    Vector2 operator*= (const Vector2& vec2_2);
-    Vector2 operator/= (const Vector2& vec2_2);
+    void operator+= (const Vector2& vec2_2);
+    void operator-= (const Vector2& vec2_2);
+    void operator*= (const Vector2& vec2_2);
+    void operator/= (const Vector2& vec2_2);
 
-    Vector2 operator+= (float num);
-    Vector2 operator-= (float num);
-    Vector2 operator*= (float num);
-    Vector2 operator/= (float num);
+    void operator+= (float num);
+    void operator-= (float num);
+    void operator*= (float num);
+    void operator/= (float num);
 
-    Vector2 operator+= (int num_i);
-    Vector2 operator-= (int num_i);
-    Vector2 operator*= (int num_i);
-    Vector2 operator/= (int num_i);
+    void operator+= (int num_i);
+    void operator-= (int num_i);
+    void operator*= (int num_i);
+    void operator/= (int num_i);
 
     friend Vector2 operator+ (const Vector2& vec2_1, const Vector2& vec2_2);
     friend Vector2 operator- (const Vector2& vec2_1, const Vector2& vec2_2);

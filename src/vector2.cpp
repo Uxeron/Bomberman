@@ -1,47 +1,47 @@
 #include "../include/vector2.hpp"
 
-Vector2 Vector2::operator+= (const Vector2& vec2_2) {
+void Vector2::operator+= (const Vector2& vec2_2) {
     _x += vec2_2._x, _y += vec2_2._y;
 }
 
-Vector2 Vector2::operator-= (const Vector2& vec2_2) {
+void Vector2::operator-= (const Vector2& vec2_2) {
     _x -= vec2_2._x, _y -= vec2_2._y;
 }
 
-Vector2 Vector2::operator*= (const Vector2& vec2_2) {
+void Vector2::operator*= (const Vector2& vec2_2) {
     _x *= vec2_2._x, _y *= vec2_2._y;
 }
 
-Vector2 Vector2::operator/= (const Vector2& vec2_2) {
+void Vector2::operator/= (const Vector2& vec2_2) {
     _x /= vec2_2._x, _y /= vec2_2._y;
 }
 
 
-Vector2 Vector2::operator+= (float num) { _x += num, _y += num; }
+void Vector2::operator+= (float num) { _x += num, _y += num; }
 
-Vector2 Vector2::operator-= (float num) { _x -= num, _y -= num; }
+void Vector2::operator-= (float num) { _x -= num, _y -= num; }
 
-Vector2 Vector2::operator*= (float num) { _x *= num, _y *= num; }
+void Vector2::operator*= (float num) { _x *= num, _y *= num; }
 
-Vector2 Vector2::operator/= (float num) { _x /= num, _y /= num; }
+void Vector2::operator/= (float num) { _x /= num, _y /= num; }
 
 
-Vector2 Vector2::operator+= (int num_i) {
+void Vector2::operator+= (int num_i) {
     float num = static_cast<float>(num_i);
     _x += num, _y += num;
 }
 
-Vector2 Vector2::operator-= (int num_i) {
+void Vector2::operator-= (int num_i) {
     float num = static_cast<float>(num_i);
     _x -= num, _y -= num;
 }
 
-Vector2 Vector2::operator*= (int num_i) {
+void Vector2::operator*= (int num_i) {
     float num = static_cast<float>(num_i);
     _x *= num, _y *= num;
 }
 
-Vector2 Vector2::operator/= (int num_i) {
+void Vector2::operator/= (int num_i) {
     float num = static_cast<float>(num_i);
     _x /= num, _y /= num;
 }
