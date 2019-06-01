@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "vector2.hpp"
+#include "exceptions.hpp"
 
 struct Rect {
   Vector2 position;

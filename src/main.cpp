@@ -2,9 +2,14 @@
 
 int main(int argc, char *args[]) {
 	GameLogic* game = new GameLogic;
-	game->startGame();
-	game->mainLoop();
+
+	try {
+		game->startGame();
+		game->mainLoop();
+	} catch (const std::exception& e) {
+		std::cout << "error: " << e.what() << std::endl;
+	} 
 	game->stopGame();
-	
+
 	return 0; 
 }

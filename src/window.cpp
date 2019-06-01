@@ -2,12 +2,18 @@
 
 Window::Window(int w, int h, const char* name): width(w), height(h) {
 	gameWindow = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+	if (gameWindow == NULL) throw window_error();
+	
 	screenSurface = SDL_GetWindowSurface(gameWindow);
+	if (screenSurface == NULL) throw surface_error();
 }
 
 Window::Window(): width(640), height(480) {
 	gameWindow = SDL_CreateWindow("Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+	if (gameWindow == NULL) throw window_error();
+
 	screenSurface = SDL_GetWindowSurface(gameWindow);
+    if (screenSurface == NULL) throw surface_error();
 }
 
 Window::~Window() {
@@ -22,6 +28,7 @@ SDL_Surface* Window::loadSurface(const char* path) const {
 
 	// Load image at specified path
 	SDL_Surface *loadedSurface = IMG_Load(path);
+	if (loadedSurface == NULL) throw file_not_found_error(path);
 
 	// Convert surface to screen format
 	optimizedSurface = SDL_ConvertSurface(loadedSurface, screenSurface->format, 0);

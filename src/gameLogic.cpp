@@ -4,8 +4,11 @@
 #include "../include/wallDestr.hpp"
 
 void GameLogic::startGame() {
-    SDL_Init(SDL_INIT_VIDEO); // Start SDL
-    IMG_Init(IMG_INIT_PNG);   // Start SDL_img
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) // Start SDL
+		throw SDL_init_error();
+
+    if (IMG_Init(IMG_INIT_PNG) == 0)   // Start SDL_img
+		throw SDL_Image_init_error();
 
 	gameEndScreenRect.position.x((SCREEN_WIDTH - GAME_END_SCREEN_SIZE_X) / 2);
 	gameEndScreenRect.position.y((SCREEN_HEIGHT - GAME_END_SCREEN_SIZE_Y) / 2);
@@ -151,11 +154,7 @@ void GameLogic::mainLoop() {
 		if (gameStopped) {
 			std::list<InteractiveObject*>::iterator it = std::find_if(intObjList.begin(), intObjList.end(), isCharacter);
 			if (it != intObjList.end()) {
-				try {
-					window->drawImage(sprites[dynamic_cast<Character*>(*it)->getIndex()], gameEndScreenRect);
-				} catch(std::exception& ex) {
-					debugWrite("Exception raised, " << ex.what());
-				}
+				window->drawImage(sprites[dynamic_cast<Character*>(*it)->getIndex()], gameEndScreenRect);
 			} else {
 				window->drawImage(sprites[4], gameEndScreenRect);
 			}
@@ -175,11 +174,7 @@ void GameLogic::mainLoop() {
 bool GameLogic::addObject(Object *obj, Vector2 pos) {
     if (grid->addObject(obj, pos)) {
         if (dynamic_cast<InteractiveObject *>(obj)) {
-			try {
-            	intObjList.push_back(dynamic_cast<InteractiveObject *>(obj));
-			} catch(std::exception& ex) {
-				debugWrite("Exception raised, " << ex.what());
-			}
+            intObjList.push_back(dynamic_cast<InteractiveObject *>(obj));
 		} else {
             objList.push_back(obj);
 		}
@@ -240,8 +235,7 @@ void GameLogic::generateMap() {
 			} else if (map[y][x] == '3') {
 				addObject(new Character(*window, *this, Vector2(x, y)));
 			} else {
-				stopGame();
-				throw mapException();
+				throw map_read_error(y, x);
 			}
 		}
 	}
