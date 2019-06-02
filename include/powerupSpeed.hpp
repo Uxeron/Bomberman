@@ -9,6 +9,6 @@ class PowerupSpeed: public InteractiveObject {
     ~PowerupSpeed();
 
     void process(float delta);
-    void event(const SDL_Event& ev) {};
+    void event(SDL_Event const& ev){};
     void draw() const { window.drawImage(sprite, rect); };
 };

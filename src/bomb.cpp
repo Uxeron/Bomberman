@@ -1,4 +1,5 @@
 #include "../include/bomb.hpp"
+#include "../include/gameLogic.hpp"
 
 Bomb::Bomb(Window& wind, GameLogic& logic, Vector2 position): InteractiveObject(wind, logic, position) {
     sprites[0] = window.loadSurface("Sprites/Bomb/0.png");
@@ -48,18 +49,18 @@ void Bomb::addExplosion(Vector2 position, bool &condition) {
     
     position += pos;
     if (!gameLogic.isOccupied(position)) {
-        gameLogic.addObject(new Explosion(window, gameLogic, position));
+        gameLogic.addObject(std::move(std::make_unique<Explosion> (window, gameLogic, position)));
     } else {
         if (std::find(destructibleObjects.begin(), destructibleObjects.end(), gameLogic.getObjectName(position)) != destructibleObjects.end()) {
             gameLogic.removeObject(position);
             if (rand() % 7 == 0) {
                 if (rand() % 3 == 0) {
-                    gameLogic.addObject(new PowerupSpeed(window, gameLogic, position));
+                    gameLogic.addObject(std::move(std::make_unique<PowerupSpeed> (window, gameLogic, position)));
                 } else {
-                    gameLogic.addObject(new PowerupBomb(window, gameLogic, position));
+                    gameLogic.addObject(std::move(std::make_unique<PowerupBomb> (window, gameLogic, position)));
                 }
             } else {
-                gameLogic.addObject(new Explosion(window, gameLogic, position));
+                gameLogic.addObject(std::move(std::make_unique<Explosion> (window, gameLogic, position)));
             }
         } else {
             condition = false;

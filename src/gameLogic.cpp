@@ -1,7 +1,13 @@
-//#include "../include/gameLogic.hpp"
+#include "../include/gameLogic.hpp"
 #include "../include/character.hpp"
 #include "../include/wall.hpp"
 #include "../include/wallDestr.hpp"
+
+const int GameLogic::CELL_SIZE = 32;
+const int GameLogic::SCREEN_WIDTH = 672;
+const int GameLogic::SCREEN_HEIGHT = 480;
+const int GameLogic::FPS = 60;
+const int GameLogic::FRAME_TIME = 1000 / FPS;
 
 void GameLogic::startGame() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) // Start SDL
@@ -17,14 +23,14 @@ void GameLogic::startGame() {
 
     debugWrite("Creating window");
     // Create the main window
-    window = new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
+    window = std::unique_ptr<Window> (new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!"));
 
 	debugWrite("Loading game end sprites");
 	for (int i = 0; i < 5; i++) sprites[i] = window->loadSurface(("Sprites/WinScreens/P" + std::to_string(i) + ".png").c_str());
 
 	debugWrite("Creating grid")
 	// Create game's grid
-	grid = new GameGrid(Vector2(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE), CELL_SIZE);
+	grid = std::unique_ptr<GameGrid> (new GameGrid(Vector2(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE), CELL_SIZE));
 
 	debugWrite("Generating map")
 	generateMap();
@@ -32,24 +38,17 @@ void GameLogic::startGame() {
 
 
 void GameLogic::stopGame() {
-    debugWrite("Clearing all interactive objects");
+    debugWrite("Clearing all objects");
 	// Free all leftover objects
-	std::for_each(objList.begin(), objList.end(), deleteObj);
 	objList.clear();
-
-	std::for_each(intObjList.begin(), intObjList.end(), deleteObj);
 	intObjList.clear();
 
+	debugWrite("Freeing game ending sprites");
 	for (int i = 0; i < 5; i++) SDL_FreeSurface(sprites[i]);
 
 	debugWrite("Destroying grid")
 	// Destroying grid
 	grid->clear();
-	delete grid;
-
-    debugWrite("Destroying window");
-    // Destroy window
-	delete window;
 
     debugWrite("Stopping SDL and SDL_IMG");
     SDL_Quit(); // Quit SDL
@@ -76,11 +75,9 @@ void GameLogic::mainLoop() {
 			if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_r) {
 				gameStopped = false;
 				debugWrite("Cleaning objects");
-				std::for_each(objList.begin(), objList.end(), deleteObj);
 				objList.clear();
 
 				debugWrite("Cleaning interactive objects");
-				std::for_each(intObjList.begin(), intObjList.end(), deleteObj);
 				intObjList.clear();
 
 				debugWrite("Cleaning grid");
@@ -96,7 +93,9 @@ void GameLogic::mainLoop() {
 			}
 
 			// Pass events to all objects
-			for (InteractiveObject *obj : intObjList) obj->event(e);
+			for (auto it = intObjList.begin(); it != intObjList.end(); it++) {
+				(*it)->event(e);
+			}
 		}
 
 		if (gameStopped) {
@@ -107,25 +106,23 @@ void GameLogic::mainLoop() {
 		}
 
                 // Call process for all objects
-		for (InteractiveObject *obj : intObjList) {
+		for (auto it = intObjList.begin(); it != intObjList.end(); it++) {
 			// Check if object needs to be deleted
-            if (obj->remove) {
-				intObjList.remove(obj);
-				grid->removeObject(obj);
-                delete obj;
+            if ((*it)->remove) {
+                grid->removeObject((*it).get());
+                intObjList.erase(it);
 				continue;
 			}
 
 			// Call process
-            obj->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
+            (*it)->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
 
 			// Check again if object needs to be deleted
-            if (obj->remove) {
-				intObjList.remove(obj);
-				grid->removeObject(obj);
-                delete obj;
+            if ((*it)->remove) {
+                grid->removeObject((*it).get());
+                intObjList.erase(it);
 			} else {
-				if (obj->name() == "character" && Character::getCount() == 1) {	// The last character remaining, wins game
+				if ((*it)->name() == "character" && Character::getCount() == 1) {	// The last character remaining, wins game
 					gameStopped = true;
 				}
             }
@@ -135,12 +132,11 @@ void GameLogic::mainLoop() {
 			gameStopped = true;
 		}
 
-		for (Object *obj : objList) {
+		for (auto it = objList.begin(); it != objList.end(); it++) {
 			// Check if object needs to be deleted
-            if (obj->remove) {
-				objList.remove(obj);
-				grid->removeObject(obj);
-                delete obj;
+            if ((*it)->remove) {
+				grid->removeObject((*it).get());
+				objList.erase(it);
 			}
 		}
 
@@ -148,13 +144,13 @@ void GameLogic::mainLoop() {
 		window->fillScreen(0, 127, 64);
 
 		// Draw all objects
-		for (Object *obj : objList) obj->draw();
-		for (InteractiveObject *obj : intObjList) obj->draw();
+		for (auto it = intObjList.begin(); it != intObjList.end(); it++) (*it)->draw();
+		for (auto it = objList.begin(); it != objList.end(); it++) (*it)->draw();
 
 		if (gameStopped) {
-			std::list<InteractiveObject*>::iterator it = std::find_if(intObjList.begin(), intObjList.end(), isCharacter);
+			auto it = std::find_if(intObjList.begin(), intObjList.end(), [&](std::unique_ptr<InteractiveObject>& p) { return (p->name() == "character");});
 			if (it != intObjList.end()) {
-				window->drawImage(sprites[dynamic_cast<Character*>(*it)->getIndex()], gameEndScreenRect);
+				window->drawImage(sprites[dynamic_cast<Character*>((*it).get())->getIndex()], gameEndScreenRect);
 			} else {
 				window->drawImage(sprites[4], gameEndScreenRect);
 			}
@@ -171,20 +167,21 @@ void GameLogic::mainLoop() {
 	}
 }
 
-bool GameLogic::addObject(Object *obj, Vector2 pos) {
-    if (grid->addObject(obj, pos)) {
-        if (dynamic_cast<InteractiveObject *>(obj)) {
-            intObjList.push_back(dynamic_cast<InteractiveObject *>(obj));
-		} else {
-            objList.push_back(obj);
+bool GameLogic::addObject(std::unique_ptr<Object> obj, Vector2 pos) {
+    if (grid->addObject(obj.get(), pos)) {
+        if (dynamic_cast<InteractiveObject *>(obj.get())) {
+			std::unique_ptr<InteractiveObject> intObj(dynamic_cast<InteractiveObject *>(obj.release()));
+            intObjList.push_back(std::move(intObj));
+        } else {
+            objList.push_back(std::move(obj));
 		}
 		return true;
     }
 	return false;
 }
 
-bool GameLogic::addObject(Object *obj) {
-    return addObject(obj, obj->getPos());
+bool GameLogic::addObject(std::unique_ptr<Object> obj) {
+    return addObject(std::move(obj), obj->getPos());
 }
 
 bool GameLogic::removeObject(Vector2 pos) {
@@ -225,15 +222,14 @@ void GameLogic::generateMap() {
 			if (map[y][x] == '0') {
 				continue;
 			} else if (map[y][x] == '1') {
-				Wall *wall = new Wall(*window, CELL_SIZE, Vector2(x, y));
-				objList.push_back(wall);
-				grid->addObject(wall);
+				auto wall = std::make_unique<Wall> (*window.get(), CELL_SIZE, Vector2(x, y));
+				addObject(std::move(wall));
 			} else if (map[y][x] == '2') {
-				WallDestr *wall = new WallDestr(*window, CELL_SIZE, Vector2(x, y));
-				objList.push_back(wall);
-				grid->addObject(wall);
+				auto wall = std::make_unique<WallDestr> (*window.get(), CELL_SIZE, Vector2(x, y));
+				addObject(std::move(wall));
 			} else if (map[y][x] == '3') {
-				addObject(new Character(*window, *this, Vector2(x, y)));
+				auto chr = std::make_unique<Character> (*window.get(), *this, Vector2(x, y));
+				addObject(std::move(chr));
 			} else {
 				throw map_read_error(y, x);
 			}

@@ -1,7 +1,7 @@
 #include "../include/gameLogic.hpp"
 
 int main(int argc, char *args[]) {
-	GameLogic* game = new GameLogic;
+	auto game = std::make_unique<GameLogic>();
 
 	try {
 		game->startGame();
@@ -10,8 +10,6 @@ int main(int argc, char *args[]) {
 		std::cout << "error: " << e.what() << std::endl;
 	} 
 	game->stopGame();
-
-	delete game;
 
 	return 0; 
 }

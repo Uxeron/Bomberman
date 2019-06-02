@@ -1,4 +1,5 @@
 #include "../include/character.hpp"
+#include "../include/gameLogic.hpp"
 
 int Character::count = 0;
 
@@ -119,9 +120,9 @@ void Character::event(const SDL_Event& ev) {
                         bombPos.x(pos.x() - 1);
                         break;
                 }
-                Bomb* bomb = new Bomb(window, gameLogic, bombPos);
+                auto bomb = std::make_unique<Bomb> (window, gameLogic, bombPos);
                 bomb->adjustDelay(bombStepAdjust);
-                gameLogic.addObject(bomb);
+                gameLogic.addObject(std::move(bomb));
                 bombDelayCurr = bombDelay;
             }
         }

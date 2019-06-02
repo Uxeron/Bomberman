@@ -1,4 +1,5 @@
 #include "../include/explosion.hpp"
+#include "../include/gameLogic.hpp"
 
 Explosion::Explosion(Window& wind, GameLogic& logic, Vector2 position)
     : InteractiveObject(wind, logic, position) {

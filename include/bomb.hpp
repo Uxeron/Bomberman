@@ -33,6 +33,6 @@ class Bomb: public InteractiveObject {
     ~Bomb();
     void adjustDelay(int amount) { endExplosionStep += amount; }
     void process(float delta);
-    void event(const SDL_Event& ev) {};
+    void event(SDL_Event const& ev){};
     void draw() const { window.drawImage(sprite, rect); };
 };

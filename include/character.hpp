@@ -39,7 +39,7 @@ class Character: public InteractiveObject {
     Character(Window& wind, GameLogic& logic, Vector2 position);
     ~Character();
     void process(float delta);
-    void event(const SDL_Event& ev);
+    void event(SDL_Event const& ev);
     void draw() const;
 
     bool move(Vector2 dist);

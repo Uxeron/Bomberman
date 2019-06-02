@@ -2,20 +2,19 @@
 #pragma once
 
 #include "object.hpp"
-#include "gameLogic.hpp"
 
-class InteractiveObject: public Object {
-  protected:
+class GameLogic;
+
+class InteractiveObject : public Object {
+   protected:
     GameLogic& gameLogic;
 
   public:
-    InteractiveObject(Window& wind, GameLogic& logic)
-       : Object(wind, logic.getSqSize()), gameLogic(logic) {};
-    InteractiveObject(Window& wind, GameLogic& logic, Vector2 position)
-       : Object(wind, logic.getSqSize(), position), gameLogic(logic) {};
+    InteractiveObject(Window& wind, GameLogic& logic);
+    InteractiveObject(Window& wind, GameLogic& logic, Vector2 position);
     
     virtual ~InteractiveObject() = 0;
 
     virtual void process(float delta) = 0;
-    virtual void event(const SDL_Event& ev) = 0;
+    virtual void event(SDL_Event const& ev) = 0;
 };

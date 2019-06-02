@@ -18,11 +18,11 @@ endif
 objects := $(patsubst src/%.cpp,temp/%.o,$(wildcard src/*.cpp))
 
 all: $(FOLDER) $(objects)
-	g++ -std=c++11 $(objects) $(ARGS) -o $(PROG)
+	g++ -std=c++14 $(objects) $(ARGS) -o $(PROG)
 release: $(FOLDER) $(objects)
-	g++ -std=c++11 $(objects) $(NOCONSOLE) $(ARGS) -o $(PROG)
+	g++ -std=c++14 $(objects) $(NOCONSOLE) $(ARGS) -o $(PROG)
 temp/%.o: src/%.cpp include/%.hpp
-	g++ -std=c++11 -c $< -o $@
+	g++ -std=c++14 -c $< -o $@
 folder:
 	if not exist "temp" md temp
 folder_lin:
