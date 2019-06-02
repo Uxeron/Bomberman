@@ -23,14 +23,14 @@ void GameLogic::startGame() {
 
     debugWrite("Creating window");
     // Create the main window
-    window = std::unique_ptr<Window> (new Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!"));
+    window = std::make_unique<Window> (SCREEN_WIDTH, SCREEN_HEIGHT, "Bomberman!");
 
 	debugWrite("Loading game end sprites");
 	for (int i = 0; i < 5; i++) sprites[i] = window->loadSurface(("Sprites/WinScreens/P" + std::to_string(i) + ".png").c_str());
 
 	debugWrite("Creating grid")
 	// Create game's grid
-	grid = std::unique_ptr<GameGrid> (new GameGrid(Vector2(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE), CELL_SIZE));
+	grid = std::make_unique<GameGrid> (Vector2(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE), CELL_SIZE);
 
 	debugWrite("Generating map")
 	generateMap();
@@ -93,9 +93,7 @@ void GameLogic::mainLoop() {
 			}
 
 			// Pass events to all objects
-			for (auto it = intObjList.begin(); it != intObjList.end(); it++) {
-				(*it)->event(e);
-			}
+			std::for_each(intObjList.begin(), intObjList.end(), [&](std::unique_ptr<InteractiveObject>& p) { p->event(e);});
 		}
 
 		if (gameStopped) {
@@ -144,8 +142,8 @@ void GameLogic::mainLoop() {
 		window->fillScreen(0, 127, 64);
 
 		// Draw all objects
-		for (auto it = intObjList.begin(); it != intObjList.end(); it++) (*it)->draw();
-		for (auto it = objList.begin(); it != objList.end(); it++) (*it)->draw();
+		std::for_each(intObjList.begin(), intObjList.end(), [&](std::unique_ptr<InteractiveObject>& p) { p->draw();});
+		std::for_each(objList.begin(), objList.end(), [&](std::unique_ptr<Object>& p) { p->draw();});
 
 		if (gameStopped) {
 			auto it = std::find_if(intObjList.begin(), intObjList.end(), [&](std::unique_ptr<InteractiveObject>& p) { return (p->name() == "character");});
