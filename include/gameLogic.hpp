@@ -32,8 +32,8 @@ class GameLogic {
     std::unique_ptr<GameGrid> grid;
     SDL_Surface* sprites[5];
 
-    std::list<std::unique_ptr<Object> >::iterator objListIt;
-    std::list<std::unique_ptr<InteractiveObject> >::iterator intObjListIt;
+    std::list<std::unique_ptr<Object> >::iterator objIt;
+    std::list<std::unique_ptr<InteractiveObject> >::iterator intIt;
 
     static const int GAME_END_SCREEN_SIZE_X = 400;
     static const int GAME_END_SCREEN_SIZE_Y = 300;

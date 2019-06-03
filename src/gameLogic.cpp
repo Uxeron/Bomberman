@@ -103,38 +103,44 @@ void GameLogic::mainLoop() {
 			continue;
 		}
 
-                // Call process for all objects
-		for (auto it = intObjList.begin(); it != intObjList.end(); it++) {
+        // Call process for all objects
+		intIt = intObjList.begin();
+		while (intIt != intObjList.end()) {
 			// Check if object needs to be deleted
-            if ((*it)->remove) {
-                grid->removeObject((*it).get());
-                intObjList.erase(it);
+            if ((*intIt)->remove) {
+                grid->removeObject((*intIt).get());
+                intObjList.erase(intIt++);
 				continue;
 			}
 
 			// Call process
-            (*it)->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
+            (*intIt)->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
 
 			// Check again if object needs to be deleted
-            if ((*it)->remove) {
-                grid->removeObject((*it).get());
-                intObjList.erase(it);
+            if ((*intIt)->remove) {
+                grid->removeObject((*intIt).get());
+                intObjList.erase(intIt++);
+				continue;
 			} else {
-				if ((*it)->name() == "character" && Character::getCount() == 1) {	// The last character remaining, wins game
+				if ((*intIt)->name() == "character" && Character::getCount() == 1) {	// The last character remaining, wins game
 					gameStopped = true;
 				}
             }
+			++intIt;
 		}
 
 		if (Character::getCount() == 0) {	// All characters were removed, noone wins
 			gameStopped = true;
 		}
 
-		for (auto it = objList.begin(); it != objList.end(); it++) {
+		objIt = objList.begin();
+		while (objIt != objList.end()) {
 			// Check if object needs to be deleted
-            if ((*it)->remove) {
-				grid->removeObject((*it).get());
-				objList.erase(it);
+            if ((*objIt)->remove) {
+				grid->removeObject((*objIt).get());
+				objList.erase(objIt++);
+			} else {
+				++objIt;
 			}
 		}
 
