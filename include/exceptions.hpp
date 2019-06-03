@@ -12,6 +12,11 @@ class SDL_Image_init_error : public std::runtime_error {
     SDL_Image_init_error() : runtime_error("SDL Image failed to initialize") {}
 };
 
+class SDL_TTF_init_error : public std::runtime_error {
+   public:
+    SDL_TTF_init_error() : runtime_error("SDL TTF failed to initialize") {}
+};
+
 class window_error : public std::runtime_error {
    public:
     window_error() : runtime_error("Failed to create a window") {}

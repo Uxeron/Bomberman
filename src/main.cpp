@@ -8,7 +8,8 @@ int main(int argc, char *args[]) {
 		if (IMG_Init(IMG_INIT_PNG) == 0)   // Start SDL_img
 			throw SDL_Image_init_error();
 
-		TTF_Init();
+		if (TTF_Init() != 0)	// Start SDL_ttf
+			throw SDL_TTF_init_error();
 
 		while (true) {
 			std::unique_ptr<GameLogic> game;
