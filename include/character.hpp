@@ -14,7 +14,7 @@ class Character: public InteractiveObject {
     float walkDelay = 0.2;
     float walkDelayCurr = 0;
 
-    float bombDelay = 3.0;
+    float bombDelay = 2.5;
     float bombDelayCurr = 0;
 
     Vector2 moveAnimationOffset;

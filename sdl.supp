@@ -33,4 +33,11 @@
 		fun:SDL_IME_Init
 		...
 }
+{
+	<SDL_Cond>
+		Memcheck:Cond
+		...
+		fun:main
+		...
+}
 
