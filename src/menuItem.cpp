@@ -16,3 +16,22 @@ void MenuItem::writeName() {
     SDL_BlitSurface(text, NULL, sprite, &textLocation);
     SDL_FreeSurface(text);
 }
+
+void MenuItem::loadMap() { 
+    std::ifstream mapFile;
+    mapFile.open(path);
+
+    int number;
+    mapFile >> number;
+    mapSize.x(number);
+    mapFile >> number;
+    mapSize.y(number);
+
+    for (int y = 0; y < mapSize.y(); y++) {
+        map.push_back(std::vector<int> ());
+        for (int x = 0; x < mapSize.x(); x++) {
+            mapFile >> number;
+            map[y].push_back(number);
+        }
+    }
+};

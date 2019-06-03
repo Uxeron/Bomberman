@@ -189,33 +189,15 @@ bool GameLogic::removeObject(Object *obj) {
 
 
 void GameLogic::generateMap() {
-    const char* map[] = {
-        "111111111111111111111",
-        "130222222222222222031",
-        "101212121212121212101",
-        "122222222222222222221",
-		"121212121212121212121",
-		"122222222222222222221",
-		"121212121212121212121",
-		"122222222222222222221",
-		"121212121212121212121",
-		"122222222222222222221",
-		"121212121212121212121",
-		"122222222222222222221",
-		"101212121212121212101",
-		"130222222222222222031",
-		"111111111111111111111",
-    };
-
-	for (int y = 0; y < SCREEN_HEIGHT/CELL_SIZE; y++) {
-		for (int x = 0; x < SCREEN_WIDTH/CELL_SIZE; x++) {
-			if (map[y][x] == '0') {
+	for (int y = 0; y < mapSize.y(); y++) {
+		for (int x = 0; x < mapSize.x(); x++) {
+			if (map[y][x] == 0) {
 				continue;
-			} else if (map[y][x] == '1') {
+			} else if (map[y][x] == 1) {
 				addObject(new Wall(*window.get(), CELL_SIZE, Vector2(x, y)));
-			} else if (map[y][x] == '2') {
+			} else if (map[y][x] == 2) {
 				addObject(new WallDestr(*window.get(), CELL_SIZE, Vector2(x, y)));
-			} else if (map[y][x] == '3') {
+			} else if (map[y][x] == 3) {
 				addObject(new Character(*window.get(), *this, Vector2(x, y)));
 			} else {
 				throw map_read_error(y, x);

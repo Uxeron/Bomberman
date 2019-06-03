@@ -9,6 +9,7 @@
 #endif
 
 #include <vector>
+#include <fstream>
 #include "vector2.hpp"
 #include "exceptions.hpp"
 
@@ -29,5 +30,5 @@ class MenuItem {
     ~MenuItem() { SDL_FreeSurface(sprite); }
 
     void writeName();
-    void loadMap() { mapSize = Vector2(21, 15); };
+    void loadMap();
 };
