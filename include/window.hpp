@@ -34,4 +34,5 @@ public:
     void update();
     int getWidth() const { return width; }
     int getHeight() const { return height; }
+    Uint32 MapRGB(SDL_Color col) { return SDL_MapRGB(screenSurface->format, col.r, col.g, col.b); }
 };
