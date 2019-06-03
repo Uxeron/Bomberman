@@ -16,6 +16,7 @@ int main(int argc, char *args[]) {
 			{
 			auto menu = std::make_unique<Menu>();
 			game = menu->menuLoop();
+			if (game == NULL) break;
 			}
 			game->startGame();
 			game->mainLoop();

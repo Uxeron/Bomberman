@@ -56,9 +56,11 @@ std::unique_ptr<GameLogic> Menu::menuLoop() {
             // Move selection up
             if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_w)
                 if (selectedItem > 0) selectedItem--;
+                else selectedItem = menuItems.size() - 1;
             // Move selection down
             if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_s)
                 if (selectedItem < menuItems.size() - 1) selectedItem++;
+                else selectedItem = 0;
             
             if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_RETURN) {
                 return std::make_unique<GameLogic> (menuItems[selectedItem]->map, menuItems[selectedItem]->mapSize);
