@@ -21,9 +21,10 @@ class MenuItem {
     SDL_Surface* sprite;
     TTF_Font* font;
     Vector2 textPos = Vector2(115, 35);
-    int index;
     std::string path;
     std::vector< std::vector< int > > map;
+    Vector2 mapSize;
+    int index;
 
     SDL_Color fgCol = { 255, 178, 127 };
     SDL_Color bgCol = { 109, 73, 50 };
@@ -32,5 +33,5 @@ class MenuItem {
     ~MenuItem() { debugWrite("Im free! " << index); SDL_FreeSurface(sprite); }
 
     void writeName();
-    void loadMap() {};
+    void loadMap() { mapSize = Vector2(21, 15); };
 };

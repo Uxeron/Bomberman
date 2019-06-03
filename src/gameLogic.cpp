@@ -4,8 +4,6 @@
 #include "../include/wallDestr.hpp"
 
 const int GameLogic::CELL_SIZE = 32;
-const int GameLogic::SCREEN_WIDTH = 672;
-const int GameLogic::SCREEN_HEIGHT = 480;
 const int GameLogic::FPS = 60;
 const int GameLogic::FRAME_TIME = 1000 / FPS;
 

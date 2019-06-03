@@ -21,10 +21,10 @@
 
 class GameLogic {
     static const int CELL_SIZE;
-    static const int SCREEN_WIDTH;
-    static const int SCREEN_HEIGHT;
     static const int FPS;
     static const int FRAME_TIME;
+    const int SCREEN_WIDTH;
+    const int SCREEN_HEIGHT;
     Uint32 prevTime = 0;
     std::unique_ptr<Window> window;
     std::list<std::unique_ptr<Object> > objList;
@@ -42,11 +42,18 @@ class GameLogic {
     bool gameStopped = false;
     int wonCharIndex = 0;
 
+    Vector2 mapSize;
+    std::vector< std::vector< int > > map;
+
     void generateMap();
     void resetGame();
     void limitFPS();
 
   public:
+
+    GameLogic(std::vector< std::vector< int > > mapTemp, Vector2 size) : 
+        map(mapTemp), mapSize(size), SCREEN_WIDTH(size.x() * CELL_SIZE), SCREEN_HEIGHT(size.y() * CELL_SIZE) {};
+
     void startGame();
     void mainLoop();
     void stopGame();

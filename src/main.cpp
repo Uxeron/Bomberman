@@ -1,8 +1,6 @@
 #include "../include/main.hpp"
 
 int main(int argc, char *args[]) {
-	std::unique_ptr<GameLogic> game;
-
 	try {
 		if (SDL_Init(SDL_INIT_VIDEO) != 0) // Start SDL
 			throw SDL_init_error();
@@ -12,15 +10,15 @@ int main(int argc, char *args[]) {
 
 		TTF_Init();
 
-		auto menu = std::make_unique<Menu>();
-		game = menu->menuLoop();
-		while (game != NULL) {
+		while (true) {
+			std::unique_ptr<GameLogic> game;
+			{
+			auto menu = std::make_unique<Menu>();
+			game = menu->menuLoop();
+			}
 			game->startGame();
 			game->mainLoop();
 			game->stopGame();
-
-			auto menu = std::make_unique<Menu>();
-			game = menu->menuLoop();
 		}
 	} catch (const std::exception& e) {
 		std::cout << "error: " << e.what() << std::endl;
