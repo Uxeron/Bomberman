@@ -10,12 +10,6 @@ const int GameLogic::FPS = 60;
 const int GameLogic::FRAME_TIME = 1000 / FPS;
 
 void GameLogic::startGame() {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) // Start SDL
-		throw SDL_init_error();
-
-    if (IMG_Init(IMG_INIT_PNG) == 0)   // Start SDL_img
-		throw SDL_Image_init_error();
-
 	gameEndScreenRect.position.x((SCREEN_WIDTH - GAME_END_SCREEN_SIZE_X) / 2);
 	gameEndScreenRect.position.y((SCREEN_HEIGHT - GAME_END_SCREEN_SIZE_Y) / 2);
 	gameEndScreenRect.size.x(GAME_END_SCREEN_SIZE_X);
@@ -51,8 +45,6 @@ void GameLogic::stopGame() {
 	grid->clear();
 
     debugWrite("Stopping SDL and SDL_IMG");
-    SDL_Quit(); // Quit SDL
-    IMG_Quit(); // Quit SDL_img
 }
 
 
@@ -118,6 +110,7 @@ void GameLogic::mainLoop() {
 		std::for_each(intObjList.begin(), intObjList.end(), [&](auto& p) { p->draw();});
 		std::for_each(objList.begin(), objList.end(), [&](auto& p) { p->draw();});
 
+		// Draw game win message
 		if (gameStopped) {
 			window->drawImage(sprites[wonCharIndex], gameEndScreenRect);
 			debugWrite("Stopping game");
