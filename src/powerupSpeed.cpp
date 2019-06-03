@@ -7,9 +7,3 @@ PowerupSpeed::PowerupSpeed(Window& wind, GameLogic& logic, Vector2 position)
 }
 
 PowerupSpeed::~PowerupSpeed() {}
-
-void PowerupSpeed::process(float delta) {
-    if (gameLogic.getObjectName(pos) != name()) {
-        gameLogic.addObjectnoList(this);
-    }
-}

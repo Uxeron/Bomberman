@@ -48,9 +48,8 @@ class GameLogic {
     void mainLoop();
     void stopGame();
 
-    bool addObject(std::unique_ptr<Object> obj, Vector2 pos);
-    bool addObject(std::unique_ptr<Object> obj);
-    bool addObjectnoList(Object *obj) const { return grid->addObject(obj); }
+    bool addObject(Object *obj, Vector2 pos);
+    bool addObject(Object *obj);
 
     bool removeObject(Vector2 pos);
     bool removeObject(Object *obj);

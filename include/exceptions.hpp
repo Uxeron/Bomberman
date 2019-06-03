@@ -22,6 +22,11 @@ class surface_error : public std::runtime_error {
     surface_error() : runtime_error("Failed to get surface from window") {}
 };
 
+class object_missing_error : public std::runtime_error {
+   public:
+    object_missing_error() : runtime_error("Object not found in list") {}
+};
+
 class file_not_found_error : public std::runtime_error {
     std::string m_message;
 

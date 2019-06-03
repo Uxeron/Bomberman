@@ -49,18 +49,18 @@ void Bomb::addExplosion(Vector2 position, bool &condition) {
     
     position += pos;
     if (!gameLogic.isOccupied(position)) {
-        gameLogic.addObject(std::move(std::make_unique<Explosion> (window, gameLogic, position)));
+        gameLogic.addObject(new Explosion(window, gameLogic, position));
     } else {
         if (std::find(destructibleObjects.begin(), destructibleObjects.end(), gameLogic.getObjectName(position)) != destructibleObjects.end()) {
             gameLogic.removeObject(position);
             if (rand() % 7 == 0) {
                 if (rand() % 3 == 0) {
-                    gameLogic.addObject(std::move(std::make_unique<PowerupSpeed> (window, gameLogic, position)));
+                    gameLogic.addObject(new PowerupSpeed(window, gameLogic, position));
                 } else {
-                    gameLogic.addObject(std::move(std::make_unique<PowerupBomb> (window, gameLogic, position)));
+                    gameLogic.addObject(new PowerupBomb(window, gameLogic, position));
                 }
             } else {
-                gameLogic.addObject(std::move(std::make_unique<Explosion> (window, gameLogic, position)));
+                gameLogic.addObject(new Explosion(window, gameLogic, position));
             }
         } else {
             condition = false;

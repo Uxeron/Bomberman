@@ -7,9 +7,3 @@ PowerupBomb::PowerupBomb(Window& wind, GameLogic& logic, Vector2 position)
 }
 
 PowerupBomb::~PowerupBomb() {}
-
-void PowerupBomb::process(float delta) {
-    if (gameLogic.getObjectName(pos) != name()) {
-        gameLogic.addObjectnoList(this);
-    }
-}

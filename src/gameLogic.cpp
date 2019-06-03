@@ -106,7 +106,7 @@ void GameLogic::mainLoop() {
         // Call process for all objects
 		intIt = intObjList.begin();
 		while (intIt != intObjList.end()) {
-			// Check if object needs to be deleted
+			// Check if interactive object needs to be deleted
             if ((*intIt)->remove) {
                 grid->removeObject((*intIt).get());
                 intObjList.erase(intIt++);
@@ -116,33 +116,15 @@ void GameLogic::mainLoop() {
 			// Call process
             (*intIt)->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
 
-			// Check again if object needs to be deleted
-            if ((*intIt)->remove) {
-                grid->removeObject((*intIt).get());
-                intObjList.erase(intIt++);
-				continue;
-			} else {
-				if ((*intIt)->name() == "character" && Character::getCount() == 1) {	// The last character remaining, wins game
-					gameStopped = true;
-				}
+            // Check if there's only one character remaining
+            if ((*intIt)->name() == "character" && Character::getCount() == 1) {
+                gameStopped = true;
             }
 			++intIt;
 		}
 
-		if (Character::getCount() == 0) {	// All characters were removed, noone wins
-			gameStopped = true;
-		}
-
-		objIt = objList.begin();
-		while (objIt != objList.end()) {
-			// Check if object needs to be deleted
-            if ((*objIt)->remove) {
-				grid->removeObject((*objIt).get());
-				objList.erase(objIt++);
-			} else {
-				++objIt;
-			}
-		}
+		// All characters were removed, noone wins
+		if (Character::getCount() == 0) { gameStopped = true; }
 
 		// Clear screen
 		window->fillScreen(0, 127, 64);
@@ -171,26 +153,34 @@ void GameLogic::mainLoop() {
 	}
 }
 
-bool GameLogic::addObject(std::unique_ptr<Object> obj, Vector2 pos) {
-    if (grid->addObject(obj.get(), pos)) {
-        if (dynamic_cast<InteractiveObject *>(obj.get())) {
-			std::unique_ptr<InteractiveObject> intObj(dynamic_cast<InteractiveObject *>(obj.release()));
+bool GameLogic::addObject(Object* obj, Vector2 pos) {
+    if (grid->addObject(obj, pos)) {
+        if (dynamic_cast<InteractiveObject *>(obj)) {
+			std::unique_ptr<InteractiveObject> intObj(dynamic_cast<InteractiveObject *>(obj));
             intObjList.push_back(std::move(intObj));
         } else {
-            objList.push_back(std::move(obj));
+            objList.push_back(std::move(std::unique_ptr<Object> (obj)));
 		}
 		return true;
     }
 	return false;
 }
 
-bool GameLogic::addObject(std::unique_ptr<Object> obj) {
-    return addObject(std::move(obj), obj->getPos());
+bool GameLogic::addObject(Object* obj) {
+    return addObject(obj, obj->getPos());
 }
 
 bool GameLogic::removeObject(Vector2 pos) {
 	if (grid->isOccupied(pos)) {
-		grid->getObject(pos)->remove = true;
+		auto objPtr = grid->getObject(pos);
+
+		if (dynamic_cast<InteractiveObject* > (objPtr)) {
+			objPtr->remove = true;
+		} else {
+			auto it = std::find_if(objList.begin(), objList.end(), [&](std::unique_ptr<Object>& p) { return (p.get() == objPtr);});
+			if (it == objList.end()) throw object_missing_error();
+			objList.erase(it);
+		}
 		grid->removeObject(pos);
 		return true;
 	}
@@ -226,14 +216,11 @@ void GameLogic::generateMap() {
 			if (map[y][x] == '0') {
 				continue;
 			} else if (map[y][x] == '1') {
-				auto wall = std::make_unique<Wall> (*window.get(), CELL_SIZE, Vector2(x, y));
-				addObject(std::move(wall));
+				addObject(new Wall(*window.get(), CELL_SIZE, Vector2(x, y)));
 			} else if (map[y][x] == '2') {
-				auto wall = std::make_unique<WallDestr> (*window.get(), CELL_SIZE, Vector2(x, y));
-				addObject(std::move(wall));
+				addObject(new WallDestr(*window.get(), CELL_SIZE, Vector2(x, y)));
 			} else if (map[y][x] == '3') {
-				auto chr = std::make_unique<Character> (*window.get(), *this, Vector2(x, y));
-				addObject(std::move(chr));
+				addObject(new Character(*window.get(), *this, Vector2(x, y)));
 			} else {
 				throw map_read_error(y, x);
 			}

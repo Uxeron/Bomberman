@@ -8,7 +8,7 @@ class PowerupBomb: public InteractiveObject {
     PowerupBomb(Window& wind, GameLogic& logic, Vector2 position);
     ~PowerupBomb();
 
-    void process(float delta);
-    void event(SDL_Event const& ev){};
+    void process(float delta) {};
+    void event(SDL_Event const& ev) {};
     void draw() const { window.drawImage(sprite, rect); };
 };

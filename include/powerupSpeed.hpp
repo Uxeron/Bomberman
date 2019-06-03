@@ -8,7 +8,7 @@ class PowerupSpeed: public InteractiveObject {
     PowerupSpeed(Window& wind, GameLogic& logic, Vector2 position);
     ~PowerupSpeed();
 
-    void process(float delta);
-    void event(SDL_Event const& ev){};
+    void process(float delta) {};
+    void event(SDL_Event const& ev) {};
     void draw() const { window.drawImage(sprite, rect); };
 };

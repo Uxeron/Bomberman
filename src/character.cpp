@@ -120,9 +120,9 @@ void Character::event(const SDL_Event& ev) {
                         bombPos.x(pos.x() - 1);
                         break;
                 }
-                auto bomb = std::make_unique<Bomb> (window, gameLogic, bombPos);
+                auto bomb = new Bomb(window, gameLogic, bombPos);
                 bomb->adjustDelay(bombStepAdjust);
-                gameLogic.addObject(std::move(bomb));
+                gameLogic.addObject(bomb);
                 bombDelayCurr = bombDelay;
             }
         }
