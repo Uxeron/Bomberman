@@ -87,22 +87,22 @@ void GameLogic::mainLoop() {
         // Call process for all objects
 		intIt = intObjList.begin();
 		while (intIt != intObjList.end()) {
-			// Check if interactive object needs to be deleted
+			// Check if interactive object needs to be removed
             if ((*intIt)->remove) {
                 grid->removeObject((*intIt).get());
                 intObjList.erase(intIt++);
 				continue;
 			}
 
-			// Call process
-            (*intIt)->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
-
             // Check if there's only one character remaining
             if ((*intIt)->name() == "character" && Character::getCount() == 1) {
                 gameStopped = true;
                 wonCharIndex = dynamic_cast<Character*>((*intIt).get())->getIndex();
+				break;
             }
-			++intIt;
+
+			// Call process
+            (*intIt++)->process((SDL_GetTicks() - prevTime + FRAME_TIME) / 1000.0);
 		}
 
 		// All characters were removed, noone wins
