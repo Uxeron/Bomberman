@@ -72,34 +72,15 @@ void GameLogic::mainLoop() {
 				quit = true;
 			
 			// Reset game
-			if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_r) {
-				gameStopped = false;
-				debugWrite("Cleaning objects");
-				objList.clear();
-
-				debugWrite("Cleaning interactive objects");
-				intObjList.clear();
-
-				debugWrite("Cleaning grid");
-				grid->clear();
-
-				debugWrite("Resetting counter");
-				Character::resetCount();
-
-				debugWrite("Reseting grid");
-				grid->setSize(Vector2(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE), CELL_SIZE);
-				debugWrite("Regenerating map");
-				generateMap();
-			}
+			if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_ESCAPE) 
+				resetGame();
 
 			// Pass events to all objects
-			std::for_each(intObjList.begin(), intObjList.end(), [&](std::unique_ptr<InteractiveObject>& p) { p->event(e);});
+			std::for_each(intObjList.begin(), intObjList.end(), [&](auto& p) { p->event(e);});
 		}
 
 		if (gameStopped) {
-			if (prevTime + FRAME_TIME > SDL_GetTicks())
-				SDL_Delay(prevTime + FRAME_TIME - SDL_GetTicks());
-			prevTime = SDL_GetTicks();
+			limitFPS();
 			continue;
 		}
 
@@ -119,27 +100,26 @@ void GameLogic::mainLoop() {
             // Check if there's only one character remaining
             if ((*intIt)->name() == "character" && Character::getCount() == 1) {
                 gameStopped = true;
+                wonCharIndex = dynamic_cast<Character*>((*intIt).get())->getIndex();
             }
 			++intIt;
 		}
 
 		// All characters were removed, noone wins
-		if (Character::getCount() == 0) { gameStopped = true; }
+		if (Character::getCount() == 0) { 
+			gameStopped = true; 
+			wonCharIndex = 4;
+		}
 
 		// Clear screen
 		window->fillScreen(0, 127, 64);
 
 		// Draw all objects
-		std::for_each(intObjList.begin(), intObjList.end(), [&](std::unique_ptr<InteractiveObject>& p) { p->draw();});
-		std::for_each(objList.begin(), objList.end(), [&](std::unique_ptr<Object>& p) { p->draw();});
+		std::for_each(intObjList.begin(), intObjList.end(), [&](auto& p) { p->draw();});
+		std::for_each(objList.begin(), objList.end(), [&](auto& p) { p->draw();});
 
 		if (gameStopped) {
-			auto it = std::find_if(intObjList.begin(), intObjList.end(), [&](std::unique_ptr<InteractiveObject>& p) { return (p->name() == "character");});
-			if (it != intObjList.end()) {
-				window->drawImage(sprites[dynamic_cast<Character*>((*it).get())->getIndex()], gameEndScreenRect);
-			} else {
-				window->drawImage(sprites[4], gameEndScreenRect);
-			}
+			window->drawImage(sprites[wonCharIndex], gameEndScreenRect);
 			debugWrite("Stopping game");
 		}
 
@@ -147,10 +127,35 @@ void GameLogic::mainLoop() {
 		window->update();
 
 		// Limit framerate
-		if (prevTime + FRAME_TIME > SDL_GetTicks())
-			SDL_Delay(prevTime + FRAME_TIME - SDL_GetTicks());
-		prevTime = SDL_GetTicks();
+		limitFPS();
 	}
+}
+
+void GameLogic::resetGame() {
+    gameStopped = false;
+    debugWrite("Cleaning objects");
+    objList.clear();
+
+    debugWrite("Cleaning interactive objects");
+    intObjList.clear();
+
+    debugWrite("Cleaning grid");
+    grid->clear();
+
+    debugWrite("Resetting counter");
+    Character::resetCount();
+
+    debugWrite("Reseting grid");
+    grid->setSize(Vector2(SCREEN_WIDTH / CELL_SIZE, SCREEN_HEIGHT / CELL_SIZE),
+                  CELL_SIZE);
+    debugWrite("Regenerating map");
+    generateMap();
+}
+
+void GameLogic::limitFPS() {
+    if (prevTime + FRAME_TIME > SDL_GetTicks())
+        SDL_Delay(prevTime + FRAME_TIME - SDL_GetTicks());
+    prevTime = SDL_GetTicks();
 }
 
 bool GameLogic::addObject(Object* obj, Vector2 pos) {
@@ -177,7 +182,7 @@ bool GameLogic::removeObject(Vector2 pos) {
 		if (dynamic_cast<InteractiveObject* > (objPtr)) {
 			objPtr->remove = true;
 		} else {
-			auto it = std::find_if(objList.begin(), objList.end(), [&](std::unique_ptr<Object>& p) { return (p.get() == objPtr);});
+			auto it = std::find_if(objList.begin(), objList.end(), [&](auto& p) { return (p.get() == objPtr);});
 			if (it == objList.end()) throw object_missing_error();
 			objList.erase(it);
 		}

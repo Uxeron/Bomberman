@@ -40,8 +40,11 @@ class GameLogic {
     Rect gameEndScreenRect;
 
     bool gameStopped = false;
+    int wonCharIndex = 0;
 
     void generateMap();
+    void resetGame();
+    void limitFPS();
 
   public:
     void startGame();
