@@ -14,6 +14,8 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <fstream>
 
 class Menu {
     const int FPS = 60;
@@ -23,11 +25,12 @@ class Menu {
 
     const Rect menuTitleRect = { Vector2(0, 0), Vector2(600, 200) };
     const Rect arrowUpRect = { Vector2(50, 200), Vector2(500, 50) };
-    const Rect arrowDownRect = { Vector2(50, 550), Vector2(500, 50) };
+    const Rect arrowDownRect = { Vector2(50, 570), Vector2(500, 50) };
 
     const Rect menuRects[3] = { { Vector2(50, 250), Vector2(500, 100) },
-                                { Vector2(50, 350), Vector2(500, 100) },
-                                { Vector2(50, 450), Vector2(500, 100) } };
+                                { Vector2(50, 360), Vector2(500, 100) },
+                                { Vector2(50, 470), Vector2(500, 100) } };
+    
 
     Uint32 prevTime = 0;
     std::unique_ptr<Window> window;
@@ -40,7 +43,7 @@ class Menu {
     
     int selectedItem = 0;
 
-    std::vector<MenuItem> menuItems;
+    std::vector<std::unique_ptr<MenuItem> > menuItems;
 
     std::unique_ptr<GameLogic> gameLogic;
 

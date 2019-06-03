@@ -1,5 +1,4 @@
-#include "../include/gameLogic.hpp"
-#include "../include/menu.hpp"
+#include "../include/main.hpp"
 
 int main(int argc, char *args[]) {
 	std::unique_ptr<GameLogic> game;
@@ -10,6 +9,8 @@ int main(int argc, char *args[]) {
 
 		if (IMG_Init(IMG_INIT_PNG) == 0)   // Start SDL_img
 			throw SDL_Image_init_error();
+
+		TTF_Init();
 
 		auto menu = std::make_unique<Menu>();
 		game = menu->menuLoop();
@@ -27,6 +28,7 @@ int main(int argc, char *args[]) {
 	
 	SDL_Quit(); // Quit SDL
     IMG_Quit(); // Quit SDL_img
+	TTF_Quit(); // Quit SDL_ttf
 
 	return 0; 
 }
