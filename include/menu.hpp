@@ -3,9 +3,11 @@
 #ifdef __linux__
   #include <SDL2/SDL.h>
   #include <SDL2/SDL_image.h>
+  #include <SDL2/SDL_ttf.h>
 #else
   #include "../SDL2/include/SDL.h"
   #include "../SDL2/include/SDL_image.h"
+  #include "../SDL2/include/SDL_ttf.h"
 #endif
 
 #include "gameLogic.hpp"
@@ -20,6 +22,7 @@
 class Menu {
     const int FPS = 60;
     const int FRAME_TIME = 1000 / FPS;
+    const int FONT_SIZE = 36;
 
     const Vector2 menuSize = Vector2(600, 700);
 
@@ -30,7 +33,8 @@ class Menu {
     const Rect menuRects[3] = { { Vector2(50, 250), Vector2(500, 100) },
                                 { Vector2(50, 360), Vector2(500, 100) },
                                 { Vector2(50, 470), Vector2(500, 100) } };
-    
+
+    TTF_Font* font = TTF_OpenFont("SHOWG.TTF", FONT_SIZE);
 
     Uint32 prevTime = 0;
     std::unique_ptr<Window> window;

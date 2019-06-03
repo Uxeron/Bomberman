@@ -9,6 +9,7 @@
 #endif
 
 #include <vector>
+#include "vector2.hpp"
 #include "exceptions.hpp"
 
 #include <iostream>
@@ -18,12 +19,18 @@
 class MenuItem {
   public:
     SDL_Surface* sprite;
+    TTF_Font* font;
+    Vector2 textPos = Vector2(115, 35);
     int index;
+    std::string path;
     std::vector< std::vector< int > > map;
 
-    MenuItem(int ind, SDL_Surface* spr) : index(ind), sprite(spr) {};
-    MenuItem(int ind, SDL_Surface* spr, const char* path) : index(ind), sprite(spr) { loadMap(path); };
+    SDL_Color fgCol = { 255, 178, 127 };
+    SDL_Color bgCol = { 109, 73, 50 };
+
+    MenuItem(int ind, SDL_Surface* spr, TTF_Font* fnt, std::string pth) : index(ind), sprite(spr), font(fnt), path(pth) { writeName(); loadMap(); };
     ~MenuItem() { debugWrite("Im free! " << index); SDL_FreeSurface(sprite); }
 
-    void loadMap(const char* path) {};
+    void writeName();
+    void loadMap() {};
 };

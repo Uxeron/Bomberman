@@ -16,7 +16,7 @@ Menu::Menu() {
 
     mapsList.open("Maps/maps.txt");
     while (std::getline(mapsList, path)) {
-        menuItems.push_back(std::move(std::make_unique<MenuItem> (i++, window->loadSurface("Sprites/UI/MenuItem.png"), ("Maps/" + path).c_str())));
+        menuItems.push_back(std::move(std::make_unique<MenuItem> (i++, window->loadSurface("Sprites/UI/MenuItem.png"), font, ("Maps/" + path))));
         debugWrite("Item " << i << " created");
     }
 }
@@ -27,6 +27,8 @@ Menu::~Menu() {
     SDL_FreeSurface(menuArrowDownSprite);
     SDL_FreeSurface(menuItemSprite);
     SDL_FreeSurface(menuItemSelectedSprite);
+
+    TTF_CloseFont(font);
 
     menuItems.clear();
 }
