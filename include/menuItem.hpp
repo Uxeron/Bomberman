@@ -20,7 +20,7 @@ class MenuItem {
     TTF_Font* font;
     Window& window;
     Vector2 textPos = Vector2(115, 35);
-    std::string path;
+    const char* path;
     std::vector< std::vector< int > > map;
     Vector2 mapSize;
     int index;
@@ -33,7 +33,7 @@ class MenuItem {
                              window.MapRGB({ 69,  40,  60}),
                              window.MapRGB({173,  13,  19}) };
 
-    MenuItem(int ind, SDL_Surface* spr, TTF_Font* fnt, std::string pth, Window& wind);
+    MenuItem(int ind, SDL_Surface* spr, TTF_Font* fnt, const char* pth, Window& wind);
     ~MenuItem() { SDL_FreeSurface(sprite); }
 
     void writeName();

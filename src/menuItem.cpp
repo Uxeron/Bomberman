@@ -1,6 +1,6 @@
 #include "../include/menuItem.hpp"
 
-MenuItem::MenuItem(int ind, SDL_Surface* spr, TTF_Font* fnt, std::string pth, Window& wind)
+MenuItem::MenuItem(int ind, SDL_Surface* spr, TTF_Font* fnt, const char* pth, Window& wind)
     : index(ind), sprite(spr), font(fnt), path(pth), window(wind) {
     loadMap();
     writeName();
@@ -9,7 +9,7 @@ MenuItem::MenuItem(int ind, SDL_Surface* spr, TTF_Font* fnt, std::string pth, Wi
 
 void MenuItem::writeName() {
     // Get map name from map file path
-    std::string mapName = path;
+    std::string mapName = std::string(path);
     std::size_t len = mapName.find_last_of('.');
     len -= 5;
     if (len > 15) len = 15; // Limit name length to 15 characters
@@ -42,7 +42,7 @@ void MenuItem::drawIcon() {
     for (int y1 = 0; y1 < mapSize.y(); y1++) {
         for (int x1 = 0; x1 < mapSize.x(); x1++) {
             if (map[y1][x1] > 3) throw map_read_error(y1, x1);
-            if (map[y1][x1] == 3) if(++charCount > 4) throw too_many_characters_error(path.c_str());
+            if (map[y1][x1] == 3) if(++charCount > 4) throw too_many_characters_error(path);
             for (int y2 = 0; y2 < scale; y2++) {
                 for (int x2 = 0; x2 < scale; x2++) {
                     drawPixel(sprite, iconPos.x() + x1 * scale + x2, iconPos.y() + y1 * scale + y2, mapColors[map[y1][x1]]);
@@ -60,7 +60,7 @@ void MenuItem::drawIcon() {
 void MenuItem::loadMap() { 
     std::ifstream mapFile;
     mapFile.open(path);
-    if (!mapFile.is_open()) throw file_not_found_error(path.c_str());
+    if (!mapFile.is_open()) throw file_not_found_error(path);
 
     int number;
     mapFile >> number;
@@ -68,14 +68,20 @@ void MenuItem::loadMap() {
     mapFile >> number;
     mapSize.y(number);
 
+    if (mapSize.x() < 13) throw map_too_small_error(path);
+    if (mapSize.x() > 50) throw map_too_large_error(path);
+
+    if (mapSize.y() < 9) throw map_too_small_error(path);
+    if (mapSize.y() > 50) throw map_too_large_error(path);
+
     for (int y = 0; y < mapSize.y(); y++) {
         map.push_back(std::vector<int> ());
         for (int x = 0; x < mapSize.x(); x++) {
             mapFile >> number;
             map[y].push_back(number);
-            
+
             if (mapFile.eof() && (y < mapSize.y() || x < mapSize.x())) 
-                throw map_size_error(path.c_str());
+                throw map_size_error(path);
         }
     }
 };

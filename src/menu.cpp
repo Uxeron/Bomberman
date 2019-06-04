@@ -21,7 +21,7 @@ Menu::Menu() {
 
     while (std::getline(mapsList, path)) {
         debugWrite("Item " << i << " created");
-        menuItems.push_back(std::move(std::make_unique<MenuItem> (i++, window->loadSurface("Sprites/UI/MenuItem.png"), font, ("Maps/" + path), *window.get())));
+        menuItems.push_back(std::move(std::make_unique<MenuItem> (i++, window->loadSurface("Sprites/UI/MenuItem.png"), font, ("Maps/" + path).c_str(), *window.get())));
     }
 }
 
