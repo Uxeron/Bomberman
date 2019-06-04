@@ -16,6 +16,7 @@ Menu::Menu() {
     std::string path;
     std::ifstream mapsList;
     mapsList.open("Maps/maps.txt");
+    if (!mapsList.is_open()) throw file_not_found_error("Maps/maps.txt");
     int i = 0;
 
     while (std::getline(mapsList, path)) {

@@ -32,28 +32,41 @@ class object_missing_error : public std::runtime_error {
     object_missing_error() : runtime_error("Object not found in list") {}
 };
 
-class file_not_found_error : public std::runtime_error {
-    std::string m_message;
 
-   public:
-    file_not_found_error(const char* filename) : runtime_error(filename) {
-        std::stringstream ss;
-        ss << "file not found " << filename;
-        m_message = ss.str();
-    }
 
-    const char* what() const noexcept { return m_message.c_str(); }
+class error_base : public std::runtime_error {
+  public:
+    std::stringstream ss;
+
+    error_base(const char* filename) : runtime_error(filename) {};
+
+    const char* what() const noexcept { return ss.str().c_str(); }
 };
 
-class map_read_error : public std::runtime_error {
-    std::string m_message;
-
+class too_many_characters_error : public error_base {
    public:
-    map_read_error(int x, int y) : runtime_error("") {
-        std::stringstream ss;
-        ss << "invalid map symbol at line " << x << ", position " << y;
-        m_message = ss.str();
+    too_many_characters_error(const char* filename) : error_base(filename) {
+        ss << "too many characters found in " << filename << ", maximum is 4";
     }
+};
 
-    const char* what() const noexcept { return m_message.c_str(); }
+class file_not_found_error : public error_base {
+   public:
+    file_not_found_error(const char* filename) : error_base(filename) {
+        ss << "file not found " << filename;
+    }
+};
+
+class map_read_error : public error_base {
+   public:
+    map_read_error(int x, int y) : error_base("") {
+        ss << "invalid map symbol at line " << x << ", position " << y;
+    }
+};
+
+class map_size_error : public error_base {
+   public:
+    map_size_error(const char* filename) : error_base(filename) {
+        ss << "map " << filename << " is of incorrect size";
+    }
 };

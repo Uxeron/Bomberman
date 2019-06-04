@@ -37,9 +37,12 @@ void MenuItem::drawIcon() {
         SDL_LockSurface(sprite);
     }
 
+    int charCount = 0;
+
     for (int y1 = 0; y1 < mapSize.y(); y1++) {
         for (int x1 = 0; x1 < mapSize.x(); x1++) {
             if (map[y1][x1] > 3) throw map_read_error(y1, x1);
+            if (map[y1][x1] == 3) if(++charCount > 4) throw too_many_characters_error(path.c_str());
             for (int y2 = 0; y2 < scale; y2++) {
                 for (int x2 = 0; x2 < scale; x2++) {
                     drawPixel(sprite, iconPos.x() + x1 * scale + x2, iconPos.y() + y1 * scale + y2, mapColors[map[y1][x1]]);
@@ -57,6 +60,7 @@ void MenuItem::drawIcon() {
 void MenuItem::loadMap() { 
     std::ifstream mapFile;
     mapFile.open(path);
+    if (!mapFile.is_open()) throw file_not_found_error(path.c_str());
 
     int number;
     mapFile >> number;
@@ -69,6 +73,9 @@ void MenuItem::loadMap() {
         for (int x = 0; x < mapSize.x(); x++) {
             mapFile >> number;
             map[y].push_back(number);
+            
+            if (mapFile.eof() && (y < mapSize.y() || x < mapSize.x())) 
+                throw map_size_error(path.c_str());
         }
     }
 };
