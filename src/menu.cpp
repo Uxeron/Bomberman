@@ -55,11 +55,11 @@ std::unique_ptr<GameLogic> Menu::menuLoop() {
             if (e.type == SDL_QUIT) return NULL;
 
             // Move selection up
-            if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_w)
+            if (!e.key.repeat && e.key.state == SDL_PRESSED && (e.key.keysym.sym == SDLK_w || e.key.keysym.sym == SDLK_UP))
                 if (selectedItem > 0) selectedItem--;
                 else selectedItem = menuItems.size() - 1;
             // Move selection down
-            if (!e.key.repeat && e.key.state == SDL_PRESSED && e.key.keysym.sym == SDLK_s)
+            if (!e.key.repeat && e.key.state == SDL_PRESSED && (e.key.keysym.sym == SDLK_s || e.key.keysym.sym == SDLK_DOWN))
                 if (selectedItem < menuItems.size() - 1) selectedItem++;
                 else selectedItem = 0;
             
