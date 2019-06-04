@@ -41,14 +41,11 @@ Menu::~Menu() {
 }
 
 std::unique_ptr<GameLogic> Menu::menuLoop() {
-    // Main loop flag
-    bool quit = false;
-
     // Event handler
     SDL_Event e;
 
     debugWrite("Starting main loop");
-    while (!quit) {
+    while (true) {
         // Handle events on queue
         while (SDL_PollEvent(&e) != 0) {
             // User pressed x
@@ -102,6 +99,8 @@ std::unique_ptr<GameLogic> Menu::menuLoop() {
         // Limit framerate
         limitFPS();
     }
+
+    return NULL;
 }
 
 void Menu::limitFPS() {
